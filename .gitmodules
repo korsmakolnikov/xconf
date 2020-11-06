@@ -1,0 +1,3 @@
+[submodule "swapcaps"]
+	path = swapcaps
+	url = https://github.com/korsmakolnikov/swapcaps
