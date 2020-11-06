@@ -1,0 +1,48 @@
+snippet cmake_minimal
+	cmake_minimum_required(VERSION 3.15)
+	project(${0:project_name})
+
+	set(CMAKE_CXX_STANDARD 11)
+	set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+	add_executable(${PROJECT_NAME\} src/main.cpp)
+
+snippet cmake_lib
+	add_library(${0:library_label} ./src/${1:library_hpp}.hpp
+                             ./src/${2:library_cpp}.cpp)
+
+	add_executable(${PROJECT_NAME} src/main.cpp)
+	target_link_libraries(${PROJECT_NAME} $1)
+
+
+snippet cmake_test
+	find_package(Catch2 3 REQUIRED)
+
+	add_executable(${0:testing_label} ./${1:testing_main_path})
+	target_link_libraries($0 Catch2::Catch2WithMain ${2:libraries})
+
+	include(CTest)
+	include(Catch)
+	catch_discover_tests($0)
+
+snippet cmake_testing_lib
+	cmake_minimum_required(VERSION 3.15)
+	project(${0:project_name})
+
+	set(CMAKE_CXX_STANDARD ${1:standard})
+	set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+	add_library(${2:library_label} ./src/${3:library_hpp}.hpp
+                             ./src/${4:library_cpp}.cpp)
+
+	add_executable(${PROJECT_NAME} src/main.cpp)
+	target_link_libraries(${PROJECT_NAME} $2)
+
+	find_package(Catch2 3 REQUIRED)
+
+	add_executable(tests ./tests/test.cpp)
+	target_link_libraries(tests Catch2::Catch2WithMain $2)
+
+	include(CTest)
+	include(Catch)
+	catch_discover_tests(tests)

@@ -1,0 +1,6 @@
+[submodule "swapcaps"]
+	path = swapcaps
+	url = https://github.com/korsmakolnikov/swapcaps
+[submodule "my_keyboard_layout"]
+	path = my_keyboard_layout
+	url = git@github.com:korsmakolnikov/my_keyboard_layout.git
