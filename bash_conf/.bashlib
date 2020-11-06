@@ -1,0 +1,53 @@
+#!/bin/sh
+# Utility lib
+
+function dir_stats () {
+  if [ -z "$1" ]                                                    # Is parameter #1 zero length?
+   then
+     echo "-Parameter #1 is zero length.-"                          # Or no parameter passed.
+     return 1
+   else
+     #find $1 -type f | sed 's/.*\.//' | sort | uniq -c
+     eval "find $1 -type f | sed 's/.*\.//' | sort | uniq -c"
+     return 0
+   fi
+}
+
+function git_up () {
+    CBRANCH=`git branch | grep \* | cut -d ' ' -f2`
+    printf "\e[38;5;81mpush force with lease local branch ${CBRANCH} to origin/${CBRANCH}\e[0m\n"
+    git push --force-with-lease origin $CBRANCH
+}
+
+function git_down () {
+    CBRANCH=`git branch | grep \* | cut -d ' ' -f2`
+    printf "\e[38;5;81mpull local branch from origin/${CBRANCH}\e[0m\n"
+    git fetch -p
+    git pull origin $CBRANCH --rebase
+}
+
+function who_on_port () {
+    sudo lsof -i tcp:$1
+}
+
+function find_port_occupant () {
+  sudo lsof -i tcp:$1
+}
+
+function kill_port_occupant () {
+  kill -9 `sudo lsof -i tcp:$1`
+}
+
+function cbranch () {
+  if [ -d .git ]; then
+    git branch | grep \* | cut -d ' ' -f2
+  fi
+}
+
+export -f cbranch
+export -f find_port_occupant
+export -f kill_port_occupant
+export -f who_on_port
+export -f git_up
+export -f git_down
+export -f dir_stats
