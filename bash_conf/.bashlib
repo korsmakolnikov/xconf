@@ -1,0 +1,101 @@
+#!/bin/sh
+# Utility lib
+
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+function dir_stats () {
+  if [ -z "$1" ]                                                    # Is parameter #1 zero length?
+   then
+     echo "-Parameter #1 is zero length.-"                          # Or no parameter passed.
+     return 1
+   else
+     #find $1 -type f | sed 's/.*\.//' | sort | uniq -c
+     eval "find $1 -type f | sed 's/.*\.//' | sort | uniq -c"
+     return 0
+   fi
+}
+
+function git_up () {
+    CBRANCH=`git branch | grep \* | cut -d ' ' -f2`
+    printf "\e[38;5;81mpush force with lease local branch ${CBRANCH} to origin/${CBRANCH}\e[0m\n"
+    git push --force-with-lease origin $CBRANCH
+}
+
+function git_down () {
+    CBRANCH=`git branch | grep \* | cut -d ' ' -f2`
+    printf "\e[38;5;81mpull local branch from origin/${CBRANCH}\e[0m\n"
+    git fetch -p
+    git pull origin $CBRANCH --rebase
+}
+
+function who_on_port () {
+    sudo lsof -i tcp:$1
+}
+
+function find_port_occupant () {
+  sudo lsof -i tcp:$1
+}
+
+function kill_port_occupant () {
+  kill -9 `sudo lsof -i tcp:$1`
+}
+
+function cbranch () {
+  if [ -d .git ]; then
+    git branch | grep \* | cut -d ' ' -f2
+  fi
+}
+
+function docker_run () {
+  if [ -z "$1" ]                                                    # Is parameter #1 zero length? 
+    then 
+      echo "Please enter the name of the container you need to start"
+      return 1
+    fi
+
+  if [ -z "$2" ]                                                    # Is parameter #1 zero length?
+   then
+    docker-compose run --service-ports $1 bash
+   else
+    docker-compose run --service-ports $1 $2
+   fi
+}
+
+function last_revision () {
+  git log origin/master..HEAD -s --pretty=format:"%h" $1 | head -n 1
+  echo ""
+}
+
+function auto_fixup () {
+  commit=$(last_revision $1)
+  eval_auto_fixup $commit
+  local _ret=$?
+  if [ $_ret -ne 0 ] ; then
+    >&2 echo -e "${RED}Auto fix returned with exit code $_ret, aborting due the last revision is out of scope${NC}"
+    return $_ret
+  fi
+  echo "Auto fixup on $commit"
+  git add $1
+  git commit --fixup $commit
+}
+
+function eval_auto_fixup () {
+  if [ -z "$1" ]; then
+    return 1
+  fi
+
+  return 0
+}
+
+export -f cbranch
+export -f find_port_occupant
+export -f kill_port_occupant
+export -f who_on_port
+export -f git_up
+export -f git_down
+export -f dir_stats
+export -f docker_run
+export -f last_revision
+export -f auto_fixup
+export -f eval_auto_fixup
