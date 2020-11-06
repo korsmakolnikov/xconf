@@ -1,0 +1,4 @@
+#!/bin/bash
+
+PS1="\[$(tput setaf 2)\][\w](\[$(tput bold)\]\[$(tput setaf 4)\]\$(cbranch)\[$(tput sgr0)\]\[$(tput setaf 2)\])> \[$(tput sgr0)\]\[$(tput sgr0)\]"
+export PS1

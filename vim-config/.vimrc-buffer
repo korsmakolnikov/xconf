@@ -1,0 +1,14 @@
+" Buffer section
+nnoremap <silent> <TAB> :bn<CR> :redraw<CR>
+nnoremap <silent> <S-TAB> :bp<CR> :redraw<CR>
+function! FileNameYank()
+  let @" = expand("%")
+  :execute "OscyankRegister"
+endfunction
+:command! FileNameYank call FileNameYank()                                     " buffer path copy 
+:command! JsonPretty %!jq '.'
+:nmap <silent><Leader>fy :FileNameYank<CR>
+nnoremap <silent><Leader>bd :bd<CR> |                                          " close buffer 
+nnoremap <silent><Leader>bK :bufdo bd<CR> |                                    " close all buffer
+"TODO leader bD to close all buffer but the currently opened
+
