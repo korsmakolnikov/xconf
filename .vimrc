@@ -185,6 +185,9 @@ autocmd BufWritePre *.hrl :call CocAction('format')
 "
 " Mapping (keep EOF)
 "
+"
+" leader
+let mapleader = ","
 
 " BUFFERS
 nnoremap <silent> <TAB> :bn<CR> :redraw<CR>
