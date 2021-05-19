@@ -272,18 +272,18 @@ nnoremap <silent> <C-c> :NERDTreeFind<CR>
 "
 " vim-go
 " TODO map only in go
-nnoremap <Leader>b :GoDebugBreakpoint<CR>
-nnoremap <Leader>s :GoDebugStart<CR>
-nnoremap <Leader>t :GoDebugTest<CR>
-nnoremap <Leader>gg :GoDebugRestart<CR>
-nnoremap <Leader>G :GoDebugContinue<CR>
-nnoremap <Leader>q :GoDebugStop<CR>
-nnoremap <Leader>e :GoDebugStep<CR>
-nnoremap <Leader>w :GoDebugStepout<CR>
-nnoremap <Leader>p :GoDebugPrint
-nnoremap <Leader>fs :GoFillStruct<CR>
-nnoremap <Leader>k :GoKeyify<CR>
-nnoremap <Leader>r :GoIfErr<CR>
+autocmd FileType go noremap <Leader>b :GoDebugBreakpoint<CR>
+autocmd FileType go noremap <Leader>s :GoDebugStart<CR>
+autocmd FileType go noremap <Leader>t :GoDebugTest<CR>
+autocmd FileType go noremap <Leader>gg :GoDebugRestart<CR>
+autocmd FileType go noremap <Leader>G :GoDebugContinue<CR>
+autocmd FileType go noremap <Leader>q :GoDebugStop<CR>
+autocmd FileType go noremap <Leader>e :GoDebugStep<CR>
+autocmd FileType go noremap <Leader>w :GoDebugStepout<CR>
+autocmd FileType go noremap <Leader>p :GoDebugPrint
+autocmd FileType go noremap <Leader>fs :GoFillStruct<CR>
+autocmd FileType go noremap <Leader>k :GoKeyify<CR>
+autocmd FileType go noremap <Leader>r :GoIfErr<CR>
 
 " buffer path copy 
 :command! -nargs=1 FileNameYank execute ':silent !echo '.<q-args>.' | xclip -selection clipboard' | execute ':redraw!'
