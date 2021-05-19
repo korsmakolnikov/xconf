@@ -129,13 +129,21 @@ xnoremap <Tab> >gv
 xnoremap <S-Tab> <gv
 
 " nerdtree
+" close nerdtree on startup
+let g:NERDTreeHijackNetrw = 0
+
 " nerdtree on the right
 let g:NERDTreeWinPos = "right"
-autocmd VimEnter * NERDTree
 
 " nerdtree size
 let NERDTreeWinSize = 50
-autocmd VimEnter * if &filetype !=# 'gitcommit' | NERDTree | wincmd p | endif
+
+" auto close nerdtree when opening a file
+let NERDTreeQuitOnOpen = 1
+
+" git integration
+"autocmd VimEnter * if &filetype !=# 'gitcommit' | NERDTree | wincmd p | endif
+
 " automatically quit if nerdtree is the only windows
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 " end nerdtree
