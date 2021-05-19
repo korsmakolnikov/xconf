@@ -197,14 +197,15 @@ nnoremap <silent> <S-TAB> :bp<CR> :redraw<CR>
 xnoremap <Tab> >gv
 xnoremap <S-Tab> <gv
 
-" poweryank
-" TODO map to C-y
+" MyPoweryank
 function Poweryank() range
   echo 'copy to system clipboard'
   echo system('echo '.shellescape(join(getline(a:firstline, a:lastline), "\n")).'| xclip -selection clipboard')
-endfunction
-com -range=% -nargs=0 Yank :<line1>,<line2>call Poweryank()
+  endfunction
 " end poweryank
+"
+" Copy to system clipboard
+xnoremap <C-y> :call Poweryank()<cr> 
 
 " coc
 " Use K to show documentation in preview window.
