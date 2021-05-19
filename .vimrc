@@ -124,10 +124,6 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 " delays and poor user experience.
 set updatetime=50
 
-" tab in visual/selection mode
-xnoremap <Tab> >gv
-xnoremap <S-Tab> <gv
-
 " nerdtree
 " close nerdtree on startup
 let g:NERDTreeHijackNetrw = 0
@@ -189,6 +185,14 @@ autocmd BufWritePre *.hrl :call CocAction('format')
 "
 " Mapping (keep EOF)
 "
+
+" BUFFERS
+nnoremap <silent> <TAB> :bn<CR> :redraw<CR>
+nnoremap <silent> <S-TAB> :bp<CR> :redraw<CR>
+
+" tab in visual/selection mode
+xnoremap <Tab> >gv
+xnoremap <S-Tab> <gv
 
 " poweryank
 " TODO map to C-y
@@ -306,10 +310,6 @@ nnoremap <F10> :RG<Space>
 nnoremap <silent> <F11> :UndotreeToggle<cr>
 nnoremap <silent> <F12> :execute "e ~/.vimrc"<CR>
 nnoremap <silent> <S-F12> :execute "source ~/.vimrc"<CR>
-
-" BUFFERS
-nnoremap <silent> <TAB> :bn<CR> :redraw<CR>
-nnoremap <silent> <S-TAB> :bp<CR> :redraw<CR>
 
 " Sort lines
 vmap <silent> ls :'<,'>sort u<CR>
