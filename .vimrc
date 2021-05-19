@@ -66,7 +66,7 @@ Plug 'vim-erlang/vim-erlang-skeletons'
 " graphql
 Plug 'jparise/vim-graphql'
 
-"snippet
+" snippet
 Plug 'honza/vim-snippets'
 Plug 'neoclide/coc-snippets'
 call plug#end()
@@ -128,6 +128,8 @@ xnoremap <S-Tab> <gv
 " nerdtree on the right
 let g:NERDTreeWinPos = "right"
 autocmd VimEnter * NERDTree
+
+" nerdtree size
 let NERDTreeWinSize = 50
 autocmd VimEnter * if &filetype !=# 'gitcommit' | NERDTree | wincmd p | endif
 " automatically quit if nerdtree is the only windows
