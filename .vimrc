@@ -69,6 +69,10 @@ Plug 'jparise/vim-graphql'
 " snippet
 Plug 'honza/vim-snippets'
 Plug 'neoclide/coc-snippets'
+
+" orgmode
+Plug 'jceb/vim-orgmode'
+
 call plug#end()
 
 "COLORSCHEME
