@@ -47,8 +47,8 @@ Plug 'elixir-editors/vim-elixir'                                               "
 Plug 'elixir-lsp/coc-elixir', {'do': 'yarn install && yarn prepack'}
 
 " javascript
-Plug 'mxw/vim-jsx', { 'for': 'javascript' }                                    " vim-jsx and vim-javascript fix js highlightind
-Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+" Plug 'mxw/vim-jsx', { 'for': 'javascript' }                                    " vim-jsx and vim-javascript fix js highlightind
+" Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 
 " Rust
 Plug 'rust-lang/rust.vim'
@@ -157,11 +157,6 @@ let g:go_updatetime = 150
 let g:go_jump_to_error = 1
 
 autocmd FileType go setlocal shiftwidth=8 tabstop=8
-
-"VIM JS 
-" let g:jsx_ext_required = 0
-" fix syntax highlighting
-" autocmd FileType javascript syn sync ccomment javaScriptComment
 
 " HIE configuration 
 let g:LanguageClient_rootMarkers = ['*.cabal', 'stack.yaml']
