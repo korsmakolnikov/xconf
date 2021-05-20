@@ -275,9 +275,6 @@ endfunction
 endfunction
 
 
-" gitblame
-nnoremap <Leader>s :<C-u>call gitblame#echo()<CR>
-" end gitblame
 
 " fzf
 function! QuickSearch () 
