@@ -323,17 +323,20 @@ autocmd FileType go noremap <Leader>fs :GoFillStruct<CR>
 autocmd FileType go noremap <Leader>k :GoKeyify<CR>
 autocmd FileType go noremap <Leader>r :GoIfErr<CR>
 
-" buffer path copy 
+" buffer 
+" path copy 
 :command! -nargs=1 FileNameYank execute ':silent !echo '.<q-args>.' | xclip -selection clipboard' | execute ':redraw!'
 :nmap <silent> by :FileNameYank %<CR>
+" close 
+nnoremap <Leader>bd :bd<CR>
 
 
 " FUNCTION KEYS
 nnoremap <silent> <F2> :call ToggleNerdTree()<CR>
 nnoremap <silent> <F3> :call BufExplorer()<CR>
-nnoremap <F4> :Buffers<CR>
+nnoremap <Leader>. :Buffers<CR>
 nnoremap <F5> :History<CR>
-nnoremap <F6> :GFiles<CR>
+nnoremap <Leader><Leader> :GFiles<CR>
 nnoremap <F7> :Marks<CR>
 nnoremap <F8> :BLines<CR>
 nnoremap <F9> :Files<CR>
