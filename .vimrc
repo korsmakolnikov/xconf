@@ -270,18 +270,42 @@ set mouse=a
 " undotree 
 " end undotree
 
-endfunction
-
-endfunction
-
-
-
 " fzf
 function! QuickSearch () 
   let currentWord = expand("<cword>")
   :execute "Rg ". currentWord
 endfunction
+
+function! RipgrepFzf(query, fullscreen)
+  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+
+function! s:getVisualSelection()
+    let [line_start, column_start] = getpos("'<")[1:2]
+    let [line_end, column_end] = getpos("'>")[1:2]
+    let lines = getline(line_start, line_end)
+
+    if len(lines) == 0
+        return ""
+    endif
+
+    let lines[-1] = lines[-1][:column_end - (&selection == "inclusive" ? 1 : 2)]
+    let lines[0] = lines[0][column_start - 1:]
+
+    return join(lines, "\n")
+endfunction
+
+command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+command! -range SearchSelection :call RipgrepFzf(substitute(@*,"\n"," ","g"), 0)  
+
 nnoremap <silent> <C-f> :call QuickSearch()<CR>
+nnoremap <silent><Leader>/ :call RipgrepFzf("", 0)<CR>
+vmap <silent><Leader>/ <Esc>:RG <C-R>=<SID>getVisualSelection()<CR><CR>
+
 " end fzf
 "
 " vim-go
@@ -303,15 +327,6 @@ autocmd FileType go noremap <Leader>r :GoIfErr<CR>
 :command! -nargs=1 FileNameYank execute ':silent !echo '.<q-args>.' | xclip -selection clipboard' | execute ':redraw!'
 :nmap <silent> by :FileNameYank %<CR>
 
-function! RipgrepFzf(query, fullscreen)
-  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
-  let initial_command = printf(command_fmt, shellescape(a:query))
-  let reload_command = printf(command_fmt, '{q}')
-  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
-  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
-endfunction
-
-command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 
 " FUNCTION KEYS
 nnoremap <silent> <F2> :call ToggleNerdTree()<CR>
@@ -324,7 +339,6 @@ nnoremap <F8> :BLines<CR>
 nnoremap <F9> :Files<CR>
 nnoremap <S-F8> :Lines<CR>
 vmap <F10> :SSel<CR>
-nnoremap <F10> :RG<Space>
 nnoremap <silent> <F11> :UndotreeToggle<cr>
 nnoremap <silent> <F12> :execute "e ~/.vimrc"<CR>
 nnoremap <silent> <S-F12> :execute "source ~/.vimrc"<CR>
