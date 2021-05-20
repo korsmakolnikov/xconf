@@ -125,6 +125,11 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 " delays and poor user experience.
 set updatetime=50
 
+" COC
+let elsp_path = $ELSP
+call coc#config("elixir.pathToElixirLS", elsp_path . "/language_server.sh")
+" call coc#config("elixirLS.dialyzerEnabled", "false") fa crashare lsp...
+
 " nerdtree
 " close nerdtree on startup
 let g:NERDTreeHijackNetrw = 0
