@@ -1,6 +1,7 @@
 call plug#begin('~/.vim/bundle')
 " Nerdtree
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' } |
+  \ Plug 'Xuyuanp/nerdtree-git-plugin'
 
 " Color schemes
 Plug 'blueshirts/darcula'
@@ -137,11 +138,33 @@ let NERDTreeWinSize = 50
 " auto close nerdtree when opening a file
 let NERDTreeQuitOnOpen = 1
 
-" git integration
-"autocmd VimEnter * if &filetype !=# 'gitcommit' | NERDTree | wincmd p | endif
+autocmd VimEnter * NERDTree | wincmd p | NERDTreeClose
 
 " automatically quit if nerdtree is the only windows
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+" prevent other buffer to replace nerdtree
+autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+
+function! IsNerdTreeEnabled()
+  return exists('t:NERDTreeBufName') && bufwinnr(t:NERDTreeBufName) != -1
+endfunction
+
+function! ToggleNerdTree()
+  :if IsNerdTreeEnabled()
+  :execute "NERDTreeClose" | echom "close nerdtree"
+  :else
+  :execute "NERDTree" | echom "toggle nerdtree"
+  :endif
+endfunction
+
+nnoremap <silent> <C-c> :NERDTreeFind<CR>
+
+" git plugin 
+" show ignored status
+let g:NERDTreeGitStatusShowIgnored = 1 
+
 " end nerdtree
 
 " AIRLINE
@@ -242,20 +265,10 @@ set mouse=a
 " undotree 
 " end undotree
 
-" nerdtree
-function! IsNerdTreeEnabled()
-  return exists('t:NERDTreeBufName') && bufwinnr(t:NERDTreeBufName) != -1
 endfunction
 
-function! ToggleNerdTree()
-  :if IsNerdTreeEnabled()
-  :execute "NERDTreeClose" | echom "close nerdtree"
-  :else
-  :execute "NERDTree" | echom "toggle nerdtree"
-  :endif
 endfunction
 
-" end nerdtree
 
 " gitblame
 nnoremap <Leader>s :<C-u>call gitblame#echo()<CR>
@@ -267,7 +280,6 @@ function! QuickSearch ()
   :execute "Rg ". currentWord
 endfunction
 nnoremap <silent> <C-f> :call QuickSearch()<CR>
-nnoremap <silent> <C-c> :NERDTreeFind<CR>
 " end fzf
 "
 " vim-go
