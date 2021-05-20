@@ -1,5 +1,6 @@
 #!/bin/bash
 
+export ELSP="$HOME/.elsp-1.11.2-otp-23"
 PATH="${PATH}:/usr/local/bin"
 
 if [ -f ~/.bashlib ]; then
