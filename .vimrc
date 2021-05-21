@@ -47,13 +47,6 @@ Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }                         "
 Plug 'elixir-editors/vim-elixir'                                               " elixir plug in
 Plug 'elixir-lsp/coc-elixir', {'do': 'yarn install && yarn prepack'}
 
-" javascript
-" Plug 'mxw/vim-jsx', { 'for': 'javascript' }                                    " vim-jsx and vim-javascript fix js highlightind
-" Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
-
-" Rust
-Plug 'rust-lang/rust.vim'
-
 " elm
 Plug 'elmcast/elm-vim'
 
@@ -63,6 +56,13 @@ Plug 'gleam-lang/gleam.vim'
 " Erlang
 Plug 'hyhugh/coc-erlang_ls', {'do': 'yarn install --frozen-lockfile'}
 Plug 'vim-erlang/vim-erlang-skeletons'
+
+" javascript
+" Plug 'mxw/vim-jsx', { 'for': 'javascript' }                                    " vim-jsx and vim-javascript fix js highlightind
+" Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+
+" Rust
+Plug 'rust-lang/rust.vim'
 
 " graphql
 Plug 'jparise/vim-graphql'
@@ -128,6 +128,7 @@ set updatetime=50
 " COC
 let elsp_path = $ELSP
 call coc#config("elixir.pathToElixirLS", elsp_path . "/language_server.sh")
+" call coc#config("elmLS.trace.server", "verbose")
 " call coc#config("elixirLS.dialyzerEnabled", "false") fa crashare lsp...
 
 " nerdtree
@@ -335,12 +336,12 @@ nnoremap <Leader>bd :bd<CR>
 nnoremap <silent> <F2> :call ToggleNerdTree()<CR>
 nnoremap <silent> <F3> :call BufExplorer()<CR>
 nnoremap <Leader>. :Buffers<CR>
-nnoremap <F5> :History<CR>
-nnoremap <Leader><Leader> :GFiles<CR>
-nnoremap <F7> :Marks<CR>
-nnoremap <F8> :BLines<CR>
-nnoremap <F9> :Files<CR>
-nnoremap <S-F8> :Lines<CR>
+nnoremap <Leader><Leader> :History<CR>
+nnoremap <Leader><Space> :GFiles<CR>
+nnoremap <Leader>fm :Marks<CR>
+nnoremap <Leader>fbl :BLines<CR>
+nnoremap <Leader>ff :Files<CR>
+nnoremap <Leader>fl :Lines<CR>
 vmap <F10> :SSel<CR>
 nnoremap <silent> <F11> :UndotreeToggle<cr>
 nnoremap <silent> <F12> :execute "e ~/.vimrc"<CR>
