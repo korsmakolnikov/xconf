@@ -52,6 +52,7 @@ export PATH="${PATH}:/home/blacksheep/.local/share/bin"
 export PATH="${PATH}:/snap/bin"
 export PATH="${PATH}:~/doom-emacs/bin"
 export PATH="${PATH}:${GOPATH}/bin"
+export PATH="${PATH}:${ELSP}"
 export GOPATH="/home/blacksheep/.asdf/installs/golang/1.14.6/packages"
 source <(kitty + complete setup bash)
 eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
