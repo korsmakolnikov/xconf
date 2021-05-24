@@ -146,7 +146,6 @@
 (setq org-journal-dir "~/Dropbox/archive")
 
 ;; clipboard
-(setq x-select-enable-clipboard t)
+(setq select-enable-clipboard t)
 
 ;; helm
-(set-frame-parameter nil 'unsplittable t)
