@@ -43,12 +43,12 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 " haskell
 Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }                         " haskell language server client
 
+" elm
+Plug 'elmcast/elm-vim'
+
 " elixir
 Plug 'elixir-editors/vim-elixir'                                               " elixir plug in
 Plug 'elixir-lsp/coc-elixir', {'do': 'yarn install && yarn prepack'}
-
-" elm
-Plug 'elmcast/elm-vim'
 
 " gleam
 Plug 'gleam-lang/gleam.vim'
@@ -76,6 +76,22 @@ Plug 'jceb/vim-orgmode'
 
 call plug#end()
 
+" FUNCTIONS 
+function! s:getVisualSelection()
+    let [line_start, column_start] = getpos("'<")[1:2]
+    let [line_end, column_end] = getpos("'>")[1:2]
+    let lines = getline(line_start, line_end)
+
+    if len(lines) == 0
+        return ""
+    endif
+
+    let lines[-1] = lines[-1][:column_end - (&selection == "inclusive" ? 1 : 2)]
+    let lines[0] = lines[0][column_start - 1:]
+
+    return join(lines, "\n")
+endfunction
+
 "COLORSCHEME
 colorscheme darcula 
 if &term =~ 'xterm-kitty'
@@ -87,7 +103,7 @@ syntax enable
 set number
 
 " Clipboard
-set clipboard=unnamed
+" set clipboard=unnamed
 
 " Load local .vimrc
 set exrc
@@ -103,12 +119,11 @@ set guicursor+=i:blinkwait10
 set cmdheight=2
 
 " Editor configuration
-filetype plugin indent on
-" show existing tab with 4 spaces width
+
+"tab size
 set tabstop=2
-" when indenting with '>', use 4 spaces width
 set shiftwidth=2
-" On pressing tab, insert 4 spaces
+" On pressing tab, insert spaces
 set expandtab
 " Fix backspace
 set bs=2
@@ -119,15 +134,18 @@ set fileformat=unix
 " consent to move freely in the page even if there are no spaces
 set virtualedit=all 
 
-" Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience.
 set updatetime=50
 
+" elm
+au BufRead,BufNewFile *.elm set filetype=elm | syntax on
+
 " COC
 let elsp_path = $ELSP
 call coc#config("elixir.pathToElixirLS", elsp_path . "/language_server.sh")
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
 " call coc#config("elmLS.trace.server", "verbose")
 " call coc#config("elixirLS.dialyzerEnabled", "false") fa crashare lsp...
 
@@ -210,6 +228,7 @@ autocmd BufWritePre *.ex :call CocAction('format')
 autocmd BufWritePre *.go :call CocAction('format') 
 autocmd BufWritePre *.erl :call CocAction('format')  
 autocmd BufWritePre *.hrl :call CocAction('format') 
+autocmd BufWritePre *.elm :call CocAction('format') 
 
 "
 " Mapping (keep EOF)
@@ -226,15 +245,16 @@ nnoremap <silent> <S-TAB> :bp<CR> :redraw<CR>
 xnoremap <Tab> >gv
 xnoremap <S-Tab> <gv
 
-" MyPoweryank
-function Poweryank() range
-  echo 'copy to system clipboard'
-  echo system('echo '.shellescape(join(getline(a:firstline, a:lastline), "\n")).'| xclip -selection clipboard')
-  endfunction
-" end poweryank
-"
 " Copy to system clipboard
-xnoremap <C-y> :call Poweryank()<cr> 
+function Poweryank() range
+  let selection = s:getVisualSelection()
+  echo 'copy to system clipboard'
+  echo system('echo '.shellescape(selection).'| xclip -selection clipboard')
+endfunction
+
+noremap <C-y> :call Poweryank()<cr> 
+vmap <C-y> :call Poweryank()<cr> 
+" end poweryank
 
 " coc
 " Use K to show documentation in preview window.
@@ -285,21 +305,6 @@ function! RipgrepFzf(query, fullscreen)
   call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
 endfunction
 
-function! s:getVisualSelection()
-    let [line_start, column_start] = getpos("'<")[1:2]
-    let [line_end, column_end] = getpos("'>")[1:2]
-    let lines = getline(line_start, line_end)
-
-    if len(lines) == 0
-        return ""
-    endif
-
-    let lines[-1] = lines[-1][:column_end - (&selection == "inclusive" ? 1 : 2)]
-    let lines[0] = lines[0][column_start - 1:]
-
-    return join(lines, "\n")
-endfunction
-
 command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 command! -range SearchSelection :call RipgrepFzf(substitute(@*,"\n"," ","g"), 0)  
 
@@ -327,16 +332,16 @@ autocmd FileType go noremap <Leader>r :GoIfErr<CR>
 " buffer 
 " path copy 
 :command! -nargs=1 FileNameYank execute ':silent !echo '.<q-args>.' | xclip -selection clipboard' | execute ':redraw!'
-:nmap <silent> by :FileNameYank %<CR>
+:nmap <silent><Leader>fy :FileNameYank %<CR>
 " close 
-nnoremap <Leader>bd :bd<CR>
+nnoremap <silent><Leader>bd :bd<CR>
 
 
 " FUNCTION KEYS
 nnoremap <silent> <F2> :call ToggleNerdTree()<CR>
 nnoremap <silent> <F3> :call BufExplorer()<CR>
-nnoremap <Leader>. :Buffers<CR>
-nnoremap <Leader><Leader> :History<CR>
+nnoremap <Leader>. :History<CR>
+nnoremap <Leader><Leader> :Buffers<CR>
 nnoremap <Leader><Space> :GFiles<CR>
 nnoremap <Leader>fm :Marks<CR>
 nnoremap <Leader>fbl :BLines<CR>
