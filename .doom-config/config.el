@@ -102,33 +102,11 @@
 (require 'which-key)
 (setq which-key-idle-delay 0.1)
 
-
-;; elixir lsp
-;;
-;; (use-package lsp-mode
-;;              :commands lsp
-;;              :ensure nil
-;;              :diminish lsp-mode
-;;              :hook
-;;              (elixir-mode . lsp)
-;;              :init
-;;              (add-to-list 'exec-path "~/.elsp-1.11.2-otp-23")
-;;              :config
-;;              (setq lsp-enable-on-type-formatting nil
-;;                    lsp-enable-file-watchers nil
-;;                    lsp-enable-xref t
-;;                    lsp-completition-enable t
-;;                    lsp-prefer-flymake t))
-
 (setq lsp-enable-file-watchers nil)
-(setq lsp-file-watch-threshold 1000000)
 (setq lsp-elixir-dialyzer-enabled nil)
 (setq lsp-elixir-fetch-deps nil)
 (setq lsp-elixir-mix-env "dev")
 (setq lsp-elixir-enable-test-lenses nil)
-
-;; (setq lsp-idle-delay 1.0)
-;; (setq gc-cons-threshold (* 3 100000000))
 
 ;; go
 (add-hook 'go-mode-hook

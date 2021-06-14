@@ -9,6 +9,9 @@ Plug 'blueshirts/darcula'
 " Multicursor
 Plug 'terryma/vim-multiple-cursors'
 
+" OSC52 (kitty clipboard)
+Plug 'greymd/oscyank.vim'
+
 " Airline
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -76,7 +79,7 @@ Plug 'jceb/vim-orgmode'
 
 call plug#end()
 
-" FUNCTIONS 
+" GLOBAL FUNCTIONS 
 function! s:getVisualSelection()
     let [line_start, column_start] = getpos("'<")[1:2]
     let [line_end, column_end] = getpos("'>")[1:2]
@@ -92,76 +95,44 @@ function! s:getVisualSelection()
     return join(lines, "\n")
 endfunction
 
-"COLORSCHEME
+" COLORSCHEME
 colorscheme darcula 
 if &term =~ 'xterm-kitty'
   set t_ut=
 endif
 
-" BASIC
-syntax enable
-set number
-
-" Clipboard
-" set clipboard=unnamed
-
-" Load local .vimrc
-set exrc
-
-" Required for operations modifying multiple buffers like rename.
-set hidden
-
-" Cursor configuration 
-set guicursor+=n-v-c:blinkon0
+" Basic
+syntax enable                                                                  " enable syntax 
+set number                                                                     " enable line numbers
+set colorcolumn=80                                                             " set vertical column at 80
+set exrc                                                                       " Load local .vimrc
+set hidden                                                                     " Required for operations modifying multiple buffers like rename. 
+set guicursor+=n-v-c:blinkon0                                                  " Cursor configuration  
 set guicursor+=i:blinkwait10
-
-" command line
-set cmdheight=2
-
-" Editor configuration
-
-"tab size
-set tabstop=2
+set cmdheight=2                                                                " command line height 
+set tabstop=2                                                                  " tab size 
 set shiftwidth=2
-" On pressing tab, insert spaces
-set expandtab
-" Fix backspace
-set bs=2
+set expandtab                                                                  " On pressing tab, insert spaces 
+set bs=2                                                                       " Fix backspace 
+set fileformat=unix                                                            " Fix E418
+set virtualedit=all                                                            " consent to move freely in the page even if there are no spaces 
+set updatetime=50                                                              " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable 
+                                                                               " delays and poor user experience. 
 
-" Fix E418
-set fileformat=unix
-
-" consent to move freely in the page even if there are no spaces
-set virtualedit=all 
-
-" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
-" delays and poor user experience.
-set updatetime=50
-
-" elm
-au BufRead,BufNewFile *.elm set filetype=elm | syntax on
-
-" COC
+" Coc
+set mouse=a                                                                    " enable mouse scrolling of Coc documentation 
 let elsp_path = $ELSP
 call coc#config("elixir.pathToElixirLS", elsp_path . "/language_server.sh")
 " Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
-" call coc#config("elmLS.trace.server", "verbose")
-" call coc#config("elixirLS.dialyzerEnabled", "false") fa crashare lsp...
+" call coc#config("elmLS.trace.server", "verbose") did not work
+" call coc#config("elixirLS.dialyzerEnabled", "false") cousing crash 
 
-" nerdtree
-" close nerdtree on startup
-let g:NERDTreeHijackNetrw = 0
-
-" nerdtree on the right
-let g:NERDTreeWinPos = "right"
-
-" nerdtree size
-let NERDTreeWinSize = 50
-
-" auto close nerdtree when opening a file
-let NERDTreeQuitOnOpen = 1
-
+" Nerdtree
+let g:NERDTreeHijackNetrw = 0                                                  " close nerdtree on startup 
+let g:NERDTreeWinPos = "right"                                                 " nerdtree on the right 
+let NERDTreeWinSize = 50                                                       " nerdtree size 
+let NERDTreeQuitOnOpen = 1                                                     " auto close nerdtree when opening a file 
 autocmd VimEnter * NERDTree | wincmd p | NERDTreeClose
 
 " automatically quit if nerdtree is the only windows
@@ -185,19 +156,26 @@ endfunction
 
 nnoremap <silent> <C-c> :NERDTreeFind<CR>
 
-" git plugin 
-" show ignored status
-let g:NERDTreeGitStatusShowIgnored = 1 
+" Git plugin 
+let g:NERDTreeGitStatusShowIgnored = 1                                         " show ignored status 
 
-" end nerdtree
-
-" AIRLINE
 " Airline configuration
 let g:airline_theme='bubblegum'
 let g:airline#extensions#tabline#enabled = 1
-" end airline
 
-"VIM GO
+" Languages integration
+autocmd BufWritePre *.rs :call CocAction('format')                             " Autoformat on save 
+autocmd BufWritePre *.exs :call CocAction('format')
+autocmd BufWritePre *.ex :call CocAction('format') 
+autocmd BufWritePre *.go :call CocAction('format') 
+autocmd BufWritePre *.erl :call CocAction('format')  
+autocmd BufWritePre *.hrl :call CocAction('format') 
+autocmd BufWritePre *.elm :call CocAction('format') 
+
+" Elm
+au BufRead,BufNewFile *.elm set filetype=elm | syntax on
+
+" Golang
 let g:go_def_mapping_enabled = 0
 let g:go_auto_sameids = 1
 let g:go_highlight_functions = 1
@@ -215,83 +193,73 @@ let g:go_jump_to_error = 1
 
 autocmd FileType go setlocal shiftwidth=8 tabstop=8
 
-" HIE configuration 
+" TODO map only in go
+autocmd FileType go noremap <Leader>b :GoDebugBreakpoint<CR>
+autocmd FileType go noremap <Leader>s :GoDebugStart<CR>
+autocmd FileType go noremap <Leader>t :GoDebugTest<CR>
+autocmd FileType go noremap <Leader>gg :GoDebugRestart<CR>
+autocmd FileType go noremap <Leader>G :GoDebugContinue<CR>
+autocmd FileType go noremap <Leader>q :GoDebugStop<CR>
+autocmd FileType go noremap <Leader>e :GoDebugStep<CR>
+autocmd FileType go noremap <Leader>w :GoDebugStepout<CR>
+autocmd FileType go noremap <Leader>p :GoDebugPrint
+autocmd FileType go noremap <Leader>fs :GoFillStruct<CR>
+autocmd FileType go noremap <Leader>k :GoKeyify<CR>
+autocmd FileType go noremap <Leader>r :GoIfErr<CR>
+
+" Haskell HIE configuration 
 let g:LanguageClient_rootMarkers = ['*.cabal', 'stack.yaml']
 
-" RUST
+" Rust
 let g:rustfmt_autosave = 1
 
-" autoformat on save
-autocmd BufWritePre *.rs :call CocAction('format') 
-autocmd BufWritePre *.exs :call CocAction('format')
-autocmd BufWritePre *.ex :call CocAction('format') 
-autocmd BufWritePre *.go :call CocAction('format') 
-autocmd BufWritePre *.erl :call CocAction('format')  
-autocmd BufWritePre *.hrl :call CocAction('format') 
-autocmd BufWritePre *.elm :call CocAction('format') 
+" Mapping 
+let mapleader = ","                                                            " leader 
+xnoremap <Tab> >gv |                                                           " Tab in visual/selection mode 
+xnoremap <S-Tab> <gv
+noremap <C-y> :Oscyank<cr> |                                                   " Copy to system clipboard 
 
-"
-" Mapping (keep EOF)
-"
-"
-" leader
-let mapleader = ","
-
-" BUFFERS
+" Buffer section
 nnoremap <silent> <TAB> :bn<CR> :redraw<CR>
 nnoremap <silent> <S-TAB> :bp<CR> :redraw<CR>
-
-" tab in visual/selection mode
-xnoremap <Tab> >gv
-xnoremap <S-Tab> <gv
-
-" Copy to system clipboard
-function Poweryank() range
-  let selection = s:getVisualSelection()
-  echo 'copy to system clipboard'
-  echo system('echo '.shellescape(selection).'| xclip -selection clipboard')
+function! FileNameYank()
+  let @" = expand("%")
+  :execute "OscyankRegister"
 endfunction
+:command! FileNameYank call FileNameYank()                                     " buffer path copy 
+:nmap <silent><Leader>fy :FileNameYank<CR>
+nnoremap <silent><Leader>bd :bd<CR> |                                          " close buffer 
+nnoremap <silent><Leader>bK :bufdo bd<CR> |                                    " close all buffer
+"TODO leader bD to close all buffer but the currently opened
 
-noremap <C-y> :call Poweryank()<cr> 
-vmap <C-y> :call Poweryank()<cr> 
-" end poweryank
-
-" coc
-" Use K to show documentation in preview window.
-function! s:show_documentation()
+" Coc section
+function! s:show_documentation()                                               
   if (index(['vim','help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
   else
     call CocAction('doHover')
   endif
 endfunction
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+nnoremap <silent> K :call <SID>show_documentation()<CR>|                       " Use K to show documentation in preview window.  
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 imap <C-l> <Plug>(coc-snippets-expand)
-" tab for completition
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
+                                                                               " Tab completition
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-" enable mouse scrolling of documentation
-set mouse=a
-" end coc
-"
-" bufexplorer
-" end bufexplorer
 
-" undotree 
-" end undotree
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
 
-" fzf
+" Fzf/RipGrep
 function! QuickSearch () 
   let currentWord = expand("<cword>")
   :execute "Rg ". currentWord
@@ -307,51 +275,24 @@ endfunction
 
 command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 command! -range SearchSelection :call RipgrepFzf(substitute(@*,"\n"," ","g"), 0)  
-
 nnoremap <silent> <C-f> :call QuickSearch()<CR>
 nnoremap <silent><Leader>/ :call RipgrepFzf("", 0)<CR>
 vmap <silent><Leader>/ <Esc>:RG <C-R>=<SID>getVisualSelection()<CR><CR>
 
-" end fzf
-"
-" vim-go
-" TODO map only in go
-autocmd FileType go noremap <Leader>b :GoDebugBreakpoint<CR>
-autocmd FileType go noremap <Leader>s :GoDebugStart<CR>
-autocmd FileType go noremap <Leader>t :GoDebugTest<CR>
-autocmd FileType go noremap <Leader>gg :GoDebugRestart<CR>
-autocmd FileType go noremap <Leader>G :GoDebugContinue<CR>
-autocmd FileType go noremap <Leader>q :GoDebugStop<CR>
-autocmd FileType go noremap <Leader>e :GoDebugStep<CR>
-autocmd FileType go noremap <Leader>w :GoDebugStepout<CR>
-autocmd FileType go noremap <Leader>p :GoDebugPrint
-autocmd FileType go noremap <Leader>fs :GoFillStruct<CR>
-autocmd FileType go noremap <Leader>k :GoKeyify<CR>
-autocmd FileType go noremap <Leader>r :GoIfErr<CR>
-
-" buffer 
-" path copy 
-:command! -nargs=1 FileNameYank execute ':silent !echo '.<q-args>.' | xclip -selection clipboard' | execute ':redraw!'
-:nmap <silent><Leader>fy :FileNameYank %<CR>
-" close 
-nnoremap <silent><Leader>bd :bd<CR>
-
-
-" FUNCTION KEYS
+" Navigation section
 nnoremap <silent> <F2> :call ToggleNerdTree()<CR>
 nnoremap <silent> <F3> :call BufExplorer()<CR>
 nnoremap <Leader>. :History<CR>
 nnoremap <Leader><Leader> :Buffers<CR>
 nnoremap <Leader><Space> :GFiles<CR>
-nnoremap <Leader>fm :Marks<CR>
-nnoremap <Leader>fbl :BLines<CR>
+nnoremap <Leader>m :Marks<CR>
+nnoremap <Leader>l :BLines<CR>
 nnoremap <Leader>ff :Files<CR>
-nnoremap <Leader>fl :Lines<CR>
-vmap <F10> :SSel<CR>
-nnoremap <silent> <F11> :UndotreeToggle<cr>
+nnoremap <Leader>L :Lines<CR>
+nnoremap <Leader>u :UndotreeToggle<cr>
 nnoremap <silent> <F12> :execute "e ~/.vimrc"<CR>
 nnoremap <silent> <S-F12> :execute "source ~/.vimrc"<CR>
 
 " Sort lines
-vmap <silent> ls :'<,'>sort u<CR>
-vmap <silent> lus :'<,'>sort! u<CR>
+vmap <silent><Leader>s :'<,'>sort u<CR>
+vmap <silent><Leader>us :'<,'>sort! u<CR>
