@@ -309,6 +309,7 @@ nnoremap <Leader>L :Lines<CR>
 nnoremap <Leader>u :UndotreeToggle<cr>
 nnoremap <silent> <F12> :execute "e ~/.vimrc"<CR>
 nnoremap <silent> <S-F12> :execute "source ~/.vimrc"<CR>
+nnoremap <silent> <Leader>: :Commands<CR>
 
 " Sort lines
 vmap <silent><Leader>s :'<,'>sort u<CR>
