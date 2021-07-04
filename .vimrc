@@ -65,7 +65,9 @@ Plug 'vim-erlang/vim-erlang-skeletons'
 " Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 
 " Rust
-Plug 'rust-lang/rust.vim'
+" Plug 'rust-lang/rust.vim'
+Plug 'neoclide/coc-rls', {'do': 'yarn install --frozen-lockfile'}
+Plug 'fannheyward/coc-rust-analyzer', {'do': 'yarn install --frozen-lockfile'}
 
 " graphql
 Plug 'jparise/vim-graphql'
