@@ -119,11 +119,23 @@ set fileformat=unix                                                            "
 set virtualedit=all                                                            " consent to move freely in the page even if there are no spaces 
 set updatetime=50                                                              " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable 
                                                                                " delays and poor user experience. 
+" ELSP interpolation
+function! ParseToolFile()
+  let tool_file_path = "./.tool-versions"
+  if filereadable(tool_file_path)
+    let tool_file = readfile(tool_file_path)
+    for line in tool_file
+      if line =~ '^elixir.*$'
+        let elsp_path = $HOME . '/' . substitute(line, 'elixir\s', '\.elsp-', '')
+        call coc#config("elixir.pathToElixirLS", elsp_path . "/language_server.sh")
+      endif
+    endfor
+  endif
+endfunction
+autocmd VimEnter * call ParseToolFile()
 
 " Coc
 set mouse=a                                                                    " enable mouse scrolling of Coc documentation 
-let elsp_path = $ELSP
-call coc#config("elixir.pathToElixirLS", elsp_path . "/language_server.sh")
 " Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
 " call coc#config("elmLS.trace.server", "verbose") did not work
