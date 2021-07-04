@@ -33,8 +33,7 @@ Plug 'jlanzarotta/bufexplorer'
 Plug 'junegunn/goyo.vim'                                                       " disctraction free mode :Goyo, turn off by :Goyo!
 
 " git
-Plug 'airblade/vim-gitgutter'                                                  " print changes on left of line numbers
-Plug 'zivyangll/git-blame.vim'                                                 " print blame in command bar
+Plug 'airblade/vim-gitgutter'                                                " print changes on left of line numbers
 Plug 'tpope/vim-fugitive'
 
 " docker
