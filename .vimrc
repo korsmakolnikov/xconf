@@ -145,7 +145,6 @@ let g:NERDTreeHijackNetrw = 0                                                  "
 let g:NERDTreeWinPos = "right"                                                 " nerdtree on the right 
 let NERDTreeWinSize = 50                                                       " nerdtree size 
 let NERDTreeQuitOnOpen = 1                                                     " auto close nerdtree when opening a file 
-autocmd VimEnter * NERDTree | wincmd p | NERDTreeClose
 
 " automatically quit if nerdtree is the only windows
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -166,7 +165,13 @@ function! ToggleNerdTree()
   :endif
 endfunction
 
-nnoremap <silent> <C-c> :NERDTreeFind<CR>
+function! NERDTreeFindWithInit()
+  :execute "NERDTree" 
+  :execute "wincmd p"
+  :execute "NERDTreeFind"
+endfunction
+
+nnoremap <silent> <C-c> :call NERDTreeFindWithInit()<CR>
 
 " Git plugin 
 let g:NERDTreeGitStatusShowIgnored = 1                                         " show ignored status 
