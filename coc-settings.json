@@ -6,6 +6,8 @@
   "rust-analyzer.assist.importGranularity": "item",
   "rust-analyzer.assist.importEnforceGranularity": true,
   "rust-analyzer.assist.importPrefix": "self", 
+  "suggest.selection": "recentlyUsedByPrefix", 
+  "suggest.defaultSortMethod": "alphabetical",
   "elixirLS.dialyzerEnabled": false,
   "languageserver": {
     "elmLS": {

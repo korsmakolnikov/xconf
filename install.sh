@@ -1,6 +1,6 @@
 #!/bin/bash
 
-$distro_is_manjaro=lsb_release -a | cut -d ":" -f 2 | tr -d "[:blank:]" | grep -Pzo Manjaro
+distro_is_manjaro=`lsb_release -a | cut -d ":" -f 2 | tr -d "[:blank:]" | grep -Pzo Manjaro`
 
 if [[ -z "$distro_is_manjaro" ]]; then
   install_me='yay -S'
@@ -8,12 +8,32 @@ else
   install_me='sudo apt install -y'
 fi
 
+# Installing common utils
+read -p "I'm going to install common utils. Are you sure? " -n 1 -r
+echo ""
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+	$install_me curl
+  if [ ! [ -z "$distro_is_manjaro" ]]; then
+    echo "deb http://packages.azlux.fr/debian/ buster main" | sudo tee /etc/apt/sources.list.d/azlux.list
+    wget -qO - https://azlux.fr/repo.gpg.key | sudo apt-key add -
+    sudo apt update
+  fi
+	$install_me gping
+	$install_me procs
+  if command -v brew  &> /dev/null ; then
+    brew tap cantino/mcfly
+    brew install mcfly
+  else 
+    curl -LSfs https://raw.githubusercontent.com/cantino/mcfly/master/ci/install.sh | sh -s -- --git cantino/mcfly
+  fi
+fi
+
 # Installing common 
 read -p "I'm going to install common dependency. Are you sure? " -n 1 -r
 echo ""
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-	$install_me curl
   $install_me ripgrep
 	$install_me ttf-fira-code
 fi
