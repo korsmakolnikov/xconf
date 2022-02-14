@@ -78,6 +78,7 @@ endif
 
 " Main Configuration
 syntax enable                                                                  " enable syntax 
+let mapleader = ","                                                            " leader 
 set number                                                                     " enable line numbers
 set colorcolumn=80                                                             " set vertical column at 80
 set exrc                                                                       " Load local .vimrc

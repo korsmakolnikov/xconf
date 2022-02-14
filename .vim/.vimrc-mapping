@@ -1,6 +1,5 @@
 " GLOBAL MAPPING
 " this mapping overwrite all others
-let mapleader = ","                                                            " leader 
 xnoremap <Tab> >gv |                                                           " Tab in visual/selection mode 
 xnoremap <S-Tab> <gv
 noremap <C-y> :Oscyank<cr> |                                                   " Copy to system clipboard 
