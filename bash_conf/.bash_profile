@@ -72,4 +72,5 @@ export PATH="${PATH}:${ELSP}"
 export PATH="${PATH}:${GOPATH}:${GOBIN}"
 source <(kitty + complete setup bash)
 export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/ssh-agent.socket"
+eval "$(mcfly init bash)"
 source /usr/share/bash-completion/completions/git
