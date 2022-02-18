@@ -1,11 +1,12 @@
 {
   "rust-analyzer.updates.checkOnStartup": true,
-  "rust-analyzer.completion.postfix.enable": true,
+  "rust-analyzer.completion.postfix.enable": false,
   "rust-analyzer.completion.autoimport.enable": true,
   "rust-analyzer.checkOnSave.enable": true,
   "rust-analyzer.assist.importGranularity": "item",
   "rust-analyzer.assist.importEnforceGranularity": true,
   "rust-analyzer.assist.importPrefix": "self", 
+  "rust-analyzer.lens.methodReferences": true,
   "suggest.selection": "recentlyUsedByPrefix", 
   "suggest.defaultSortMethod": "alphabetical",
   "elixirLS.dialyzerEnabled": false,

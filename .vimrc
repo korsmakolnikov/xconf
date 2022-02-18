@@ -92,10 +92,13 @@ set expandtab                                                                  "
 set bs=2                                                                       " Fix backspace 
 set fileformat=unix                                                            " Fix E418
 set virtualedit=all                                                            " consent to move freely in the page even if there are no spaces 
-set updatetime=50                                                              " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable 
+set updatetime=300                                                             " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable 
 setlocal foldlevel=99
 setlocal foldmethod=syntax
 set mouse=a                                                                    " enable mouse scrolling of Coc documentation 
+set nobackup
+set nowritebackup
+set shortmess+=c
 
 " Modules
 source ~/.vim-config/nerdtree/.vimrc
