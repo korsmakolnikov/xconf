@@ -55,8 +55,11 @@ Plug 'jparise/vim-graphql'
 " TPope plugins
 Plug 'tpope/vim-commentary'
 
+" Toml
+Plug 'cespare/vim-toml'
+
 " Coc plugins
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-snippets'
 Plug 'fannheyward/coc-rust-analyzer', {'do': 'yarn install --frozen-lockfile'}
 Plug 'hyhugh/coc-erlang_ls', {'do': 'yarn install --frozen-lockfile'}
@@ -102,10 +105,10 @@ set shortmess+=c
 
 " Modules
 source ~/.vim-config/nerdtree/.vimrc
+source ~/.vim-config/fzf/.vimrc
 source ~/.vim-config/coc/.vimrc
 source ~/.vim-config/elixir/.vimrc
 source ~/.vim-config/golang/.vimrc
-source ~/.vim-config/fzf/.vimrc
 source ~/.vim-config/elm/.vimrc
 source ~/.vim-config/airline/.vimrc
 
@@ -114,5 +117,3 @@ source ~/.vim-config/.vimrc-mapping
 
 " Global buffer config
 source ~/.vim-config/.vimrc-buffer
-
-

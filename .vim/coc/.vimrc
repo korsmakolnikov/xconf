@@ -23,8 +23,8 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 " Navigate between errors
-nmap <silent> gE <Plug>(coc-diagnostic-prev)
-nmap <silent> ge <Plug>(coc-diagnostic-next)
+nmap <silent> E <Plug>(coc-diagnostic-prev)
+nmap <silent> e <Plug>(coc-diagnostic-next)
 " Applying codeAction to the selected region.
 " Example: `<leader>aap` for current paragraph
 xmap <leader>a  <Plug>(coc-codeaction-selected)
