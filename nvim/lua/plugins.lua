@@ -1,5 +1,8 @@
 return require('packer').startup(function()
   use {'savq/paq-nvim', opt = true}
+
+  -- Buffer utilities
+  use 'kazhala/close-buffers.nvim'
   -- Filetree
   use {'kyazdani42/nvim-web-devicons'}
   use {'MunifTanjim/nui.nvim'} 

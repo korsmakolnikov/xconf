@@ -70,18 +70,20 @@ vimp('n', '<C-c>', ':NeoTreeReveal!<CR>', key_opts)
 -- Buffers mapping
 vimp('n', '<TAB>', ':bn<CR> :redraw<CR>', key_opts)
 vimp('n', '<S-TAB>', ':bp<CR> :redraw<CR>', key_opts)
-vimp('n', '<Leader>bd', ':bd<CR> |', key_opts)
-vimp('n', '<Leader>bK', ':bufdo bd<CR> |', key_opts)
+vimp('n', '<Leader>bd', ':lua require(\'close_buffers\').delete({ type = \'this\' })<CR>', key_opts)
+vimp('n', '<Leader>bK', ':lua require(\'close_buffers\').wipe({ type = \'all\', force = true })<CR>', key_opts)
+vimp('n', '<Leader>bh', ':lua require(\'close_buffers\').wipe({ type = \'other\' })<CR>', key_opts)
 -- Tab mapping
 vimp('x', '<Tab>', '>gv |', key_opts)
 vimp('x', '<S-Tab>', '<gv', key_opts)
 -- FZF mapping
 -- git is under 'g' except list files that is bound to leader-space
 -- rg is under 'r' except grep project that is bound to leader-/
-vimp('n', '<Leader>.', ":FzfLua commands<CR>", key_opts)
+vimp('n', '<Leader>.', ":FzfLua oldfiles<CR>", key_opts)
 vimp('n', '<Leader>./', ":FzfLua search_history<CR>", key_opts)
 vimp('n', '<Leader>.:', ":FzfLua command_history<CR>", key_opts)
 vimp('n', '<Leader>:', ":FzfLua resume<CR>", key_opts)
+vimp('n', '<Leader>.?', ":FzfLua resume<CR>", key_opts)
 vimp('n', '<Leader><Leader>', ":FzfLua buffers<CR>", key_opts)
 vimp('n', '<Leader>m', ":FzfLua marks<CR>", key_opts)
 vimp('n', '<Leader>k', ":FzfLua keymaps<CR>", key_opts)
