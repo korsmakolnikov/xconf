@@ -1,4 +1,5 @@
 #!/bin/bash
+# TODO refactor like a list of function to call and parse cmd args for spot installations
 
 distro_is_manjaro=`lsb_release -a | cut -d ":" -f 2 | tr -d "[:blank:]" | grep -Pzo Manjaro`
 
@@ -36,6 +37,8 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 then
   $install_me ripgrep
 	$install_me ttf-fira-code
+  # install jetbrains nerd font
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/JetBrains/JetBrainsMono/master/install_manual.sh)"
 fi
 
 # Installing asdf and language
@@ -64,6 +67,18 @@ then
 	curl -fLo $HOME/.vim/autoload/plug.vim --create-dirs \
 	  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   ln -s $PWD/coc-settings.json $HOME/.vim/coc-settings.json
+fi
+
+# Installing neovim
+read -p "I'm going to install neovim and packer. Are you sure? " -n 1 -r
+echo ""
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+	$install_me neovim
+	$install_me python3-neovim
+  git clone --depth 1 https://github.com/wbthomason/packer.nvim\
+  ~/.local/share/nvim/site/pack/packer/start/packer.nvim
+	ln -s $PWD/nvim $HOME/.config/nvim
 fi
 
 # Installing bash support
