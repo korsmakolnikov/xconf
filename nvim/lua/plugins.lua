@@ -34,7 +34,7 @@ return require('packer').startup(function()
             folder_closed = "|>",
             folder_open = "=>",
             folder_empty = "_",
-            default = "•",
+            default = "*",
           },
           name = {
             trailing_slash = false,
@@ -141,12 +141,15 @@ return require('packer').startup(function()
   }
 
   -- Color schemes
+  use {'rktjmp/lush.nvim'}
   use {'blueshirts/darcula'}
 
   -- FZF
-  use {'junegunn/fzf.vim'}
   use {'junegunn/fzf', run = './install --bin'}
-  use {'gfanto/fzf-lsp.nvim'}
+  use { 'ibhagwan/fzf-lua',
+    -- optional for icon support
+    requires = { 'kyazdani42/nvim-web-devicons' }
+  }
 
   -- TODO do not work with rust
   use {'numToStr/Comment.nvim'} -- "gc" to comment visual regions/lines
