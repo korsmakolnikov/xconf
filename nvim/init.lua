@@ -99,7 +99,7 @@ vimp('n', '<Leader>gb', ":FzfLua git_branches<CR>", key_opts)
 vimp('n', '<Leader>gc', ":FzfLua changes<CR>", key_opts)
 -- FZF rg
 vimp('n', '<Leader>rl', ":FzfLua grep_curbuf<CR>", key_opts)
-vimp('n', '<Leader>/', ":FzfLua grep_project<CR>", key_opts)
+vimp('n', '<Leader>/', ":FzfLua live_grep<CR>", key_opts)
 vimp('n', '<C-f>', ":FzfLua grep_cword<CR>", key_opts)
 vimp('v', '<C-f>',":FzfLua grep_visual<CR>", key_opts)
 vimp('n', '<C-l>', ":FzfLua grep_last<CR>", key_opts)
@@ -241,4 +241,6 @@ require('lualine').setup {
     lualine_c = {'filename', "require'lsp-status'.status()", "require'lsp-status'.register_progress()"},
     lualine_x = {'encoding', 'filetype', "os.date('%H:%M')"},
   }
-}
+} 
+
+require('nvim_comment').setup()
