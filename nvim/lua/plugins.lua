@@ -1,6 +1,8 @@
 return require('packer').startup(function()
   use {'savq/paq-nvim', opt = true}
   -- Filetree
+  use {'kyazdani42/nvim-web-devicons'}
+  use {'MunifTanjim/nui.nvim'} 
   use {
   "nvim-neo-tree/neo-tree.nvim",
     branch = "v1.x",
