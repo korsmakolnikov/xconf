@@ -1,6 +1,8 @@
 return require('packer').startup(function()
   use {'savq/paq-nvim', opt = true}
 
+  -- Comment
+  use "terrortylor/nvim-comment"
   -- Buffer utilities
   use 'kazhala/close-buffers.nvim'
   -- Filetree
