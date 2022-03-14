@@ -107,7 +107,7 @@ vimp('n', '<C-l>', ":FzfLua grep_last<CR>", key_opts)
 -- LSP Mappings
 -- All lsp function are under 'a'
 -- All lsp diagnostic are under 'd'
--- All trouble function are under 't'
+-- All trouble function are under function keys
 vimp('n', '<Leader>a', ":FzfLua lsp_code_actions<CR>", key_opts)
 vimp('n', '<Leader>ad', ":FzfLua lsp_definitions<CR>", key_opts)
 vimp('n', '<Leader>aD', ":FzfLua lsp_declarations<CR>", key_opts)
@@ -122,9 +122,9 @@ vimp('n', '<Leader>ae', ':lua vim.lsp.diagnostic.goto_next()<CR>', key_opts)
 vimp('n', '<Leader>aE', ':lua vim.lsp.diagnostic.goto_prev()<CR>', key_opts)
 vimp('n', '<Leader>af', ':lua vim.lsp.buf.formatting_sync(nil, 5000)<CR>', key_opts)
 -- Trouble
-vimp("n", "<leader>t", "<cmd>TroubleToggle workspace_diagnostics<cr>", key_opts)
-vimp("n", "<leader>tqf", "<cmd>TroubleToggle quickfix<cr>", key_opts)
-vimp("n", "<leader>td", "<cmd>TroubleToggle document_diagnostics<cr>", key_opts)
+vimp("n", "<F3>", "<cmd>TroubleToggle workspace_diagnostics<cr>", key_opts)
+vimp("n", "<F4>", "<cmd>TroubleToggle document_diagnostics<cr>", key_opts)
+vimp("n", "<F5>", "<cmd>TroubleToggle quickfix<cr>", key_opts)
 -- General mapping
 vimp('n', '<F12>', ':e $MYVIMRC<CR>', key_opts)
 
