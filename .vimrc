@@ -16,9 +16,6 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'enricobacis/vim-airline-clock'
 
-" Undotree
-Plug 'mbbill/undotree'                                                         " print a tree of undo
-
 " FZF
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -37,18 +34,6 @@ Plug 'tpope/vim-fugitive'
 " Docker file syntax
 Plug 'ekalinin/Dockerfile.vim'
 
-" Golang
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-
-" Elm
-Plug 'elmcast/elm-vim'
-
-" Elixir
-Plug 'elixir-editors/vim-elixir'                                               " elixir plug in
-
-" Erlang
-Plug 'vim-erlang/vim-erlang-skeletons'
-
 " Graphql syntax
 Plug 'jparise/vim-graphql'
 
@@ -57,15 +42,6 @@ Plug 'tpope/vim-commentary'
 
 " Toml
 Plug 'cespare/vim-toml'
-
-" Coc plugins
-Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-snippets'
-Plug 'fannheyward/coc-rust-analyzer', {'do': 'yarn install --frozen-lockfile'}
-Plug 'hyhugh/coc-erlang_ls', {'do': 'yarn install --frozen-lockfile'}
-Plug 'elixir-lsp/coc-elixir', {'do': 'yarn install && yarn prepack'}
-Plug 'josa42/coc-go'
-Plug 'neoclide/coc-json'
 
 call plug#end()
 
@@ -106,10 +82,6 @@ set shortmess+=c
 " Modules
 source ~/.vim-config/nerdtree/.vimrc
 source ~/.vim-config/fzf/.vimrc
-source ~/.vim-config/coc/.vimrc
-source ~/.vim-config/elixir/.vimrc
-source ~/.vim-config/golang/.vimrc
-source ~/.vim-config/elm/.vimrc
 source ~/.vim-config/airline/.vimrc
 
 " Global mapping
