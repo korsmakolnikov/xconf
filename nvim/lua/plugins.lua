@@ -150,6 +150,7 @@ return require('packer').startup(function()
   -- Color schemes
   use {'rktjmp/lush.nvim'}
   use {'blueshirts/darcula'}
+  use {'rakr/vim-one'}
 
   -- FZF
   use {'junegunn/fzf', run = './install --bin'}
@@ -158,7 +159,6 @@ return require('packer').startup(function()
     requires = { 'kyazdani42/nvim-web-devicons' }
   }
 
-  -- TODO do not work with rust
   use {'numToStr/Comment.nvim'} -- "gc" to comment visual regions/lines
 
   -- Goyo distraction free mode
@@ -209,7 +209,7 @@ return require('packer').startup(function()
       require("trouble").setup {
         position = "right", -- position of the list can be: bottom, top, left, right
         height = 10, -- height of the trouble list when position is top or bottom
-        width = 60, -- width of the list when position is left or right
+        width = 40, -- width of the list when position is left or right
         icons = true, -- use devicons for filenames
         mode = "workspace_diagnostics", -- "workspace_diagnostics", "document_diagnostics", "quickfix", "lsp_references", "loclist"
         fold_open = "=>", -- icon used for open folds
