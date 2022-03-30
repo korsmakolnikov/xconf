@@ -36,8 +36,10 @@ echo ""
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
 	sudo pacman --noconfirm -S vim
+  rm -rf $HOME/.vim/
+  rm $HOME/.vimrc
 	ln -s $PWD/.vimrc $HOME/.vimrc
-  ln -s $PWD/vim-config/ $HOME/.vim-config/
+  ln -s $PWD/vim-config $HOME/.vim-config
 	curl -fLo $HOME/.vim/autoload/plug.vim --create-dirs \
 	  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   ln -s $PWD/coc-settings.json $HOME/.vim/coc-settings.json
@@ -71,5 +73,6 @@ echo ""
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
 	sudo pacman --noconfirm -S kitty
+  mkdir -p $HOME/.config/kitty
 	ln -s $PWD/kitty.conf $HOME/.config/kitty/kitty.conf
 fi
