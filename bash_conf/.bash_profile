@@ -4,9 +4,11 @@ export GOPATH=`asdf where golang`
 export GOBIN="${GOPATH}/bin"
 export RUSTPATH=`asdf where rust` 
 export CARGO_NET_GIT_FETCH_WITH_CLI=true
-export EDITOR=vim
-export ELSP="$HOME/.elsp-1.11.2-otp-23"
-PATH="${PATH}:/usr/local/bin:~/.local/bin"
+export EDITOR=nvim
+#export ELSP="$HOME/.elsp-1.11.2-otp-23"
+#export PATH="${PATH}:${ELSP}"
+export PATH="${PATH}:/usr/local/bin:~/.local/bin:/home/blacksheep/.local/share/bin:/home/blacksheep/.npm-global/bin:/snap/bin"
+export PATH="${PATH}:${GOPATH}:${GOBIN}"
 
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
@@ -59,17 +61,10 @@ if [ -d /home/linuxbrew ]; then
   eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 fi
 
-export EDITOR="vim"
-
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
 export ERL_AFLAGS="-kernel shell_history enabled"
-export PATH="${PATH}:~/elm-language-server;~/.els"
-export PATH="${PATH}:/home/blacksheep/.local/share/bin"
-export PATH="${PATH}:/snap/bin"
-export PATH="${PATH}:${ELSP}"
-export PATH="${PATH}:${GOPATH}:${GOBIN}"
 source <(kitty + complete setup bash)
 export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/ssh-agent.socket"
 eval "$(mcfly init bash)"
