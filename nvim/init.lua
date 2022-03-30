@@ -20,7 +20,7 @@ packer.init({
 
 require('plugins')
 
-vim.cmd('colorscheme darcula')
+vim.cmd('colorscheme one')
 vim.g.mapleader = ","
 local set = vim.opt
 set.tabstop = 2
@@ -235,9 +235,10 @@ cmp.setup({
 local custom_gruvbox = require'lualine.themes.gruvbox-material'
 
 require('lualine').setup {
-  options = {
-    theme  = custom_gruvbox
-  },
+  -- options = {
+    -- theme for darcula
+    -- theme = custom_gruvbox
+  --},
   sections = {
     lualine_c = {'filename', "require'lsp-status'.status()", "require'lsp-status'.register_progress()"},
     lualine_x = {'encoding', 'filetype', "os.date('%H:%M')"},
