@@ -49,7 +49,7 @@ vim.g.goyo_width = '80'
 
 -- Neovide
 vim.g.neovide_fullscreen=true
-set.guifont = 'Fira Code:h14'
+set.guifont = 'Fira Code:h12'
 vim.g.neovide_cursor_vfx_mode = "railgun"
 
 -- autogroup provides
