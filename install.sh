@@ -9,7 +9,7 @@ then
 	sudo pacman --noconfirm -S curl
 	sudo pacman --noconfirm -S gping
 	sudo pacman --noconfirm -S procs
-    	curl -LSfs https://raw.githubusercontent.com/cantino/mcfly/master/ci/install.sh | sh -s -- --git cantino/mcfly
+    	sudo curl -LSfs https://raw.githubusercontent.com/cantino/mcfly/master/ci/install.sh | sudo sh -s -- --git cantino/mcfly
 fi
 
 # Installing common 
@@ -75,4 +75,6 @@ then
 	sudo pacman --noconfirm -S kitty
   mkdir -p $HOME/.config/kitty
 	ln -s $PWD/kitty.conf $HOME/.config/kitty/kitty.conf
+  chsh
+  sudo chsh
 fi
