@@ -9,3 +9,6 @@ asdf install nodejs 16.14.2
 asdf global golang 1.16.15
 asdf global rust 1.58.1 
 asdf global nodejs 16.14.2 
+sudo pacman --noconfirm -S rust-analyzer
+sudo pacman --noconfirm -S python-pip
+go get -v github.com/dcoker/biscuit
