@@ -16,6 +16,7 @@ sudo pacman --noconfirm -S elm-language-server
 sudo pacman --noconfirm -S lua-language-server
 sudo pacman --noconfirm -S python-pip
 sudo pacman --noconfirm -S k9s
+sudo pacman --noconfirm -S pgcli
 go get -v github.com/dcoker/biscuit
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
