@@ -9,7 +9,8 @@ then
 	sudo pacman --noconfirm -S curl
 	sudo pacman --noconfirm -S gping
 	sudo pacman --noconfirm -S procs
-    	sudo curl -LSfs https://raw.githubusercontent.com/cantino/mcfly/master/ci/install.sh | sudo sh -s -- --git cantino/mcfly
+  sudo curl -LSfs https://raw.githubusercontent.com/cantino/mcfly/master/ci/install.sh | sudo sh -s -- --git cantino/mcfly
+	sudo pacman --noconfirm -S insomnia
 fi
 
 # Installing common 
