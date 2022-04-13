@@ -10,6 +10,10 @@ asdf global golang 1.16.15
 asdf global rust 1.58.1 
 asdf global nodejs 16.14.2 
 sudo pacman --noconfirm -S rust-analyzer
+sudo pacman --noconfirm -S gopls
+sudo pacman --noconfirm -S delve
+sudo pacman --noconfirm -S elm-language-server
+sudo pacman --noconfirm -S lua-language-server
 sudo pacman --noconfirm -S python-pip
 sudo pacman --noconfirm -S k9s
 go get -v github.com/dcoker/biscuit
