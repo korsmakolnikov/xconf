@@ -1,12 +1,9 @@
 #!/bin/bash
-
 export GOPATH=`asdf where golang`
 export GOBIN="${GOPATH}/bin"
 export RUSTPATH=`asdf where rust` 
 export CARGO_NET_GIT_FETCH_WITH_CLI=true
 export EDITOR=nvim
-#export ELSP="$HOME/.elsp-1.11.2-otp-23"
-#export PATH="${PATH}:${ELSP}"
 export PATH="${PATH}:/usr/local/bin:~/.local/bin:/home/blacksheep/.local/share/bin:/home/blacksheep/.npm-global/bin:/snap/bin"
 export PATH="${PATH}:${GOPATH}:${GOBIN}"
 
