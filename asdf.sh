@@ -17,7 +17,18 @@ sudo pacman --noconfirm -S lua-language-server
 sudo pacman --noconfirm -S python-pip
 sudo pacman --noconfirm -S k9s
 sudo pacman --noconfirm -S pgcli
+sudo pacman --noconfirm -S aws-vault
 go get -v github.com/dcoker/biscuit
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
 sudo ./aws/install
+
+# docker
+sudo groupadd docker
+sudo usermod -aG docker $USER 
+newgrp docker
+sudo pacman -Syu docker
+systemctl enable docker.service
+systemctl start docker.service
+
+xdg-mime default firefox.desktop x-scheme-handler/https x-scheme-handler/http

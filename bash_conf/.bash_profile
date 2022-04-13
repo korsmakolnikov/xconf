@@ -1,4 +1,9 @@
 #!/bin/bash
+if [ -f $HOME/.asdf/asdf.sh  ]; then
+. $HOME/.asdf/asdf.sh
+. $HOME/.asdf/completions/asdf.bash
+fi
+
 export GOPATH=`asdf where golang`
 export GOBIN="${GOPATH}/bin"
 export RUSTPATH=`asdf where rust` 
@@ -25,11 +30,6 @@ fi
 
 if [ -f $HOME/.cargo/env  ]; then
   . $HOME/.cargo/env
-fi
-
-if [ -f $HOME/.asdf/asdf.sh  ]; then
-. $HOME/.asdf/asdf.sh
-. $HOME/.asdf/completions/asdf.bash
 fi
 
 if [ -d $HOME/.asdf/installs ]; then
