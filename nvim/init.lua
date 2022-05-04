@@ -3,6 +3,8 @@ local vim = vim
 local execute = vim.api.nvim_command
 local fn = vim.fn
 local vimp = vim.api.nvim_set_keymap
+local cmd = vim.cmd
+local api = vim.api
 
 -- ensure that packer is installed
 local packer_install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
@@ -10,7 +12,7 @@ if fn.empty(fn.glob(packer_install_path)) > 0 then
   packer_bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', packer_install_path})
 end
 
-vim.cmd('packadd packer.nvim')
+cmd('packadd packer.nvim')
 local packer = require'packer'
 local util = require'packer.util'
 
@@ -20,7 +22,7 @@ packer.init({
 
 require('plugins')
 
-vim.cmd('colorscheme one')
+cmd('colorscheme one')
 vim.g.mapleader = ","
 local set = vim.opt
 set.tabstop = 2
@@ -59,11 +61,20 @@ augroup SetAutoindent
 autocmd BufEnter *.go :set autoindent noexpandtab tabstop=8 shiftwidth=8
 autocmd BufEnter *.rs :set autoindent noexpandtab tabstop=4 shiftwidth=4
 augroup END 
-augroup lsp_document_format
-    autocmd! * <buffer>
-    autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 5000)
-augroup END
 ]])
+
+-- augroup lsp_document_format
+--     autocmd! * <buffer>
+--     autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 5000)
+-- augroup END
+
+-- Highlight on yank
+local lspGrp = api.nvim_create_augroup("BufWritePre", { clear = true })
+api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*",
+  command = "lua vim.lsp.buf.formatting_sync(nil, 5000)",
+  group = lspGrp,
+})
 
 -- Filetree mapping
 vimp('n', '<F2>', ':NeoTreeFocusToggle<CR>', key_opts)
