@@ -205,8 +205,8 @@ return require('packer').startup(function()
     requires = "kyazdani42/nvim-web-devicons",
     config = function()
       require("trouble").setup {
-        position = "right", -- position of the list can be: bottom, top, left, right
-        height = 10, -- height of the trouble list when position is top or bottom
+        position = "bottom", -- position of the list can be: bottom, top, left, right
+        height = 15, -- height of the trouble list when position is top or bottom
         width = 40, -- width of the list when position is left or right
         icons = true, -- use devicons for filenames
         mode = "workspace_diagnostics", -- "workspace_diagnostics", "document_diagnostics", "quickfix", "lsp_references", "loclist"
