@@ -91,17 +91,17 @@ vimp('x', '<S-Tab>', '<gv', key_opts)
 -- FZF mapping
 -- git is under 'g' except list files that is bound to leader-space
 -- rg is under 'r' except grep project that is bound to leader-/
+-- history is under 'h'
 vimp('n', '<Leader>.', ":FzfLua oldfiles<CR>", key_opts)
-vimp('n', '<Leader>./', ":FzfLua search_history<CR>", key_opts)
-vimp('n', '<Leader>.:', ":FzfLua command_history<CR>", key_opts)
+vimp('n', '<Leader>hs', ":FzfLua search_history<CR>", key_opts)
+vimp('n', '<Leader>hc', ":FzfLua command_history<CR>", key_opts)
 vimp('n', '<Leader>:', ":FzfLua resume<CR>", key_opts)
-vimp('n', '<Leader>.?', ":FzfLua resume<CR>", key_opts)
-vimp('n', '<Leader><Leader>', ":FzfLua buffers<CR>", key_opts)
+vimp('n', '<Leader>,', ":FzfLua buffers<CR>", key_opts)
 vimp('n', '<Leader>m', ":FzfLua marks<CR>", key_opts)
 vimp('n', '<Leader>k', ":FzfLua keymaps<CR>", key_opts)
 vimp('n', '<Leader>r', ":FzfLua registers<CR>", key_opts)
 vimp('n', '<Leader>j', ":FzfLua jump<CR>", key_opts)
-vimp('n', '<Leader>ff', ":FzfLua files<CR>", { noremap = true, silent = true })
+vimp('n', '<Leader>f', ":FzfLua files<CR>", { noremap = true, silent = true })
 vimp('n', '<Leader><Space>', ":FzfLua git_files<CR>", key_opts)
 -- Git
 vimp('n', '<Leader>g', ":FzfLua git_bcommits<CR>", key_opts)
@@ -120,18 +120,18 @@ vimp('n', '<C-l>', ":FzfLua grep_last<CR>", key_opts)
 -- All lsp diagnostic are under 'd'
 -- All trouble function are under function keys
 vimp('n', '<Leader>a', ":FzfLua lsp_code_actions<CR>", key_opts)
-vimp('n', '<Leader>ad', ":FzfLua lsp_definitions<CR>", key_opts)
-vimp('n', '<Leader>aD', ":FzfLua lsp_declarations<CR>", key_opts)
-vimp('n', '<Leader>at', ":FzfLua lsp_typedefs<CR>", key_opts)
-vimp('n', '<Leader>ai', ":FzfLua lsp_implementations<CR>", key_opts)
-vimp('n', '<Leader>ar', ":FzfLua lsp_references<CR>", key_opts)
-vimp('n', '<Leader>as', ":FzfLua lsp_document_symbols<CR>", key_opts)
-vimp('n', '<Leader>aws', ":FzfLua lsp_workspace_symbols<CR>", key_opts)
+vimp('n', '<Leader>Ad', ":FzfLua lsp_definitions<CR>", key_opts)
+vimp('n', '<Leader>AD', ":FzfLua lsp_declarations<CR>", key_opts)
+vimp('n', '<Leader>At', ":FzfLua lsp_typedefs<CR>", key_opts)
+vimp('n', '<Leader>Ai', ":FzfLua lsp_implementations<CR>", key_opts)
+vimp('n', '<Leader>Ar', ":FzfLua lsp_references<CR>", key_opts)
+vimp('n', '<Leader>As', ":FzfLua lsp_document_symbols<CR>", key_opts)
+vimp('n', '<Leader>Aws', ":FzfLua lsp_workspace_symbols<CR>", key_opts)
 vimp('n', '<Leader>d', ":FzfLua lsp_document_diagnostics<CR>", key_opts)
 vimp('n', '<Leader>da', ":FzfLua lsp_workspace_diagnostics<CR>", key_opts)
-vimp('n', '<Leader>ae', ':lua vim.lsp.diagnostic.goto_next()<CR>', key_opts)
-vimp('n', '<Leader>aE', ':lua vim.lsp.diagnostic.goto_prev()<CR>', key_opts)
-vimp('n', '<Leader>af', ':lua vim.lsp.buf.formatting_sync(nil, 5000)<CR>', key_opts)
+vimp('n', '<Leader>e', ':lua vim.lsp.diagnostic.goto_next()<CR>', key_opts)
+vimp('n', '<Leader>E', ':lua vim.lsp.diagnostic.goto_prev()<CR>', key_opts)
+vimp('n', '<Leader>Af', ':lua vim.lsp.buf.formatting_sync(nil, 5000)<CR>', key_opts)
 -- Trouble
 vimp("n", "<F3>", "<cmd>TroubleToggle workspace_diagnostics<cr>", key_opts)
 vimp("n", "<F4>", "<cmd>TroubleToggle document_diagnostics<cr>", key_opts)
@@ -257,6 +257,8 @@ require('lualine').setup {
 } 
 
 require('nvim_comment').setup()
+
+-- DAP debug
 
 local dap = require('dap')
 dap.adapters.cppdbg = {
