@@ -159,8 +159,6 @@ return require('packer').startup(function()
     requires = { 'kyazdani42/nvim-web-devicons' }
   }
 
-  use {'numToStr/Comment.nvim'} -- "gc" to comment visual regions/lines
-
   -- Goyo distraction free mode
   -- turn on with command :Goyo, turn off by :Goyo!
   use {'junegunn/goyo.vim'}
