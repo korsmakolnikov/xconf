@@ -128,6 +128,8 @@ vimp('n', '<Leader>da', ":FzfLua lsp_workspace_diagnostics<CR>", key_opts)
 vimp('n', '<Leader>e', ':lua vim.lsp.diagnostic.goto_next()<CR>', key_opts)
 vimp('n', '<Leader>E', ':lua vim.lsp.diagnostic.goto_prev()<CR>', key_opts)
 vimp('n', '<Leader>Af', ':lua vim.lsp.buf.formatting_sync(nil, 5000)<CR>', key_opts)
+vimp('n', '<Leader>mv', '<cmd>lua vim.lsp.buf.rename()<CR>', key_opts)
+
 -- Trouble
 vimp("n", "<F3>", "<cmd>TroubleToggle workspace_diagnostics<cr>", key_opts)
 vimp("n", "<F4>", "<cmd>TroubleToggle document_diagnostics<cr>", key_opts)
