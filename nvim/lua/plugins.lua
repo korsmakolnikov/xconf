@@ -69,8 +69,8 @@ return require('packer').startup(function()
                                                   -- window like netrw would, regardless of window.position
                                 -- "disabled",    -- netrw left alone, neo-tree does not handle opening dirs
           window = {
-            position = "float",
-            -- width = 60,
+            position = "right",
+            width = 50,
             mappings = {
               ["<2-LeftMouse>"] = "open",
               ["<cr>"] = "open",
@@ -101,7 +101,7 @@ return require('packer').startup(function()
         buffers = {
           show_unloaded = true,
           window = {
-            position = "left",
+            position = "float",
             mappings = {
               ["<2-LeftMouse>"] = "open",
               ["<cr>"] = "open",
