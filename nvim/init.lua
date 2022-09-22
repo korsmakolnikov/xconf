@@ -22,8 +22,12 @@ packer.init({
 
 require('plugins')
 
-cmd('colorscheme one')
+require('github-theme').setup()
+
+cmd('colorscheme github_*')
 vim.g.mapleader = ","
+vim.opt.matchpairs = vim.bo.matchpairs .. ",<:>"
+
 local set = vim.opt
 set.tabstop = 2
 set.shiftwidth = 2
@@ -72,8 +76,10 @@ api.nvim_create_autocmd("BufWritePre", {
 })
 
 -- Filetree mapping
-vimp('n', '<F2>', ':NeoTreeFocusToggle<CR>', key_opts)
-vimp('n', '<C-c>', ':NeoTreeReveal!<CR>', key_opts)
+vimp('n', '<F2>', ':Neotree toggle=true<CR>', key_opts)
+vimp('n', '<F3>', ':Neotree buffers toggle=true<CR>', key_opts)
+vimp('n', '<F4>', ':Neotree git_status position=right toggle=true<CR>', key_opts)
+vimp('n', '<C-c>', ':Neotree filesystem reveal right toggle=true<CR>', key_opts)
 -- Buffers mapping
 vimp('n', '<TAB>', ':BufferLineCycleNext<CR>', key_opts)
 vimp('n', '<S-TAB>', ':BufferLineCyclePrev<CR>', key_opts)
@@ -131,58 +137,16 @@ vimp('n', '<Leader>Af', ':lua vim.lsp.buf.formatting_sync(nil, 5000)<CR>', key_o
 vimp('n', '<Leader>mv', '<cmd>lua vim.lsp.buf.rename()<CR>', key_opts)
 
 -- Trouble
-vimp("n", "<F3>", "<cmd>TroubleToggle workspace_diagnostics<cr>", key_opts)
-vimp("n", "<F4>", "<cmd>TroubleToggle document_diagnostics<cr>", key_opts)
-vimp("n", "<F5>", "<cmd>TroubleToggle quickfix<cr>", key_opts)
+vimp("n", "<F6>", "<cmd>TroubleToggle workspace_diagnostics<cr>", key_opts)
+vimp("n", "<F7>", "<cmd>TroubleToggle document_diagnostics<cr>", key_opts)
+vimp("n", "<F8>", "<cmd>TroubleToggle quickfix<cr>", key_opts)
 -- General mapping
 vimp('n', '<F12>', ':e $MYVIMRC<CR>', key_opts)
+vimp('n', '<S-F12>', ':luafile %<CR>', key_opts)
 
 -- Config LSP
 
 local nvim_lsp = require'lspconfig'
-
-local opts = {
-    tools = { -- rust-tools options
-        autoSetHints = true,
-        hover_with_actions = true,
-        inlay_hints = {
-            show_parameter_hints = false,
-            parameter_hints_prefix = "",
-            other_hints_prefix = "",
-        },
-    },
-
-    -- all the opts to send to nvim-lspconfig
-    -- these override the defaults set by rust-tools.nvim
-    -- see https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#rust_analyzer
-    server = {
-        -- on_attach is a callback called when the language server attachs to the buffer
-        -- on_attach = on_attach,
-        settings = {
-            -- to enable rust-analyzer settings visit:
-            -- https://github.com/rust-analyzer/rust-analyzer/blob/master/docs/user/generated_config.adoc
-
-              ["rust-analyzer"] = {
-                  assist = {
-                      importGranularity = "module",
-                      importPrefix = "by_self",
-                  },
-                  cargo = {
-                      loadOutDirsFromCheck = true
-                  },
-                  procMacro = {
-                      enable = true
-                  },
-                    checkOnSave = {
-                        command = "check"
-                  },
-              },
-          }
-    },
-}
-
-require('rust-tools').setup(opts)
-
 local on_attach = function(client, bufnr)
 -- Enable completion triggered by <c-x><c-o>
 vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
@@ -191,13 +155,13 @@ vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 -- See `:help vim.lsp.*` for documentation on any of the below functions
 vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', key_opts)
 vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', key_opts)
-vim.api.nvim_buf_set_keymap(bufnr, 'n', '<S-k>', '<cmd>lua vim.lsp.buf.hover()<CR>', key_opts)
+vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-space>', '<cmd>lua vim.lsp.buf.hover()<CR>', key_opts)
 vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', key_opts)
-vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', key_opts)
+vim.api.nvim_buf_set_keymap(bufnr, 'n', '<S-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', key_opts)
 vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', key_opts)
 end
 
-local servers = { 'rust_analyzer', 'gopls', 'elmls' }
+local servers = { 'gopls', 'elmls' }
 for _, lsp in pairs(servers) do
   require('lspconfig')[lsp].setup {
     on_attach = on_attach,
@@ -207,6 +171,50 @@ for _, lsp in pairs(servers) do
     }
   }
 end
+
+
+local rt = require("rust-tools")
+local rust_tools_opts = {
+  tools = {
+    inlay_hints = {
+      parameter_hints_prefix = "-> ",
+    },
+    hover_actions = {
+      auto_focus = false,
+    },
+  },
+  server = {
+    on_attach = function(_, bufnr)
+      local up = true
+      local down = false
+      local move_up = function() 
+        rt.move_item.move_item(up) 
+      end
+      local move_down = function()
+        rt.move_item.move_item(down) 
+      end
+
+      -- Hover actions
+      vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+      -- why this do not work?
+      -- vim.keymap.set("v", "<C-space>", "rt.hover_range.hover_range()", { buffer = bufnr })
+      -- Code action groups
+      vim.keymap.set("x", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+      -- Parent module
+      vim.keymap.set("n", "<C-p>", rt.parent_module.parent_module, { buffer = bufnr })
+      -- Move up/down
+      vim.keymap.set("n", "<C-j>", move_down, { buffer = bufnr })
+      vim.keymap.set("n", "<C-k>", move_up, { buffer = bufnr })
+
+      vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', key_opts)
+      vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', key_opts)
+      vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', key_opts)
+      vim.api.nvim_buf_set_keymap(bufnr, 'n', '<S-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', key_opts)
+      vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', key_opts)
+    end,
+  },
+}
+rt.setup(rust_tools_opts)
 
 local cmp = require'cmp'
 cmp.setup({
@@ -243,12 +251,18 @@ cmp.setup({
 
 local custom_gruvbox = require'lualine.themes.gruvbox-material'
 
+function shorten_by(w)
+  return function(s)
+    local ellipsis = "…"
+    return s:sub(1, w) .. ellipsis
+  end
+end
+
+local shorten_branch_name = shorten_by(10)
+
 require('lualine').setup {
-  -- options = {
-    -- theme for darcula
-    -- theme = custom_gruvbox
-  --},
   sections = {
+    lualine_b = {{'branch', fmt = shorten_branch_name}, 'diff', 'diagnostics' },
     lualine_c = {'filename', "require'lsp-status'.status()", "require'lsp-status'.register_progress()"},
     lualine_x = {'encoding', 'filetype', "os.date('%H:%M')"},
   }
@@ -258,170 +272,75 @@ require('nvim_comment').setup()
 
 -- DAP debug
 
+vim.keymap.set("n", "<F5>", require'dap'.continue, { buffer = bufnr })
+-- nnoremap <silent> <F9> <Cmd>lua require'dap'.step_over()<CR>
+-- nnoremap <silent> <F10> <Cmd>lua require'dap'.step_into()<CR>
+-- nnoremap <silent> <F11> <Cmd>lua require'dap'.step_out()<CR>
+vim.keymap.set("n", "<Leader>b", require'dap'.toggle_breakpoint, { buffer = bufnr })
+-- nnoremap <silent> <Leader>B <Cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>
+-- nnoremap <silent> <Leader>lp <Cmd>lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>
+-- nnoremap <silent> <Leader>dr <Cmd>lua require'dap'.repl.open()<CR>
+-- nnoremap <silent> <Leader>dl <Cmd>lua require'dap'.run_last()<CR>
+
 local dap = require('dap')
-dap.adapters.cppdbg = {
-  id = 'cppdbg',
+dap.adapters.lldb = {
   type = 'executable',
-  command = '/home/blacksheep/cpptools-linux/extension/debugAdapters/bin/OpenDebugAD7',
+  command = '/usr/bin/lldb-vscode', -- adjust as needed, must be absolute path
+  name = 'lldb',
 }
+
+dap.configurations.env = function()
+  local variables = {}
+  for k, v in pairs(vim.fn.environ()) do
+    table.insert(variables, string.format("%s=%s", k, v))
+  end
+  return variables
+end
 
 dap.configurations.cpp = {
   {
-    name = "Launch file",
-    type = "cppdbg",
-    request = "launch",
-    program = function()
-      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-    end,
-    cwd = '${workspaceFolder}',
-    stopOnEntry = true,
-  },
-  {
-    name = 'Attach to gdbserver :1234',
-    type = 'cppdbg',
+    name = 'Launch',
+    type = 'lldb',
     request = 'launch',
-    MIMode = 'gdb',
-    miDebuggerServerAddress = 'localhost:1234',
-    miDebuggerPath = '/usr/bin/gdb',
-    cwd = '${workspaceFolder}',
     program = function()
       return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
     end,
+    cwd = '${workspaceFolder}',
+    stopOnEntry = false,
+    args = {},
+
+    -- 💀
+    -- if you change `runInTerminal` to true, you might need to change the yama/ptrace_scope setting:
+    --
+    --    echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+    --
+    -- Otherwise you might get the following error:
+    --
+    --    Error on launch: Failed to attach to the target process
+    --
+    -- But you should be aware of the implications:
+    -- https://www.kernel.org/doc/html/latest/admin-guide/LSM/Yama.html
+    -- runInTerminal = false,
   },
 }
 
-dap.adapters.go = function(callback, config)
-    local stdout = vim.loop.new_pipe(false)
-    local handle
-    local pid_or_err
-    local port = 38697
-    local opts = {
-      stdio = {nil, stdout},
-      args = {"dap", "-l", "127.0.0.1:" .. port},
-      detached = true
-    }
-    handle, pid_or_err = vim.loop.spawn("dlv", opts, function(code)
-      stdout:close()
-      handle:close()
-      if code ~= 0 then
-        print('dlv exited with code', code)
-      end
-    end)
-    assert(handle, 'Error running dlv: ' .. tostring(pid_or_err))
-    stdout:read_start(function(err, chunk)
-      assert(not err, err)
-      if chunk then
-        vim.schedule(function()
-          require('dap.repl').append(chunk)
-        end)
-      end
-    end)
-    -- Wait for delve to start
-    vim.defer_fn(
-      function()
-        callback({type = "server", host = "127.0.0.1", port = port})
-      end,
-      100)
-  end
-  -- https://github.com/go-delve/delve/blob/master/Documentation/usage/dlv_dap.md
-  dap.configurations.go = {
-    {
-      type = "go",
-      name = "Debug",
-      request = "launch",
-      program = "${file}"
-    },
-    {
-      type = "go",
-      name = "Debug test", -- configuration for debugging test files
-      request = "launch",
-      mode = "test",
-      program = "${file}"
-    },
-    -- works with go.mod packages and sub packages 
-    {
-      type = "go",
-      name = "Debug test (go.mod)",
-      request = "launch",
-      mode = "test",
-      program = "./${relativeFileDirname}"
-    } 
-}
+dap.configurations.c = dap.configurations.cpp
+dap.configurations.rust = dap.configurations.cpp
 
--- debug mapping
---
+require("dapui").setup()
+vim.keymap.set("n", "<M-k>", require'dapui'.eval, { buffer = bufnr })
+dap.listeners.after.event_initialized["dapui_config"] = function()
+  require'dapui'.open()
+end
+dap.listeners.before.event_terminated["dapui_config"] = function()
+  require'dapui'.close()
+end
+dap.listeners.before.event_exited["dapui_config"] = function()
+  require'dapui'.close()
+end
 
-require('bufferline').setup {
-  options = {
-    mode = "buffers", -- set to "tabs" to only show tabpages instead
-    numbers = "none",
-    close_command = "bdelete! %d",       -- can be a string | function, see "Mouse actions"
-    right_mouse_command = "bdelete! %d", -- can be a string | function, see "Mouse actions"
-    left_mouse_command = "buffer %d",    -- can be a string | function, see "Mouse actions"
-    middle_mouse_command = nil,          -- can be a string | function, see "Mouse actions"
-    -- NOTE: this plugin is designed with this icon in mind,
-    -- and so changing this is NOT recommended, this is intended
-    -- as an escape hatch for people who cannot bear it for whatever reason
-    indicator_icon = '▎',
-    buffer_close_icon = '',
-    modified_icon = '●',
-    close_icon = '',
-    left_trunc_marker = '',
-    right_trunc_marker = '',
-    -- name_formatter can be used to change the buffer's label in the bufferline.
-    -- Please note some names can/will break the
-    -- bufferline so use this at your discretion knowing that it has
-    -- some limitations that will *NOT* be fixed.
-    name_formatter = function(buf)  -- buf contains a "name", "path" and "bufnr"
-      -- remove extension from markdown files for example
-      if buf.name:match('%.md') then
-        return vim.fn.fnamemodify(buf.name, ':t:r')
-      end
-    end,
-    max_name_length = 18,
-    max_prefix_length = 15, -- prefix used when a buffer is de-duplicated
-    tab_size = 18,
-    diagnostics = "nvim_lsp",
-    diagnostics_update_in_insert = false,
-    diagnostics_indicator = function(count, level, diagnostics_dict, context)
-      return "("..count..")"
-    end,
-    -- NOTE: this will be called a lot so don't do any heavy processing here
-    custom_filter = function(buf_number, buf_numbers)
-      -- filter out filetypes you don't want to see
-      if vim.bo[buf_number].filetype ~= "<i-dont-want-to-see-this>" then
-        return true
-      end
-      -- filter out by buffer name
-      if vim.fn.bufname(buf_number) ~= "<buffer-name-I-dont-want>" then
-        return true
-      end
-      -- filter out based on arbitrary rules
-      -- e.g. filter out vim wiki buffer from tabline in your work repo
-      if vim.fn.getcwd() == "<work-repo>" and vim.bo[buf_number].filetype ~= "wiki" then
-        return true
-      end
-      -- filter out by it's index number in list (don't show first buffer)
-      if buf_numbers[1] ~= buf_number then
-        return true
-      end
-    end,
-    offsets = {{filetype = "NvimTree", text = "File Explorer",  text_align = "center" }},
-    color_icons = true, -- whether or not to add the filetype icon highlights
-    show_buffer_icons = true, -- disable filetype icons for buffers
-    show_buffer_close_icons = true,
-    show_buffer_default_icon = true, -- whether or not an unrecognised filetype should show a default icon
-    show_close_icon = true,
-    show_tab_indicators = true,
-    persist_buffer_sort = true, -- whether or not custom sorted buffers should persist
-    -- can also be a table containing 2 custom separators
-    -- [focused and unfocused]. eg: { '|', '|' }
-    separator_style = "slant",
-    enforce_regular_tabs = false,
-    always_show_bufferline = true,
-    sort_by = 'insert_after_current',
-  }
-}
+vim.opt.termguicolors = true
+require("bufferline").setup{}
 
 require('close_buffers').setup({
   preserve_window_layout = { 'this' },
