@@ -38,8 +38,8 @@ alias qaupdate="git pull && git submodule update --init && twig feature qainit u
 alias soapui="/home/blacksheep/soapui/bin/SoapUI-5.6.0"
 alias notepad="cd ~/Documents/appunti && vim -c \":NERDTree\" && cd"
 alias ssh="kitty +kitten ssh"
-alias biscuit-decrypt='aws-vault exec secrets -- biscuit get -f '
-alias biscuit-list='aws-vault exec secrets -- biscuit list -f '
+alias biscuit-decrypt='AWS_PROFILE=secrets biscuit get -f config/secrets.yml'
+alias biscuit-list='AWS_PROFILE=secrets biscuit list -f config/secrets.yml' 
 alias ll="ls -lha --color"
 alias rebar="rebar3"
 alias docker.run="docker_run"
