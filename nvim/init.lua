@@ -135,7 +135,6 @@ vimp('n', '<Leader>e', ':lua vim.diagnostic.goto_next()<CR>', key_opts)
 vimp('n', '<Leader>z', ':lua vim.diagnostic.open_float()<CR>', key_opts)
 vimp('n', '<Leader>E', ':lua vim.diagnostic.goto_prev()<CR>', key_opts)
 vimp('n', '<Leader>Af', ':lua vim.lsp.buf.formatting_sync(nil, 5000)<CR>', key_opts)
-vimp('n', '<Leader>mv', '<cmd>lua vim.lsp.buf.rename()<CR>', key_opts)
 
 -- Trouble
 vimp("n", "<F6>", "<cmd>TroubleToggle workspace_diagnostics<cr>", key_opts)
@@ -149,17 +148,18 @@ vimp('n', '<S-F12>', ':luafile %<CR>', key_opts)
 
 local nvim_lsp = require'lspconfig'
 local on_attach = function(client, bufnr)
--- Enable completion triggered by <c-x><c-o>
-vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
--- Mappings.
--- See `:help vim.lsp.*` for documentation on any of the below functions
-vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', key_opts)
-vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', key_opts)
-vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-space>', '<cmd>lua vim.lsp.buf.hover()<CR>', key_opts)
-vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', key_opts)
-vim.api.nvim_buf_set_keymap(bufnr, 'n', '<S-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', key_opts)
-vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', key_opts)
+  -- Enable completion triggered by <c-x><c-o>
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', key_opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', key_opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-space>', '<cmd>lua vim.lsp.buf.hover()<CR>', key_opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', key_opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<S-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', key_opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', key_opts)
 end
 
 local servers = { 'gopls', 'elmls' }
@@ -212,6 +212,7 @@ local rust_tools_opts = {
       vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', key_opts)
       vim.api.nvim_buf_set_keymap(bufnr, 'n', '<S-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', key_opts)
       vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', key_opts)
+      vim.api.nvim_set_keymap('n', '<Leader>mv', '<cmd>lua vim.lsp.buf.rename()<CR>', key_opts)
     end,
   },
 }
