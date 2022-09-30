@@ -356,6 +356,15 @@ return require('packer').startup(function()
     }
     end
   }
+  use({
+    "Maan2003/lsp_lines.nvim",
+    config = function()
+      require("lsp_lines").setup()
+      vim.diagnostic.config({
+        virtual_text = false,
+      })
+    end,
+  })
   -- Snippet engine
   use {'hrsh7th/vim-vsnip'}
   use {'nvim-lua/popup.nvim'}
