@@ -66,3 +66,4 @@ source <(kitty + complete setup bash)
 export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/ssh-agent.socket"
 eval "$(mcfly init bash)"
 source /usr/share/bash-completion/completions/git
+[[ -s /etc/profile.d/autojump.sh ]] && source /etc/profile.d/autojump.sh

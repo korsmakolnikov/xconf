@@ -83,7 +83,7 @@ vimp('n', '<C-c>', ':Neotree filesystem reveal right toggle=true<CR>', key_opts)
 -- Buffers mapping
 vimp('n', '<TAB>', ':BufferLineCycleNext<CR>', key_opts)
 vimp('n', '<S-TAB>', ':BufferLineCyclePrev<CR>', key_opts)
-vimp( 'n', '<leader>w', [[<CMD>lua require('close_buffers').delete({type = 'this'})<CR>]], { noremap = true, silent = true })
+vimp( 'n', '<Leader>w', [[<CMD>lua require('close_buffers').delete({type = 'this'})<CR>]], { noremap = true, silent = true })
 vimp('n', '<Leader>W', ':lua require(\'close_buffers\').wipe({ type = \'all\', force = true })<CR>', key_opts)
 vimp('n', '<Leader>o', ':lua require(\'close_buffers\').wipe({ type = \'other\' })<CR>', key_opts)
 -- Tab mapping
@@ -162,21 +162,10 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', key_opts)
 end
 
-local servers = { 'gopls', 'elmls' }
-for _, lsp in pairs(servers) do
-  require('lspconfig')[lsp].setup {
-    on_attach = on_attach,
-    flags = {
-      -- This will be the default in neovim 0.7+
-      debounce_text_changes = 150,
-    }
-  }
-end
-
-
 local rt = require("rust-tools")
 local rust_tools_opts = {
   tools = {
+    reload_workspace_from_cargo_toml = true,
     inlay_hints = {
       parameter_hints_prefix = "-> ",
     },
@@ -217,6 +206,17 @@ local rust_tools_opts = {
   },
 }
 rt.setup(rust_tools_opts)
+
+local servers = { 'gopls', 'elmls' }
+for _, lsp in pairs(servers) do
+  require('lspconfig')[lsp].setup {
+    on_attach = on_attach,
+    flags = {
+      -- This will be the default in neovim 0.7+
+      debounce_text_changes = 150,
+    }
+  }
+end
 
 local cmp = require'cmp'
 cmp.setup({
@@ -265,7 +265,7 @@ local shorten_branch_name = shorten_by(10)
 require('lualine').setup {
   sections = {
     lualine_b = {{'branch', fmt = shorten_branch_name}, 'diff', 'diagnostics' },
-    lualine_c = {'filename', "require'lsp-status'.status()", "require'lsp-status'.register_progress()"},
+    lualine_c = {{ 'filename', path = 1 }, "require'lsp-status'.status()", "require'lsp-status'.register_progress()"},
     lualine_x = {'encoding', 'filetype', "os.date('%H:%M')"},
   }
 } 
@@ -344,14 +344,35 @@ end
 vim.opt.termguicolors = true
 require("bufferline").setup{}
 
+function dump(o)
+   if type(o) == 'table' then
+      local s = '{ '
+      for k,v in pairs(o) do
+         if type(k) ~= 'number' then k = '"'..k..'"' end
+         s = s .. '['..k..'] = ' .. dump(v) .. ','
+      end
+      return s .. '} '
+   else
+      return tostring(o)
+   end
+end
+
 require('close_buffers').setup({
   preserve_window_layout = { 'this' },
   next_buffer_cmd = function(windows)
-    require('bufferline').cycle(1)
-    local bufnr = vim.api.nvim_get_current_buf()
+    -- require('bufferline').cycle(1)
+    -- local bufnr = vim.api.nvim_get_current_buf()
 
-    for _, window in ipairs(windows) do
-      vim.api.nvim_win_set_buf(window, bufnr)
+    -- for _, window in ipairs(windows) do
+      -- vim.api.nvim_win_set_buf(window, bufnr)
+    -- end
+    local markpos = vim.api.nvim_buf_get_mark(0,'"')
+    dump(markpos)
+    local line = markpos[1]
+    local col = markpos[2]
+    -- if in range, go there
+    if (line > 1) and (line <= vim.api.nvim_buf_line_count(0)) then
+        vim.api.nvim_win_set_cursor(0,{line,col})
     end
   end,
 })
