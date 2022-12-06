@@ -207,14 +207,19 @@ local rust_tools_opts = {
 }
 rt.setup(rust_tools_opts)
 
-local servers = { 'gopls', 'elmls' }
+local servers = { 'gopls', 'elmls', 'hls', 'asm_lsp' }
 for _, lsp in pairs(servers) do
-  require('lspconfig')[lsp].setup {
+  -- if lsp == 'asm_lsp' then
+  --   local root = 
+  -- end 
+
+  nvim_lsp[lsp].setup {
     on_attach = on_attach,
     flags = {
       -- This will be the default in neovim 0.7+
       debounce_text_changes = 150,
-    }
+    },
+    root_dir = nvim_lsp.util.find_git_ancestor  
   }
 end
 

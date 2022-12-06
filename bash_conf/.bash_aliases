@@ -29,6 +29,7 @@ alias ringo="AWS_PROFILE=secrets ringo"
 
 alias docker.run="docker_run"
 alias docker.down="docker-compose down"
+alias hx="helix"
 
 alias ku='kubectl'
 
