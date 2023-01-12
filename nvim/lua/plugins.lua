@@ -297,8 +297,6 @@ return require('packer').startup(function()
   use {'hrsh7th/cmp-nvim-lsp'}
   -- LSP status for status bar
   use {'nvim-lua/lsp-status.nvim'}
-  -- Snippet completion source for nvim-cmp
-  use {'hrsh7th/cmp-vsnip'}
   -- Other usefull completion sources
   use {'hrsh7th/cmp-path'}
   use {'hrsh7th/cmp-buffer'}
@@ -365,12 +363,8 @@ return require('packer').startup(function()
       })
     end,
   })
-  -- Snippet engine
-  use {'hrsh7th/vim-vsnip'}
-  use {'nvim-lua/popup.nvim'}
-
   -- Rust specific
-  use 'simrat39/rust-tools.nvim'
+  use 'atidyshirt/rust-tools.nvim'
 
   -- Debugging
   use 'nvim-lua/plenary.nvim'
@@ -383,4 +377,10 @@ return require('packer').startup(function()
   use {'euclidianAce/BetterLua.vim'}
   use {'tjdevries/nlua.nvim'}
   use {'nvim-lua/completion-nvim'}
+
+  -- Snippet
+  use {'hrsh7th/cmp-vsnip'}
+  use {'dcampos/nvim-snippy'}
+  use {'honza/vim-snippets'}
+  use {'dcampos/cmp-snippy'}
 end)

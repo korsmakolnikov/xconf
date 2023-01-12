@@ -28,7 +28,12 @@ cmd('colorscheme github_*')
 vim.g.mapleader = ","
 vim.opt.matchpairs = vim.bo.matchpairs .. ",<:>"
 
+vim.cmd([[
+  setlocal spell spelllang=en,it
+]])
+
 local set = vim.opt
+set.splitright = true
 set.tabstop = 2
 set.shiftwidth = 2
 set.softtabstop = 2
@@ -54,8 +59,15 @@ vim.g.loaded_python_provider = '0'
 vim.g.goyo_width = '80'
 
 -- Neovide
+if vim.g.neovide then
+  --Put anything you want to happen only in Neovide here
+  vim.cmd([[
+    map! <C-S-v> <C-R>+
+  ]])
+end
+
 vim.g.neovide_fullscreen=true
-set.guifont = 'Fira Code:h10'
+set.guifont = 'Fira Code Font:h14'
 vim.g.neovide_cursor_vfx_mode = "railgun"
 
 -- autogroup provides
@@ -146,27 +158,11 @@ vimp('n', '<S-F12>', ':luafile %<CR>', key_opts)
 
 -- Config LSP
 
-local nvim_lsp = require'lspconfig'
-local on_attach = function(client, bufnr)
-
-  -- Enable completion triggered by <c-x><c-o>
-  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  -- Mappings.
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', key_opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', key_opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-space>', '<cmd>lua vim.lsp.buf.hover()<CR>', key_opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', key_opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<S-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', key_opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', key_opts)
-end
-
 local rt = require("rust-tools")
 local rust_tools_opts = {
   tools = {
     reload_workspace_from_cargo_toml = true,
-    inlay_hints = {
+    inlay_hints = { 
       parameter_hints_prefix = "-> ",
     },
     hover_actions = {
@@ -207,21 +203,37 @@ local rust_tools_opts = {
 }
 rt.setup(rust_tools_opts)
 
-local servers = { 'gopls', 'elmls', 'hls', 'asm_lsp' }
-for _, lsp in pairs(servers) do
-  -- if lsp == 'asm_lsp' then
-  --   local root = 
-  -- end 
+local nvim_lsp = require'lspconfig'
+local on_attach = function(client, bufnr)
 
+  -- Enable completion triggered by <c-x><c-o>
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', key_opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', key_opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-space>', '<cmd>lua vim.lsp.buf.hover()<CR>', key_opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', key_opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<S-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', key_opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', key_opts)
+end
+
+local servers = { 'gopls', 'elmls', 'hls', 'ccls' }
+for _, lsp in pairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,
     flags = {
       -- This will be the default in neovim 0.7+
       debounce_text_changes = 150,
     },
-    root_dir = nvim_lsp.util.find_git_ancestor  
+    -- root_dir = nvim_lsp.util.find_git_ancestor  
   }
 end
+
+nvim_lsp['rust-analyzer'].setup {
+  inlayHints = { locationLinks = false } 
+}
 
 local cmp = require'cmp'
 cmp.setup({
@@ -380,4 +392,17 @@ require('close_buffers').setup({
         vim.api.nvim_win_set_cursor(0,{line,col})
     end
   end,
+})
+
+-- snippet
+require('snippy').setup({
+    mappings = {
+        is = {
+            ['<Tab>'] = 'expand_or_advance',
+            ['<S-Tab>'] = 'previous',
+        },
+        nx = {
+            ['<leader>x'] = 'cut_text',
+        },
+    },
 })
