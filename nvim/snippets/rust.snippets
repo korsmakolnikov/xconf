@@ -1,0 +1,16 @@
+snippet test_module
+	#[cfg(test)]
+	mod tests {
+			use super::*;
+
+			#[test]
+			fn ${0:test_case}() {
+					assert!(false);
+			}
+	}
+
+snippet test_case
+	#[test]
+	fn ${0:test_case}() {
+			assert!(false);
+	}

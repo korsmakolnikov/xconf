@@ -4,14 +4,15 @@ local cmd = vim.cmd
 local api = vim.api
 
 -- ensure that packer is installed
-local packer_install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+local packer_install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
 if fn.empty(fn.glob(packer_install_path)) > 0 then
-  packer_bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', packer_install_path})
+  packer_bootstrap = fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim',
+    packer_install_path })
 end
 
 cmd('packadd packer.nvim')
-local packer = require'packer'
-local util = require'packer.util'
+local packer = require 'packer'
+local util = require 'packer.util'
 
 packer.init({
   package_root = util.join_paths(vim.fn.stdpath('data'), 'site', 'pack')
@@ -45,20 +46,20 @@ vim.o.number = true
 vim.o.wildmode = 'longest,list'
 vim.o.syntax = 'on'
 vim.o.mouse = 'a'
-vim.o.clipboard=vim.o.clipboard..'unnamedplus'
+vim.o.clipboard = vim.o.clipboard .. 'unnamedplus'
 vim.o.ttyfast = true
 vim.o.backupdir = '~/.config/nvim/backup'
 vim.o.cmdheight = 3
 vim.o.completeopt = 'menuone,noinsert,noselect'
-vim.o.shortmess=vim.o.shortmess..'c'
+vim.o.shortmess = vim.o.shortmess .. 'c'
 vim.opt.termguicolors = true
 vim.g.loaded_python_provider = '0'
 vim.g.goyo_width = '80'
-vim.g.neovide_fullscreen=true
+vim.g.neovide_fullscreen = true
 set.guifont = 'Fira Code Font:h14'
 vim.g.neovide_cursor_vfx_mode = "railgun"
 
-local custom_gruvbox = require'lualine.themes.gruvbox-material'
+local custom_gruvbox = require 'lualine.themes.gruvbox-material'
 
 -- autogroup provides
 -- TODO autoformat files doesn't work!
@@ -82,21 +83,23 @@ require('close_buffers').setup({
     -- local bufnr = vim.api.nvim_get_current_buf()
 
     -- for _, window in ipairs(windows) do
-      -- vim.api.nvim_win_set_buf(window, bufnr)
+    -- vim.api.nvim_win_set_buf(window, bufnr)
     -- end
-    local markpos = api.nvim_buf_get_mark(0,'"')
+    local markpos = api.nvim_buf_get_mark(0, '"')
     dump(markpos)
     local line = markpos[1]
     local col = markpos[2]
     -- if in range, go there
     if (line > 1) and (line <= api.nvim_buf_line_count(0)) then
-        api.nvim_win_set_cursor(0,{line,col})
+      api.nvim_win_set_cursor(0, { line, col })
     end
   end,
 })
 
+require "mason_setup"
+require "coding.treesitter"
 require "coding.snippets"
-require "coding.lsp"
-require "coding.rust"
-require "coding.dap"
 require "coding.autocompletition"
+require "coding.rust"
+require "coding.lsp"
+require "coding.dap"

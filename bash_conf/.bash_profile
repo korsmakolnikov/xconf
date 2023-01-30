@@ -53,6 +53,10 @@ if [ -f $HOME/.bash_twig  ]; then
   . $HOME/.bash_twig
 fi
 
+if [ -d $HOME/.local/share/nvim/mason/bin ]; then
+  export PATH="${PATH}:$HOME/.local/share/nvim/mason/bin"
+fi
+
 if [ -d /home/linuxbrew ]; then
   export PATH="${PATH}:/home/linuxbrew/.linuxbrew/bin"
   eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)

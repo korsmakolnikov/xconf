@@ -1,0 +1,20 @@
+snippet test_module
+	package tests
+
+	import (
+		"testing"
+	)
+
+	func ${0:test_name}Test(t *testing.T) {
+		if true {
+			t.Fail()
+		}
+	}
+
+snippet test_case
+	func ${0:test_name}Test(t *testing.T) {
+		if true {
+			t.Fail()
+		}
+	}
+

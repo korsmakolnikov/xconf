@@ -1,7 +1,7 @@
 local vim = vim
 local api = vim.api
 local vimp = vim.api.nvim_set_keymap
-local key_opts = { noremap=true, silent=true, buffer=bufnr }
+local key_opts = { noremap = true, silent = true, buffer = bufnr }
 -- Config LSP
 
 -- Highlight on yank
@@ -12,7 +12,7 @@ api.nvim_create_autocmd("BufWritePre", {
   group = lspGrp,
 })
 
-local on_attach = function(client, bufnr)
+local on_attach = function(_, bufnr)
   -- Enable completion triggered by <c-x><c-o>
   api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
   -- See `:help vim.lsp.*` for documentation on any of the below functions
@@ -25,11 +25,24 @@ local on_attach = function(client, bufnr)
 end
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-local servers = { 'gopls', 'elmls', 'hls', 'ccls' }
+local servers = { 'gopls', 'elmls', 'hls', 'ccls', 'sumneko_lua', 'bashls', 'yamlls' }
 for _, lsp in pairs(servers) do
-  require'lspconfig'[lsp].setup {
+  require 'lspconfig'[lsp].setup {
     on_attach = on_attach,
     capabilities = capabilities,
   }
 end
 
+require 'lspconfig'.elixirls.setup {
+  capabilities = capabilities,
+  dialyzerEnabled = false,
+  on_attach = on_attach,
+  flags = { debounce_text_changes = 150 },
+  cmd = { "elixir-ls" },
+  settings = {
+    elixirLS = {
+      fetchDeps = false,
+      mixEnv = "dev"
+    }
+  }
+}

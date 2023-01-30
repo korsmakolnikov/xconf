@@ -1,6 +1,6 @@
 local vim = vim
 local vimp = vim.api.nvim_set_keymap
-local key_opts = { noremap=true, silent=true, buffer=bufnr }
+local key_opts = { noremap = true, silent = true, buffer = bufnr }
 -- Mappings.
 -- Filetree mapping
 vimp('n', '<F2>', ':Neotree toggle=true<CR>', key_opts)
@@ -10,7 +10,8 @@ vimp('n', '<C-c>', ':Neotree filesystem reveal right toggle=true<CR>', key_opts)
 -- Buffers mapping
 vimp('n', '<TAB>', ':BufferLineCycleNext<CR>', key_opts)
 vimp('n', '<S-TAB>', ':BufferLineCyclePrev<CR>', key_opts)
-vimp( 'n', '<Leader>w', [[<CMD>lua require('close_buffers').delete({type = 'this'})<CR>]], { noremap = true, silent = true })
+vimp('n', '<Leader>w', [[<CMD>lua require('close_buffers').delete({type = 'this'})<CR>]],
+  { noremap = true, silent = true })
 vimp('n', '<Leader>W', ':lua require(\'close_buffers\').wipe({ type = \'all\', force = true })<CR>', key_opts)
 vimp('n', '<Leader>o', ':lua require(\'close_buffers\').wipe({ type = \'other\' })<CR>', key_opts)
 -- Tab mapping
@@ -41,7 +42,7 @@ vimp('n', '<Leader>gc', ":FzfLua changes<CR>", key_opts)
 vimp('n', '<Leader>rl', ":FzfLua grep_curbuf<CR>", key_opts)
 vimp('n', '<Leader>/', ":FzfLua live_grep<CR>", key_opts)
 vimp('n', '<C-f>', ":FzfLua grep_cword<CR>", key_opts)
-vimp('v', '<C-f>',":FzfLua grep_visual<CR>", key_opts)
+vimp('v', '<C-f>', ":FzfLua grep_visual<CR>", key_opts)
 vimp('n', '<C-l>', ":FzfLua grep_last<CR>", key_opts)
 
 -- LSP Mappings
@@ -70,4 +71,3 @@ vimp("n", "<F8>", "<cmd>TroubleToggle quickfix<cr>", key_opts)
 -- General mapping
 vimp('n', '<F12>', ':e $MYVIMRC<CR>', key_opts)
 vimp('n', '<S-F12>', ':luafile %<CR>', key_opts)
-

@@ -5,4 +5,3 @@ if vim.g.neovide then
     map! <C-S-v> <C-R>+
   ]])
 end
-
