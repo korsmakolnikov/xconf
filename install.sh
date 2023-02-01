@@ -1,33 +1,15 @@
 #!/bin/bash
 # TODO refactor like a list of function to call and parse cmd args for spot installations
 
-distro_is_manjaro=`lsb_release -a | cut -d ":" -f 2 | tr -d "[:blank:]" | grep -Pzo Manjaro`
-
-if [[ -z "$distro_is_manjaro" ]]; then
-  install_me='yay -S'
-else
-  install_me='sudo apt install -y'
-fi
-
 # Installing common utils
 read -p "I'm going to install common utils. Are you sure? " -n 1 -r
 echo ""
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-	$install_me curl
-  if [ ! [ -z "$distro_is_manjaro" ]]; then
-    echo "deb http://packages.azlux.fr/debian/ buster main" | sudo tee /etc/apt/sources.list.d/azlux.list
-    wget -qO - https://azlux.fr/repo.gpg.key | sudo apt-key add -
-    sudo apt update
-  fi
-	$install_me gping
-	$install_me procs
-  if command -v brew  &> /dev/null ; then
-    brew tap cantino/mcfly
-    brew install mcfly
-  else 
-    curl -LSfs https://raw.githubusercontent.com/cantino/mcfly/master/ci/install.sh | sh -s -- --git cantino/mcfly
-  fi
+	sudo pacman --noconfirm -S curl
+	sudo pacman --noconfirm -S gping
+	sudo pacman --noconfirm -S procs
+  sudo curl -LSfs https://raw.githubusercontent.com/cantino/mcfly/master/ci/install.sh | sudo sh -s -- --git cantino/mcfly
 fi
 
 # Installing common 
@@ -35,10 +17,8 @@ read -p "I'm going to install common dependency. Are you sure? " -n 1 -r
 echo ""
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-  $install_me ripgrep
-	$install_me ttf-fira-code
-  # install jetbrains nerd font
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/JetBrains/JetBrainsMono/master/install_manual.sh)"
+  sudo pacman --noconfirm -S ripgrep
+	sudo pacman --noconfirm -S ttf-fira-code
 fi
 
 # Installing asdf and language
@@ -46,26 +26,22 @@ read -p "I'm going to install Erlang and asdf. Are you sure? " -n 1 -r
 echo ""
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-	$install_me asdf-vm
-  if [[ -z "$distro_is_manjaro" ]]; then
-    sudo pacman -S erlang
-  else
-    $install_me erlang
-  fi
+	sudo pacman --noconfirm -S asdf-vm
+  sudo pacman --noconfirm -S erlang
 fi
 
 # Installing vim
-read -p "I'm going to install vim, vim-plug, nodejs. Are you sure? " -n 1 -r
+read -p "I'm going to install vim, vim-plug, vim conf. Are you sure? " -n 1 -r
 echo ""
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-	$install_me vim
-	$install_me nodejs-lts-fermium
-  $install_me npm
+	sudo pacman --noconfirm -S vim
+  rm -rf $HOME/.vim/
+  rm $HOME/.vimrc
 	ln -s $PWD/.vimrc $HOME/.vimrc
-  ln -s $PWD/.vim/ $HOME/.vim-config/
+  ln -s $PWD/vim-config $HOME/.vim-config
 	curl -fLo $HOME/.vim/autoload/plug.vim --create-dirs \
-	  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+	https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   ln -s $PWD/coc-settings.json $HOME/.vim/coc-settings.json
 fi
 
@@ -74,10 +50,10 @@ read -p "I'm going to install neovim and packer. Are you sure? " -n 1 -r
 echo ""
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-	$install_me neovim
-	$install_me python3-neovim
+	sudo pacman --noconfirm -S neovim
+	#sudo pacman --noconfirm -S python3-neovim
   git clone --depth 1 https://github.com/wbthomason/packer.nvim\
-  ~/.local/share/nvim/site/pack/packer/start/packer.nvim
+  	~/.local/share/nvim/site/pack/packer/start/packer.nvim
 	ln -s $PWD/nvim $HOME/.config/nvim
 fi
 
@@ -96,6 +72,9 @@ read -p "I'm going to install kitty configuration. Are you sure? " -n 1 -r
 echo ""
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-	$install_me kitty
+	sudo pacman --noconfirm -S kitty
+  mkdir -p $HOME/.config/kitty
 	ln -s $PWD/kitty.conf $HOME/.config/kitty/kitty.conf
+  chsh
+  sudo chsh
 fi

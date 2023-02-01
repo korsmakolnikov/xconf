@@ -1,13 +1,15 @@
 #!/bin/bash
+if [ -f $HOME/.asdf/asdf.sh  ]; then
+. $HOME/.asdf/asdf.sh
+. $HOME/.asdf/completions/asdf.bash
+fi
 
 export GOPATH=`asdf where golang`
 export GOBIN="${GOPATH}/bin"
 export RUSTPATH=`asdf where rust` 
 export CARGO_NET_GIT_FETCH_WITH_CLI=true
 export EDITOR=nvim
-#export ELSP="$HOME/.elsp-1.11.2-otp-23"
-#export PATH="${PATH}:${ELSP}"
-export PATH="${PATH}:/usr/local/bin:~/.local/bin:/home/blacksheep/.local/share/bin:/home/blacksheep/.npm-global/bin:/snap/bin"
+export PATH="${PATH}:/home/blacksheep/.local/bin:/usr/local/bin:/home/blacksheep/.local/share/bin:/home/blacksheep/.npm-global/bin"
 export PATH="${PATH}:${GOPATH}:${GOBIN}"
 
 if [ -f ~/.bash_aliases ]; then
@@ -28,11 +30,6 @@ fi
 
 if [ -f $HOME/.cargo/env  ]; then
   . $HOME/.cargo/env
-fi
-
-if [ -f $HOME/.asdf/asdf.sh  ]; then
-. $HOME/.asdf/asdf.sh
-. $HOME/.asdf/completions/asdf.bash
 fi
 
 if [ -d $HOME/.asdf/installs ]; then
@@ -56,6 +53,10 @@ if [ -f $HOME/.bash_twig  ]; then
   . $HOME/.bash_twig
 fi
 
+if [ -d $HOME/.local/share/nvim/mason/bin ]; then
+  export PATH="${PATH}:$HOME/.local/share/nvim/mason/bin"
+fi
+
 if [ -d /home/linuxbrew ]; then
   export PATH="${PATH}:/home/linuxbrew/.linuxbrew/bin"
   eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
@@ -69,3 +70,6 @@ source <(kitty + complete setup bash)
 export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/ssh-agent.socket"
 eval "$(mcfly init bash)"
 source /usr/share/bash-completion/completions/git
+[[ -s /etc/profile.d/autojump.sh ]] && source /etc/profile.d/autojump.sh
+export MCFLY_INTERFACE_VIEW=BOTTOM
+export MCFLY_RESULTS_SORT=LAST_RUN
