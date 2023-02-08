@@ -25,7 +25,7 @@ local on_attach = function(_, bufnr)
 end
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-local servers = { 'gopls', 'elmls', 'hls', 'ccls', 'sumneko_lua', 'bashls', 'yamlls' }
+local servers = { 'elmls', 'hls', 'ccls', 'sumneko_lua', 'bashls', 'yamlls' }
 for _, lsp in pairs(servers) do
   require 'lspconfig'[lsp].setup {
     on_attach = on_attach,
@@ -45,4 +45,10 @@ require 'lspconfig'.elixirls.setup {
       mixEnv = "dev"
     }
   }
+}
+
+require 'lspconfig'.gopls.setup {
+  capabilities = capabilities,
+  on_attach = on_attach,
+  flags = { debounce_text_changes = 150 },
 }
