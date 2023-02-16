@@ -5,6 +5,7 @@ if [ -f $HOME/.asdf/asdf.sh  ]; then
 fi
 
 export GOPATH=`asdf where golang`
+export GO111MODULE=on
 export GOBIN="${GOPATH}/bin"
 export RUSTPATH=`asdf where rust` 
 export CARGO_NET_GIT_FETCH_WITH_CLI=true
