@@ -24,9 +24,13 @@ return require('packer').startup(function()
         tag = "v1.*",
         config = function()
           require 'window-picker'.setup({
-            autoselect_one = true,
-            include_current = false,
+            close_if_last_window = true,
+            -- autoselect_one = true,
+            -- include_current = false,
             filter_rules = {
+              filtered_items = {
+                hide_dotfiles = false,
+              },
               -- filter using buffer options
               bo = {
                 -- if the file type is one of following, the window will be ignored

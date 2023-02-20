@@ -67,7 +67,7 @@ api.nvim_command([[
 augroup SetAutoindent
 autocmd BufEnter *.go :set autoindent noexpandtab tabstop=8 shiftwidth=8
 autocmd BufEnter *.rs :set autoindent noexpandtab tabstop=4 shiftwidth=4
-augroup END 
+augroup END
 ]])
 
 require "neovide"
@@ -76,26 +76,6 @@ require "lib"
 require "visual.lualine"
 require('nvim_comment').setup()
 require('bufferline').setup()
-require('close_buffers').setup({
-  preserve_window_layout = { 'this' },
-  next_buffer_cmd = function(windows)
-    -- require('bufferline').cycle(1)
-    -- local bufnr = vim.api.nvim_get_current_buf()
-
-    -- for _, window in ipairs(windows) do
-    -- vim.api.nvim_win_set_buf(window, bufnr)
-    -- end
-    local markpos = api.nvim_buf_get_mark(0, '"')
-    dump(markpos)
-    local line = markpos[1]
-    local col = markpos[2]
-    -- if in range, go there
-    if (line > 1) and (line <= api.nvim_buf_line_count(0)) then
-      api.nvim_win_set_cursor(0, { line, col })
-    end
-  end,
-})
-
 require "mason_setup"
 require "coding.treesitter"
 require "coding.snippets"
