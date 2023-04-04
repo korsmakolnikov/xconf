@@ -4,9 +4,3 @@ alias docker.rm='docker rm $(docker ps -a -q) -f'
 alias docker.rmi='docker rmi $(docker images -a -q) --force'
 alias docker.rmv='docker volume rm $(docker volume ls -f dangling=true -q)'
 alias docker.reset='docker.rm; docker.rmi; docker.rmv'
-
-alias postgres.start="docker run --name my_postgres -v $HOME/docker/volumes/postgres:/var/lib/postgresql/data -e POSTGRES_PASSWORD=postgres -d -p 5432:5432 postgres"
-alias pgadmin.start="docker run -p 4444:80 \
-    -e 'PGADMIN_DEFAULT_EMAIL=user@gmail.com' \
-    -e 'PGADMIN_DEFAULT_PASSWORD=postgres' \
-    -d dpage/pgadmin4"

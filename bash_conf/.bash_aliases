@@ -21,15 +21,12 @@ alias notepad="cd ~/Documents/appunti && vim -c \":NERDTree\" && cd"
 
 alias find.port.occupant="find_port_occupant"
 alias kill.port.occupant="kill_port_occupant"
-alias ssh="kitty +kitten ssh"
 alias ll="ls -lha --color"
 alias rebar="rebar3"
-alias pipewire.restart="systemctl --user restart pipewire"
 alias ringo="AWS_PROFILE=secrets ringo"
 
 alias docker.run="docker_run"
 alias docker.down="docker-compose down"
-alias hx="helix"
 
 alias ku='kubectl'
 
