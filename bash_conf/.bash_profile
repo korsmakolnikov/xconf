@@ -69,6 +69,7 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 export ERL_AFLAGS="-kernel shell_history enabled"
 source <(kitty + complete setup bash)
 export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/ssh-agent.socket"
+# mcfly isn't working anymore
 eval "$(mcfly init bash)"
 source /usr/share/bash-completion/completions/git
 [[ -s /etc/profile.d/autojump.sh ]] && source /etc/profile.d/autojump.sh

@@ -1,6 +1,9 @@
 return require('packer').startup(function()
   use { 'savq/paq-nvim', opt = true }
 
+  -- impatient optimize vim startup
+  use 'lewis6991/impatient.nvim'
+
   -- Comment
   use "terrortylor/nvim-comment"
 
@@ -35,7 +38,6 @@ return require('packer').startup(function()
               bo = {
                 -- if the file type is one of following, the window will be ignored
                 filetype = { 'neo-tree', "neo-tree-popup", "notify", "quickfix" },
-
                 -- if the buffer type is one of following, the window will be ignored
                 buftype = { 'terminal' },
               },
@@ -67,7 +69,7 @@ return require('packer').startup(function()
         enable_git_status = true,
         enable_diagnostics = true,
         sort_case_insensitive = false, -- used when sorting files and directories in the tree
-        sort_function = nil, -- use a custom function for sorting files and directories in the tree
+        sort_function = nil,           -- use a custom function for sorting files and directories in the tree
         -- sort_function = function (a,b)
         --       if a.type == b.type then
         --           return a.path > b.path
@@ -114,8 +116,8 @@ return require('packer').startup(function()
           git_status = {
             symbols = {
               -- Change type
-              added     = "", -- or "✚", but this is redundant info if you use git_status_colors on the name
-              modified  = "", -- or "", but this is redundant info if you use git_status_colors on the name
+              added     = "",  -- or "✚", but this is redundant info if you use git_status_colors on the name
+              modified  = "",  -- or "", but this is redundant info if you use git_status_colors on the name
               deleted   = "✖", -- this can only be used in the git_status source
               renamed   = "", -- this can only be used in the git_status source
               -- Status type
@@ -196,9 +198,9 @@ return require('packer').startup(function()
               --"thumbs.db"
             },
           },
-          follow_current_file = false, -- This will find and focus the file in the active buffer every
+          follow_current_file = false,            -- This will find and focus the file in the active buffer every
           -- time the current file is changed while the tree is open.
-          group_empty_dirs = false, -- when true, empty folders will be grouped together
+          group_empty_dirs = false,               -- when true, empty folders will be grouped together
           hijack_netrw_behavior = "open_default", -- netrw disabled, opening a directory opens neo-tree
           -- in whatever position is specified in window.position
           -- "open_current",  -- netrw disabled, opening a directory opens within the
@@ -223,7 +225,7 @@ return require('packer').startup(function()
         buffers = {
           follow_current_file = true, -- This will find and focus the file in the active buffer every
           -- time the current file is changed while the tree is open.
-          group_empty_dirs = true, -- when true, empty folders will be grouped together
+          group_empty_dirs = true,    -- when true, empty folders will be grouped together
           show_unloaded = true,
           window = {
             mappings = {
@@ -272,6 +274,20 @@ return require('packer').startup(function()
 
   -- Git
   use { 'tpope/vim-fugitive' }
+
+  -- which key
+  use {
+    "folke/which-key.nvim",
+    config = function()
+      vim.o.timeout = true
+      vim.o.timeoutlen = 300
+      require("which-key").setup {
+        -- your configuration comes here
+        -- or leave it empty to use the default settings
+        -- refer to the configuration section below
+      }
+    end
+  }
 
   -- Docker file syntax
   use { 'ekalinin/Dockerfile.vim' }
@@ -328,6 +344,13 @@ return require('packer').startup(function()
   use 'nvim-lua/plenary.nvim'
   use 'mfussenegger/nvim-dap'
   use { "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" } }
+  -- JS
+  use { "mxsdev/nvim-dap-vscode-js", requires = { "mfussenegger/nvim-dap" } }
+  use {
+    "microsoft/vscode-js-debug",
+    opt = true,
+    run = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out"
+  }
 
   -- Lua
   use { 'bfredl/nvim-luadev' }

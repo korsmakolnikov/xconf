@@ -19,15 +19,13 @@ packer.init({
 })
 
 require('plugins')
+require('impatient')
 require('github-theme').setup()
 
 cmd('colorscheme github_*')
 vim.g.mapleader = ","
 vim.opt.matchpairs = vim.bo.matchpairs .. ",<:>"
 
--- vim.cmd([[
---   setlocal spell spelllang=en,it
--- ]])
 
 local set = vim.opt
 set.splitright = true
@@ -59,14 +57,20 @@ vim.g.neovide_fullscreen = true
 set.guifont = 'Fira Code Font:h14'
 vim.g.neovide_cursor_vfx_mode = "railgun"
 
-local custom_gruvbox = require 'lualine.themes.gruvbox-material'
-
+require 'lualine.themes.gruvbox-material'
 -- autogroup provides
--- TODO autoformat files doesn't work!
 api.nvim_command([[
 augroup SetAutoindent
 autocmd BufEnter *.go :set autoindent noexpandtab tabstop=8 shiftwidth=8
 autocmd BufEnter *.rs :set autoindent noexpandtab tabstop=4 shiftwidth=4
+augroup END
+
+]])
+
+api.nvim_command([[
+augroup SetSpelllang
+autocmd BufEnter *.md :setlocal spell spelllang=en,it
+autocmd BufEnter *.txt :setlocal spell spelllang=en,it
 augroup END
 ]])
 
@@ -77,9 +81,9 @@ require "visual.lualine"
 require('nvim_comment').setup()
 require('bufferline').setup()
 require "mason_setup"
+require "coding.autocompletition"
 require "coding.treesitter"
 require "coding.snippets"
-require "coding.autocompletition"
-require "coding.rust"
 require "coding.lsp"
+require "coding.rust"
 require "coding.dap"

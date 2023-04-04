@@ -25,11 +25,12 @@ local on_attach = function(_, bufnr)
 end
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-local servers = { 'elmls', 'hls', 'ccls', 'lua_ls', 'bashls', 'yamlls' }
+local servers = { 'jsonls', 'tsserver', 'elmls', 'hls', 'ccls', 'lua_ls', 'bashls', 'yamlls' }
 for _, lsp in pairs(servers) do
   require 'lspconfig'[lsp].setup {
     on_attach = on_attach,
     capabilities = capabilities,
+    flags = { debounce_text_changes = 150 },
   }
 end
 

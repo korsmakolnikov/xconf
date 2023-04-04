@@ -93,6 +93,62 @@ function restart_pipewire () {
   systemctl --user daemon-reload
 }
 
+# TODO
+# apollo client:download-schema 
+#   --header=x-introspection-auth-token:aWqZeAeJjELkN2NKsdJmySA5JaaawhVK 
+#   --endpoint=https://starsky-d6197f06f1e3f7724823afb7ca010701.prima.qa/graphql 
+#   starsky_schema.graphql 
+#   --includes=me
+#
+function graphql_download_schema () {
+  local _help="Usage: $(basename $0) [-x introspection_token] [-s schema_url] [output]"
+  while getopts ':s:x:h' opt; do
+  case "$opt" in
+    x)
+      if [ -z "$OPTARG" ] ; then 
+        echo -e "${RED}option x requires an argument.${NC}\n$_help"
+        return 1
+      fi
+      local _introspection_token="$OPTARG"
+      ;;
+
+    s)
+      if [ -z "$OPTARG" ] ; then 
+        echo -e "${RED}option s requires an argument.${NC}\n$_help"
+        return 1
+      fi
+      local _schema="$OPTARG"
+      ;;
+
+    h)
+      echo "$_help\n"
+      return 0
+      ;;
+
+    ?)
+      echo -e "${RED}Invalid command option.${NC}\n"  
+      return 1
+      ;;
+  esac
+  done
+  shift "$(($OPTIND -1))"
+
+  local _command="apollo client:download-schema"
+
+  local _output=$2
+  if [ -z "$_output" ] ; then
+    _output="schema.graphql"
+  fi
+
+  if ! [ -z "$_introspection_token" ] ; then
+    _command="$_command --header=x-introspection-auth-token:$_introspection_token"
+  fi
+
+  echo "$_command --endpoint=$_schema $_output --includes=me"
+  
+  return $?
+}
+
 export -f cbranch
 export -f find_port_occupant
 export -f kill_port_occupant
