@@ -60,3 +60,5 @@ chsh
 sudo chsh
 
 git clone https://aur.archlinux.org/vcvrack.git ~/vcvrack && (cd ~/vcvrack/ || exit; makepkg -si) 
+
+ln -s "$(pwd)/xconf/wezterm.lua" "$(pwd)/.wezterm.lua"
