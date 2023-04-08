@@ -6,7 +6,7 @@ if wezterm.config_builder then
   config = wezterm.config_builder()
 end
 
-config.window_background_opacity = 0.6
+config.window_background_opacity = 0.8
 config.font = wezterm.font 'Fira Code'
 config.keys = {
   {
@@ -36,7 +36,7 @@ config.keys = {
   },
   {
     key = 'w',
-    mods = 'CTRL',
+    mods = 'CTRL|SHIFT',
     action = wezterm.action.CloseCurrentTab { confirm = true }
   },
   { key = 'LeftArrow',  mods = 'SHIFT|CTRL', action = wezterm.action.MoveTabRelative(-1) },
