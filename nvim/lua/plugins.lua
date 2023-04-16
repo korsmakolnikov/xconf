@@ -259,7 +259,8 @@ return require('packer').startup(function()
   use { 'rktjmp/lush.nvim' }
   use { 'blueshirts/darcula' }
   use { 'rakr/vim-one' }
-  use { 'projekt0n/github-nvim-theme' }
+  -- use { 'projekt0n/github-nvim-theme' }
+  use 'navarasu/onedark.nvim'
 
   -- FZF
   use { 'junegunn/fzf', run = './install --bin' }

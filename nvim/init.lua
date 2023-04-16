@@ -18,14 +18,12 @@ packer.init({
   package_root = util.join_paths(vim.fn.stdpath('data'), 'site', 'pack')
 })
 
-require('plugins')
-require('impatient')
-require('github-theme').setup()
+require 'plugins'
+require 'impatient'
+require "visual.theme"
 
-cmd('colorscheme github_*')
 vim.g.mapleader = ","
 vim.opt.matchpairs = vim.bo.matchpairs .. ",<:>"
-
 
 local set = vim.opt
 set.splitright = true
@@ -80,6 +78,7 @@ require "lib"
 require "visual.lualine"
 require('nvim_comment').setup()
 require('bufferline').setup()
+
 require "mason_setup"
 require "coding.autocompletition"
 require "coding.treesitter"
