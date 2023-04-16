@@ -62,14 +62,6 @@ augroup SetAutoindent
 autocmd BufEnter *.go :set autoindent noexpandtab tabstop=8 shiftwidth=8
 autocmd BufEnter *.rs :set autoindent noexpandtab tabstop=4 shiftwidth=4
 augroup END
-
-]])
-
-api.nvim_command([[
-augroup SetSpelllang
-autocmd BufEnter *.md :setlocal spell spelllang=en,it
-autocmd BufEnter *.txt :setlocal spell spelllang=en,it
-augroup END
 ]])
 
 require "neovide"
@@ -86,3 +78,5 @@ require "coding.snippets"
 require "coding.lsp"
 require "coding.rust"
 require "coding.dap"
+
+require "markdown"
