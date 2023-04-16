@@ -66,10 +66,7 @@ vimp('n', '<Leader>z', ':lua vim.diagnostic.open_float()<CR>', key_opts)
 vimp('n', '<Leader>E', ':lua vim.diagnostic.goto_prev()<CR>', key_opts)
 vimp('n', '<Leader>Af', ':lua vim.lsp.buf.formatting_sync(nil, 5000)<CR>', key_opts)
 
--- Trouble
-vimp("n", "<F6>", "<cmd>TroubleToggle workspace_diagnostics<cr>", key_opts)
-vimp("n", "<F7>", "<cmd>TroubleToggle document_diagnostics<cr>", key_opts)
-vimp("n", "<F8>", "<cmd>TroubleToggle quickfix<cr>", key_opts)
 -- General mapping
 vimp('n', '<F12>', ':e $MYVIMRC<CR>', key_opts)
 vimp('n', '<S-F12>', ':luafile %<CR>', key_opts)
+
