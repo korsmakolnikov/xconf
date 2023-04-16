@@ -68,8 +68,10 @@ require "neovide"
 require "bindings"
 require "lib"
 require "visual.lualine"
-require('nvim_comment').setup()
-require('bufferline').setup()
+require "nvim_comment".setup()
+require "bufferline".setup()
+require "zen-mode".setup()
+require "twilight".setup()
 
 require "mason_setup"
 require "coding.autocompletition"

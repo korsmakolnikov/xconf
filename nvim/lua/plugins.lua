@@ -272,6 +272,8 @@ return require('packer').startup(function()
   -- Goyo distraction free mode
   -- turn on with command :Goyo, turn off by :Goyo!
   use { 'junegunn/goyo.vim' }
+  use { 'folke/zen-mode.nvim' }
+  use { 'folke/twilight.nvim' }
 
   -- Git
   use { 'tpope/vim-fugitive' }
