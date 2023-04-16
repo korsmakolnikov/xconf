@@ -9,7 +9,6 @@ return require('packer').startup(function()
 
   -- Buffer utilities
   use { 'akinsho/bufferline.nvim', tag = "v2.*", requires = 'kyazdani42/nvim-web-devicons' }
-  use 'kazhala/close-buffers.nvim'
 
   -- Filetree
   use { 'kyazdani42/nvim-web-devicons' }
