@@ -3,12 +3,17 @@ local api = vim.api
 local vimp = vim.api.nvim_set_keymap
 local key_opts = { noremap = true, silent = true, buffer = bufnr }
 -- Config LSP
+function cst_formatting()
+  if vim.lsp.buf.format~=nil then
+    vim.lsp.buf.format { async = true }
+  end
+end
 
 -- Highlight on yank
 local lspGrp = api.nvim_create_augroup("BufWritePre", { clear = true })
 api.nvim_create_autocmd("BufWritePre", {
   pattern = "*",
-  command = "lua vim.lsp.buf.formatting_sync(nil, 5000)",
+  command = "lua cst_formatting()",
   group = lspGrp,
 })
 
