@@ -8,6 +8,12 @@ end
 
 config.window_background_opacity = 0.8
 config.font = wezterm.font 'Fira Code'
+
+config.inactive_pane_hsb = {
+  saturation = 0.7,
+  brightness = 0.7,
+}
+
 config.keys = {
   {
     key = 'n',
