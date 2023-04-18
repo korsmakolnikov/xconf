@@ -2,19 +2,10 @@ local vim = vim
 local api = vim.api
 local vimp = vim.api.nvim_set_keymap
 local key_opts = { noremap = true, silent = true, buffer = bufnr }
--- Config LSP
-function cst_formatting()
-  if vim.lsp.buf.format~=nil then
-    vim.lsp.buf.format { async = true }
-  end
-end
 
--- Highlight on yank
-local lspGrp = api.nvim_create_augroup("BufWritePre", { clear = true })
 api.nvim_create_autocmd("BufWritePre", {
   pattern = "*",
-  command = "lua cst_formatting()",
-  group = lspGrp,
+  command = "lua vim.lsp.buf.format()",
 })
 
 local on_attach = function(_, bufnr)
@@ -38,6 +29,7 @@ for _, lsp in pairs(servers) do
     flags = { debounce_text_changes = 150 },
   }
 end
+
 require 'lspconfig'.intelephense.setup({
   settings = {
     intelephense = {
