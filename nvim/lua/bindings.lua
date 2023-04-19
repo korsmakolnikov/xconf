@@ -8,14 +8,13 @@ vimp('n', '<F3>', ':Neotree buffers toggle=true<CR>', key_opts)
 vimp('n', '<F4>', ':Neotree git_status position=right toggle=true<CR>', key_opts)
 vimp('n', '<C-c>', ':Neotree filesystem reveal right toggle=true<CR>', key_opts)
 -- Buffers mapping
+-- This is overridden in presenting mode
 vimp('n', '<TAB>', ':BufferLineCycleNext<CR>', key_opts)
 vimp('n', '<S-TAB>', ':BufferLineCyclePrev<CR>', key_opts)
 -- bdelete! %d
 vimp('n', '<Leader>w', [[:bd # <CR> :BufferLineCyclePrev<CR> :Neotree close <CR>]], { noremap = true, silent = true })
--- vimp('n', '<Leader>w', [[<CMD>lua require('close_buffers').delete({type = 'this'})<CR>]],
---   { noremap = true, silent = true })
 -- vimp('n', '<Leader>W', ':lua require(\'close_buffers\').wipe({ type = \'all\', force = true })<CR>', key_opts)
--- vimp('n', '<Leader>o', ':lua require(\'close_buffers\').wipe({ type = \'other\' })<CR>', key_opts)
+-- vimp('n', '<Leader><S-W>', ':lua require(\'close_buffers\').wipe({ type = \'other\' })<CR>', key_opts)
 -- Tab mapping
 vimp('x', '<Tab>', '>gv |', key_opts)
 vimp('x', '<S-Tab>', '<gv', key_opts)
@@ -69,4 +68,3 @@ vimp('n', '<Leader>Af', ':lua vim.lsp.buf.formatting_sync(nil, 5000)<CR>', key_o
 -- General mapping
 vimp('n', '<F12>', ':e $MYVIMRC<CR>', key_opts)
 vimp('n', '<S-F12>', ':luafile %<CR>', key_opts)
-
