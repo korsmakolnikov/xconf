@@ -29,6 +29,7 @@ alias docker.run="docker_run"
 alias docker.down="docker-compose down"
 
 alias ku='kubectl'
+alias vimp='vim `ls *.vp |sort -g`'
 
 if [ -f ~/.bash_local_aliases ]; then
     . ~/.bash_local_aliases
