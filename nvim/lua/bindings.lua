@@ -12,7 +12,7 @@ vimp('n', '<C-c>', ':Neotree filesystem reveal right toggle=true<CR>', key_opts)
 vimp('n', '<TAB>', ':BufferLineCycleNext<CR>', key_opts)
 vimp('n', '<S-TAB>', ':BufferLineCyclePrev<CR>', key_opts)
 -- bdelete! %d
-vimp('n', '<Leader>w', [[:bd # <CR> :BufferLineCyclePrev<CR> :Neotree close <CR>]], { noremap = true, silent = true })
+vimp('n', '<Leader>w', [[:Neotree close <CR> :bd # <CR> :BufferLineCyclePrev<CR> ]], { noremap = true, silent = true })
 -- vimp('n', '<Leader>W', ':lua require(\'close_buffers\').wipe({ type = \'all\', force = true })<CR>', key_opts)
 -- vimp('n', '<Leader><S-W>', ':lua require(\'close_buffers\').wipe({ type = \'other\' })<CR>', key_opts)
 -- Tab mapping

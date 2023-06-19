@@ -10,7 +10,7 @@ export GOBIN="${GOPATH}/bin"
 export RUSTPATH=`asdf where rust` 
 export CARGO_NET_GIT_FETCH_WITH_CLI=true
 export EDITOR=nvim
-export PATH="${PATH}:/home/blacksheep/.local/bin:/usr/local/bin:/home/blacksheep/.local/share/bin:/home/blacksheep/.npm-global/bin"
+export PATH="${PATH}:/home/blacksheep/.local/bin:/usr/local/bin:/home/blacksheep/.local/share/bin:/home/blacksheep/.npm-global/bin:/home/blacksheep/.config/yarn/global"
 export PATH="${PATH}:${GOPATH}:${GOBIN}"
 
 if [ -f ~/.bash_aliases ]; then

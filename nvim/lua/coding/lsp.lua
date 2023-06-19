@@ -21,7 +21,7 @@ local on_attach = function(_, bufnr)
 end
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-local servers = { 'jsonls', 'tsserver', 'elmls', 'hls', 'ccls', 'lua_ls', 'bashls', 'yamlls' }
+local servers = { 'jsonls', 'elmls', 'hls', 'ccls', 'lua_ls', 'bashls', 'yamlls' }
 for _, lsp in pairs(servers) do
   require 'lspconfig'[lsp].setup {
     on_attach = on_attach,
@@ -114,4 +114,17 @@ require 'lspconfig'.gopls.setup {
   capabilities = capabilities,
   on_attach = on_attach,
   flags = { debounce_text_changes = 150 },
+}
+
+require 'lspconfig'.denols.setup {
+  capabilities = capabilities,
+  on_attach = on_attach,
+  root_dir = require 'lspconfig'.util.root_pattern("deno.json", "deno.jsonc"),
+}
+
+require 'lspconfig'.tsserver.setup {
+  capabilities = capabilities,
+  on_attach = on_attach,
+  root_dir = require 'lspconfig'.util.root_pattern("package.json"),
+  single_file_support = false
 }
