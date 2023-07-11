@@ -58,9 +58,13 @@ mv "$HOME/.bash_profile" "$HOME/.bash_profile.bak"
 ls -A bash_conf | xargs -I {} ln -s -v -f $PWD/bash_conf/{} $HOME/{}
 echo "source $HOME/.bash_profile" >> "$HOME/.bashrc"
 
+#wezterm
+ln -s "$(pwd)/xconf/wezterm.lua" "$(pwd)/.wezterm.lua"
+
 chsh
 sudo chsh
 
-git clone https://aur.archlinux.org/vcvrack.git ~/vcvrack && (cd ~/vcvrack/ || exit; makepkg -si) 
-
-ln -s "$(pwd)/xconf/wezterm.lua" "$(pwd)/.wezterm.lua"
+mv "$HOME/.config/i3/config" "$HOME/.config/i3/config.bak"
+mv "$HOME/.config/picom.conf" "$HOME/config/picom.bak"
+ln -s "$PWD/picom.conf" "$HOME/.config/picom.conf"
+ln -s "$PWD/i3.conf" "$HOME/.config/i3/config"
