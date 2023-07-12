@@ -42,7 +42,6 @@ pacman --noconfirm -S xclip
 pacman --noconfirm -S wezterm
 
 pacman --noconfirm -S curl
-curl -LSfs https://raw.githubusercontent.com/cantino/mcfly/master/ci/install.sh | sudo sh -s -- --git cantino/mcfly
 
 git config --global user.email "korsmakolnikov@gmail.com"
 git config --global user.name "Federico Caprari"
