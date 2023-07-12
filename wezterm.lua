@@ -7,7 +7,11 @@ if wezterm.config_builder then
 end
 
 config.window_background_opacity = 0.8
-config.font = wezterm.font 'Fira Code'
+config.font = wezterm.font_with_fallback {
+  'Fira Code',
+  'JetBrains Mono',
+}
+config.warn_about_missing_glyphs = false
 
 config.inactive_pane_hsb = {
   saturation = 0.7,
