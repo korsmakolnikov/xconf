@@ -40,8 +40,11 @@ pacman --noconfirm -S virtualbox
 pacman --noconfirm -S vlc
 pacman --noconfirm -S xclip
 pacman --noconfirm -S wezterm
-
 pacman --noconfirm -S curl
+pacman --noconfirm -S atuin
+
+curl https://raw.githubusercontent.com/rcaloras/bash-preexec/master/bash-preexec.sh -o ~/.bash-preexec.sh
+echo '[[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh' >> ~/.bashrc
 
 git config --global user.email "korsmakolnikov@gmail.com"
 git config --global user.name "Federico Caprari"
