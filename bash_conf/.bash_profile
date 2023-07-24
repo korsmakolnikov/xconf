@@ -1,4 +1,11 @@
 #!/bin/bash
+export PATH="${PATH}:/home/blacksheep/.local/bin:/usr/local/bin:/home/blacksheep/.local/share/bin:/home/blacksheep/.npm-global/bin"
+if [ -f /opt/asdf-vm/bin/asdf ]; then
+  export PATH="${PATH}:/opt/asdf-vm/bin/"
+  . /opt/asdf-vm/asdf.sh
+  . /usr/share/bash-completion/completions/asdf
+fi
+
 if [ -f $HOME/.asdf/asdf.sh  ]; then
 . $HOME/.asdf/asdf.sh
 . $HOME/.asdf/completions/asdf.bash
@@ -7,6 +14,7 @@ fi
 export GOPATH=`asdf where golang`
 export GO111MODULE=on
 export GOBIN="${GOPATH}/bin"
+export PATH="${PATH}:${GOPATH}:${GOBIN}"
 export RUSTPATH=`asdf where rust` 
 export CARGO_NET_GIT_FETCH_WITH_CLI=true
 export EDITOR=nvim
@@ -35,11 +43,6 @@ fi
 
 if [ -d $HOME/.asdf/installs ]; then
   PATH="${PATH}:$RUSTPATH:$RUSTPATH/bin"
-fi
-if [ -f /opt/asdf-vm/bin/asdf ]; then
-  export PATH="${PATH}:/opt/asdf-vm/bin/"
-  . /opt/asdf-vm/asdf.sh
-  . /usr/share/bash-completion/completions/asdf
 fi
 
 if [ -f $HOME/.bash_prompt  ]; then
