@@ -65,6 +65,8 @@ chsh
 sudo chsh
 
 mv "$HOME/.config/i3/config" "$HOME/.config/i3/config.bak"
+mv "$HOME/.config/i3status/config" "$HOME/.config/i3status/config.bak"
 mv "$HOME/.config/picom.conf" "$HOME/config/picom.bak"
 ln -s "$PWD/picom.conf" "$HOME/.config/picom.conf"
 ln -s "$PWD/i3.conf" "$HOME/.config/i3/config"
+ln -s "$PWD/i3status.conf" "$HOME/.config/i3status/config"
