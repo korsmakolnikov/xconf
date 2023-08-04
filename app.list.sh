@@ -59,6 +59,11 @@ mv "$HOME/.bash_profile" "$HOME/.bash_profile.bak"
 ls -A bash_conf | xargs -I {} ln -s -v -f $PWD/bash_conf/{} $HOME/{}
 echo "source $HOME/.bash_profile" >> "$HOME/.bashrc"
 
+#rofi theme
+git clone --depth=1 https://github.com/adi1090x/rofi.git rofi-theme
+chmod +x ~/rofi-theme/setup.sh
+sh ~/rofi-theme/setup.sh 
+
 #wezterm
 ln -s "$(pwd)/xconf/wezterm.lua" "$(pwd)/.wezterm.lua"
 
