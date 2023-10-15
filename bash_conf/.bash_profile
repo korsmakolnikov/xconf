@@ -74,3 +74,11 @@ export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/ssh-agent.socket"
 source /usr/share/bash-completion/completions/git
 [[ -s /etc/profile.d/autojump.sh ]] && source /etc/profile.d/autojump.sh
 eval "$(atuin init bash)"
+
+# drone
+export DRONE_SERVER="https://drone-1.prima.it"
+export DRONE_TOKEN="GriaKl61Ieglv1WmpirKeMADpXfrVl3b"
+
+LV2_PATH=/usr/lib/x86_64-linux-gnu/lv2:$LV2_PATH
+export LV2_PATH
+

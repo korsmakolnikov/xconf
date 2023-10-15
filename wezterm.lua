@@ -64,6 +64,16 @@ config.keys = {
     key = 's',
     mods = 'SHIFT|ALT',
     action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' },
+  },
+  {
+    key = '^',
+    mods = 'CTRL',
+    action = wezterm.action.Nop
+  },
+  {
+    key = '6',
+    mods = 'CTRL',
+    action = wezterm.action.Nop
   }
 }
 
