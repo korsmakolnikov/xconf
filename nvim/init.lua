@@ -6,8 +6,8 @@ local api = vim.api
 -- ensure that packer is installed
 local packer_install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
 if fn.empty(fn.glob(packer_install_path)) > 0 then
-	packer_bootstrap = fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim',
-		packer_install_path })
+  packer_bootstrap = fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim',
+    packer_install_path })
 end
 
 cmd('packadd packer.nvim')
@@ -15,7 +15,7 @@ local packer = require 'packer'
 local util = require 'packer.util'
 
 packer.init({
-	package_root = util.join_paths(vim.fn.stdpath('data'), 'site', 'pack')
+  package_root = util.join_paths(vim.fn.stdpath('data'), 'site', 'pack')
 })
 
 require 'plugins'
@@ -58,18 +58,18 @@ vim.g.neovide_cursor_vfx_mode = "railgun"
 require 'lualine.themes.gruvbox-material'
 -- autogroup provides
 vim.api.nvim_create_autocmd("BufEnter", {
-	pattern = "*.php",
-	command = ":set autoindent noexpandtab tabstop=4 shiftwidth=4",
+  pattern = "*.php",
+  command = ":set autoindent noexpandtab tabstop=4 shiftwidth=4",
 })
 
 vim.api.nvim_create_autocmd("BufEnter", {
-	pattern = "*.go",
-	command = ":set autoindent noexpandtab tabstop=8 shiftwidth=8",
+  pattern = "*.go",
+  command = ":set autoindent noexpandtab tabstop=8 shiftwidth=8",
 })
 
 vim.api.nvim_create_autocmd("BufEnter", {
-	pattern = "*.rs",
-	command = ":set autoindent noexpandtab tabstop=4 shiftwidth=4",
+  pattern = "*.rs",
+  command = ":set autoindent noexpandtab tabstop=4 shiftwidth=4",
 })
 
 require "neovide"
@@ -82,12 +82,12 @@ require "zen-mode".setup()
 require "twilight".setup()
 
 require "mason_setup"
-require "coding.autocompletition"
-require "coding.treesitter"
 require "coding.snippets"
 require "coding.lsp"
-require "coding.rust"
 require "coding.dap"
+require "coding.treesitter"
+require "coding.autocompletition"
+require "coding.on_attach"
 
 require "markdown"
 require "presentation"

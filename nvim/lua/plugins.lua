@@ -16,6 +16,7 @@ return require('packer').startup(function()
   use {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v2.x",
+    ensure_dependencies = true,
     requires = {
       "nvim-lua/plenary.nvim",
       "kyazdani42/nvim-web-devicons", -- not strictly required, but recommended
@@ -115,8 +116,8 @@ return require('packer').startup(function()
           git_status = {
             symbols = {
               -- Change type
-              added     = "",  -- or "✚", but this is redundant info if you use git_status_colors on the name
-              modified  = "",  -- or "", but this is redundant info if you use git_status_colors on the name
+              added     = "", -- or "✚", but this is redundant info if you use git_status_colors on the name
+              modified  = "", -- or "", but this is redundant info if you use git_status_colors on the name
               deleted   = "✖", -- this can only be used in the git_status source
               renamed   = "", -- this can only be used in the git_status source
               -- Status type
@@ -265,6 +266,7 @@ return require('packer').startup(function()
   use { 'junegunn/fzf', run = './install --bin' }
   use { 'ibhagwan/fzf-lua',
     -- optional for icon support
+    ensure_dependencies = true,
     requires = { 'kyazdani42/nvim-web-devicons' }
   }
 
@@ -303,33 +305,31 @@ return require('packer').startup(function()
   -- Status bar
   use {
     'nvim-lualine/lualine.nvim',
+    ensure_dependencies = true,
     requires = { 'kyazdani42/nvim-web-devicons', opt = true }
   }
 
   -- LSP
-  use { "williamboman/mason.nvim" }
-  -- Collection of common configurations for the Nvim LSP client
-  use { 'neovim/nvim-lspconfig' }
-  -- Completion framework
   use {
-    'hrsh7th/nvim-cmp',
+    'neovim/nvim-lspconfig',
+    ensure_dependencies = true,
     requires = {
-      'hrsh7th/cmp-nvim-lsp',
+      "williamboman/mason.nvim",
+      "williamboman/mason-lspconfig.nvim",
+      "folke/neodev.nvim",
+      --"ray-x/lsp_signature.nvim",
+      "lvimuser/lsp-inlayhints.nvim",
+      "hrsh7th/nvim-cmp",
+      "hrsh7th/cmp-nvim-lsp",
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-vsnip',
-      'hrsh7th/cmp-cmdline'
+      'hrsh7th/cmp-cmdline',
+      'nvim-lua/lsp-status.nvim'
     }
   }
-  -- LSP completion source for nvim-cmp
-  use { 'hrsh7th/cmp-nvim-lsp' }
-  -- LSP status for status bar
-  use { 'nvim-lua/lsp-status.nvim' }
   -- Elixir syntax highlight :(
   use { 'nvim-treesitter/nvim-treesitter' }
-
-  -- Rust specific
-  use 'simrat39/rust-tools.nvim'
 
   use({
     "Maan2003/lsp_lines.nvim",
@@ -342,29 +342,31 @@ return require('packer').startup(function()
     end,
   })
 
-
   -- Debugging
   use 'nvim-lua/plenary.nvim'
-  use 'mfussenegger/nvim-dap'
-  use { "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" } }
-  -- JS
-  use { "mxsdev/nvim-dap-vscode-js", requires = { "mfussenegger/nvim-dap" } }
+  use { 'mfussenegger/nvim-dap',
+    ensure_dependencies = true,
+    requires = {
+      "rcarriga/nvim-dap-ui",
+      "mxsdev/nvim-dap-vscode-js",
+    }
+  }
   use {
     "microsoft/vscode-js-debug",
     opt = true,
     run = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out"
   }
 
+  -- Debugging golang
+  use 'fatih/vim-go'
+
   -- Lua
   use { 'bfredl/nvim-luadev' }
-  -- use {'rafcamlet/nvim-luapad'}
-  -- use {'euclidianAce/BetterLua.vim'}
-  -- use {'tjdevries/nlua.nvim'}
-  -- use {'nvim-lua/completion-nvim'}
 
   -- Snippet
   use {
     'dcampos/nvim-snippy',
+    ensure_dependencies = true,
     requires = { 'honza/vim-snippets', 'dcampos/cmp-snippy' }
   }
 end)

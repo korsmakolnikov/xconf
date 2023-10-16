@@ -41,7 +41,10 @@ vimp('n', '<Leader>gb', ":FzfLua git_branches<CR>", key_opts)
 vimp('n', '<Leader>gc', ":FzfLua changes<CR>", key_opts)
 -- FZF rg
 vimp('n', '<Leader>rl', ":FzfLua grep_curbuf<CR>", key_opts)
-vimp('n', '<Leader>/', ":FzfLua live_grep<CR>", key_opts)
+vimp('n', '<Leader>/',
+  ":lua require'fzf-lua'.live_grep({ cmd = \"rg --sort=path\"})<CR>'", key_opts)
+vimp('n', '<Leader>/h',
+  ":lua require'fzf-lua'.live_grep({ cmd = \"rg --sort=path --hidden --follow\"})<CR>'", key_opts)
 vimp('n', '<C-f>', ":FzfLua grep_cword<CR>", key_opts)
 vimp('v', '<C-f>', ":FzfLua grep_visual<CR>", key_opts)
 vimp('n', '<C-l>', ":FzfLua grep_last<CR>", key_opts)
@@ -50,6 +53,15 @@ vimp('n', '<C-l>', ":FzfLua grep_last<CR>", key_opts)
 -- All lsp function are under 'a'
 -- All lsp diagnostic are under 'd'
 -- All trouble function are under function keys
+--
+--
+
+vimp('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', key_opts)
+vimp('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', key_opts)
+vimp('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', key_opts)
+vimp('n', '<S-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', key_opts)
+vim.keymap.set("n", "<C-space>", '<cmd>lua vim.lsp.buf.hover()<CR>', key_opts)
+vim.api.nvim_set_keymap('n', '<Leader>mv', '<cmd>lua vim.lsp.buf.rename()<CR>', key_opts)
 vimp('n', '<Leader>a', ":FzfLua lsp_code_actions<CR>", key_opts)
 vimp('n', '<Leader>Ad', ":FzfLua lsp_definitions<CR>", key_opts)
 vimp('n', '<Leader>AD', ":FzfLua lsp_declarations<CR>", key_opts)

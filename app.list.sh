@@ -42,6 +42,8 @@ pacman --noconfirm -S xclip
 pacman --noconfirm -S wezterm
 pacman --noconfirm -S curl
 pacman --noconfirm -S atuin
+pacman --noconfirm -S betterlockscreen
+pacman --noconfirm -S autojump
 
 curl https://raw.githubusercontent.com/rcaloras/bash-preexec/master/bash-preexec.sh -o ~/.bash-preexec.sh
 echo '[[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh' >> ~/.bashrc
@@ -58,6 +60,11 @@ mv "$HOME/.bash_profile" "$HOME/.bash_profile.bak"
 ls -A bash_conf | xargs -I {} ln -s -v -f $PWD/bash_conf/{} $HOME/{}
 echo "source $HOME/.bash_profile" >> "$HOME/.bashrc"
 
+#rofi theme
+git clone --depth=1 https://github.com/adi1090x/rofi.git rofi-theme
+chmod +x ~/rofi-theme/setup.sh
+sh ~/rofi-theme/setup.sh 
+
 #wezterm
 ln -s "$(pwd)/xconf/wezterm.lua" "$(pwd)/.wezterm.lua"
 
@@ -65,6 +72,8 @@ chsh
 sudo chsh
 
 mv "$HOME/.config/i3/config" "$HOME/.config/i3/config.bak"
+mv "$HOME/.config/i3status/config" "$HOME/.config/i3status/config.bak"
 mv "$HOME/.config/picom.conf" "$HOME/config/picom.bak"
 ln -s "$PWD/picom.conf" "$HOME/.config/picom.conf"
 ln -s "$PWD/i3.conf" "$HOME/.config/i3/config"
+ln -s "$PWD/i3status.conf" "$HOME/.config/i3status/config"
