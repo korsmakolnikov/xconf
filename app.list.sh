@@ -43,6 +43,7 @@ pacman --noconfirm -S wezterm
 pacman --noconfirm -S curl
 pacman --noconfirm -S atuin
 pacman --noconfirm -S betterlockscreen
+pacman --noconfirm -S autojump
 
 curl https://raw.githubusercontent.com/rcaloras/bash-preexec/master/bash-preexec.sh -o ~/.bash-preexec.sh
 echo '[[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh' >> ~/.bashrc

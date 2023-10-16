@@ -73,6 +73,4 @@ export ERL_AFLAGS="-kernel shell_history enabled"
 export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/ssh-agent.socket"
 source /usr/share/bash-completion/completions/git
 [[ -s /etc/profile.d/autojump.sh ]] && source /etc/profile.d/autojump.sh
-export MCFLY_INTERFACE_VIEW=BOTTOM
-export MCFLY_RESULTS_SORT=LAST_RUN
 eval "$(atuin init bash)"

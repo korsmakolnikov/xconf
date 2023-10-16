@@ -115,8 +115,8 @@ return require('packer').startup(function()
           git_status = {
             symbols = {
               -- Change type
-              added     = "",  -- or "✚", but this is redundant info if you use git_status_colors on the name
-              modified  = "",  -- or "", but this is redundant info if you use git_status_colors on the name
+              added     = "", -- or "✚", but this is redundant info if you use git_status_colors on the name
+              modified  = "", -- or "", but this is redundant info if you use git_status_colors on the name
               deleted   = "✖", -- this can only be used in the git_status source
               renamed   = "", -- this can only be used in the git_status source
               -- Status type
@@ -354,6 +354,9 @@ return require('packer').startup(function()
     opt = true,
     run = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out"
   }
+
+  -- Debugging golang
+  use 'fatih/vim-go'
 
   -- Lua
   use { 'bfredl/nvim-luadev' }
