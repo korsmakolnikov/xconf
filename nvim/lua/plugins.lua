@@ -331,6 +331,7 @@ return require('packer').startup(function()
   -- Elixir syntax highlight :(
   use { 'nvim-treesitter/nvim-treesitter' }
 
+
   use({
     "Maan2003/lsp_lines.nvim",
     config = function()
@@ -357,8 +358,9 @@ return require('packer').startup(function()
     run = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out"
   }
 
-  -- Debugging golang
-  use 'fatih/vim-go'
+  -- golang
+  use 'ray-x/go.nvim'
+  use 'ray-x/guihua.lua' -- recommended if need floating window support
 
   -- Lua
   use { 'bfredl/nvim-luadev' }

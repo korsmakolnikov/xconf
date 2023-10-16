@@ -1,27 +1,10 @@
 local vim = vim
 local api = vim.api
--- local vimp = vim.api.nvim_set_keymap
--- local key_opts = { noremap = true, silent = true, buffer = bufnr }
 api.nvim_create_autocmd("BufWritePre", {
   pattern = "*",
   command = "lua vim.lsp.buf.format()",
 })
 
--- local on_attach = function(client, bufnr)
---   -- Enable completion triggered by <c-x><c-o>
---   api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
---   -- See `:help vim.lsp.*` for documentation on any of the below functions
---   vimp('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', key_opts)
---   vimp('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', key_opts)
---   vimp('n', '<C-space>', '<cmd>lua vim.lsp.buf.hover()<CR>', key_opts)
---   vimp('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', key_opts)
---   vimp('n', '<S-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', key_opts)
---   vimp('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', key_opts)
---
---   -- require("lsp_signature").on_attach({ bind = true }, bufnr)
---   require("lsp-inlayhints").on_attach(client, bufnr)
--- end
---
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local servers = { 'jsonls', 'elmls', 'hls', 'ccls', 'lua_ls', 'bashls', 'yamlls' }
 for _, lsp in pairs(servers) do
@@ -116,7 +99,27 @@ require 'lspconfig'.gopls.setup {
   capabilities = capabilities,
   -- on_attach = on_attach,
   flags = { debounce_text_changes = 150 },
+  settings = {
+    gopls = {
+      hints = {
+        assignVariableTypes = true,
+        compositeLiteralFields = true,
+        compositeLiteralTypes = true,
+        constantValues = true,
+        functionTypeParameters = true,
+        parameterNames = true,
+        rangeVariableTypes = true,
+      },
+    },
+  },
 }
+
+require('go').setup({
+  lsp_inlay_hints = {
+    enable = false
+  }
+})
+
 
 require 'lspconfig'.tsserver.setup {
   capabilities = capabilities,
@@ -153,6 +156,7 @@ require 'lspconfig'.rust_analyzer.setup {
     }
   }
 }
+
 local inlay_hints_default_configuration = {
   inlay_hints = {
     parameter_hints = {
