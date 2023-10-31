@@ -6,7 +6,7 @@ api.nvim_create_autocmd("BufWritePre", {
 })
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-local servers = { 'jsonls', 'elmls', 'hls', 'ccls', 'lua_ls', 'bashls', 'yamlls' }
+local servers = { 'clangd', 'jsonls', 'elmls', 'hls', 'ccls', 'lua_ls', 'bashls', 'yamlls' }
 for _, lsp in pairs(servers) do
   require 'lspconfig'[lsp].setup {
     -- on_attach = on_attach,
@@ -191,3 +191,5 @@ local inlay_hints_default_configuration = {
   debug_mode = false,
 }
 require("lsp-inlayhints").setup(inlay_hints_default_configuration)
+
+require 'lspconfig'.cmake.setup {}
