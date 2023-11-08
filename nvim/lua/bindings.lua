@@ -50,9 +50,11 @@ vimp('n', '<Leader>gc', ":FzfLua changes<CR>", key_opts)
 -- FZF rg
 vimp('n', '<Leader>rl', ":FzfLua grep_curbuf<CR>", key_opts)
 vimp('n', '<Leader>/',
-  ":lua require'fzf-lua'.live_grep({ cmd = \"rg --sort=path\"})<CR>'", key_opts)
+  ":lua require'fzf-lua'.live_grep({ cmd = \"rg --sort=path --column --line-number --no-heading --color=always --smart-case --max-columns=4096 -e\"})<CR>'",
+  key_opts)
 vimp('n', '<Leader>/h',
-  ":lua require'fzf-lua'.live_grep({ cmd = \"rg --sort=path --hidden --follow\"})<CR>'", key_opts)
+  ":lua require'fzf-lua'.live_grep({ cmd = \"rg --sort=path --hidden --follow --column --line-number --no-heading --color=always --smart-case --max-columns=4096 -e\"})<CR>'",
+  key_opts)
 vimp('n', '<C-f>', ":FzfLua grep_cword<CR>", key_opts)
 vimp('v', '<C-f>', ":FzfLua grep_visual<CR>", key_opts)
 vimp('n', '<C-l>', ":FzfLua grep_last<CR>", key_opts)
