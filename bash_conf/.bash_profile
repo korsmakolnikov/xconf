@@ -75,6 +75,8 @@ source /usr/share/bash-completion/completions/git
 [[ -s /etc/profile.d/autojump.sh ]] && source /etc/profile.d/autojump.sh
 export MCFLY_INTERFACE_VIEW=BOTTOM
 export MCFLY_RESULTS_SORT=LAST_RUN
+export MCFLY_RESULTS=50
+export MCFLY_KEY_SCHEME=vim
 eval "$(mcfly init bash)"
 
 LV2_PATH=/usr/lib/x86_64-linux-gnu/lv2:$LV2_PATH
