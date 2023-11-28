@@ -316,6 +316,7 @@ return require('packer').startup(function()
     requires = {
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
+      "WhoIsSethDaniel/mason-tool-installer.nvim",
       "folke/neodev.nvim",
       "lvimuser/lsp-inlayhints.nvim",
       "hrsh7th/nvim-cmp",
