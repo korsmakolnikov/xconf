@@ -49,7 +49,7 @@ vimp('n', '<Leader>/h',
   key_opts)
 vimp('n', '<C-f>', ":FzfLua grep_cword<CR>", key_opts)
 vimp('v', '<C-f>', ":FzfLua grep_visual<CR>", key_opts)
-vimp('n', '<C-l>', ":FzfLua grep_last<CR>", key_opts)
+vimp('n', '<C-l>', ":lua require('fzf-lua').files({ resume = true })<CR>", key_opts)
 
 -- LSP Mappings
 -- All lsp function are under 'a'
