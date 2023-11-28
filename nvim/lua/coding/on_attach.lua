@@ -23,6 +23,5 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
     -- require("lsp_signature").on_attach({ bind = true }, bufnr)
     require("lsp-inlayhints").on_attach(client, bufnr, true)
-    print("dbg on_attach executed")
   end,
 })
