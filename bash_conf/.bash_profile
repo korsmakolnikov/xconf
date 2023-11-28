@@ -75,11 +75,7 @@ source /usr/share/bash-completion/completions/git
 [[ -s /etc/profile.d/autojump.sh ]] && source /etc/profile.d/autojump.sh
 export MCFLY_INTERFACE_VIEW=BOTTOM
 export MCFLY_RESULTS_SORT=LAST_RUN
-eval "$(atuin init bash)"
-
-# drone
-export DRONE_SERVER="https://drone-1.prima.it"
-export DRONE_TOKEN="GriaKl61Ieglv1WmpirKeMADpXfrVl3b"
+eval "$(mcfly init bash)"
 
 LV2_PATH=/usr/lib/x86_64-linux-gnu/lv2:$LV2_PATH
 export LV2_PATH
