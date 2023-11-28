@@ -361,4 +361,33 @@ return require('packer').startup(function()
     ensure_dependencies = true,
     requires = { 'honza/vim-snippets', 'dcampos/cmp-snippy' }
   }
+
+  -- PHP
+  use({
+    "gbprod/phpactor.nvim",
+    run = function()
+      require('phpactor.handler.update')()
+    end,                       -- To install/update phpactor when installing this plugin
+    requires = {
+      "nvim-lua/plenary.nvim", -- required to update phpactor
+      "neovim/nvim-lspconfig"  -- required to automaticly register lsp serveur
+    },
+    config = function()
+      require("phpactor").setup({
+        install = {
+          path = "/home/blacksheep/.local/share/nvim/mason/packages/phpactor", -- vim.fn.stdpath("data") .. "/opt/",                     --,
+          branch = "master",
+          bin = "/home/blacksheep/.local/share/nvim/mason/bin/phpactor",       -- vim.fn.stdpath("data") .. "/opt/phpactor/bin/phpactor", --
+          php_bin = "php",
+          composer_bin = "composer",
+          git_bin = "git",
+          check_on_startup = "none",
+        },
+        lspconfig = {
+          enabled = true,
+          options = {},
+        },
+      })
+    end
+  })
 end)
