@@ -317,7 +317,6 @@ return require('packer').startup(function()
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
       "folke/neodev.nvim",
-      --"ray-x/lsp_signature.nvim",
       "lvimuser/lsp-inlayhints.nvim",
       "hrsh7th/nvim-cmp",
       "hrsh7th/cmp-nvim-lsp",
@@ -351,11 +350,6 @@ return require('packer').startup(function()
       "rcarriga/nvim-dap-ui",
       "mxsdev/nvim-dap-vscode-js",
     }
-  }
-  use {
-    "microsoft/vscode-js-debug",
-    opt = true,
-    run = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out"
   }
 
   -- golang
