@@ -101,3 +101,18 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   end,
   group = format_sync_grp,
 })
+
+require("oil").setup({
+  default_file_explorer = true,
+  delete_to_trash = true,
+  columns = {
+    "icon",
+  },
+  win_options = {
+    signcolumn = "yes:3",
+  },
+  view_options = {
+    -- Show files and directories that start with "."
+    show_hidden = true,
+  }
+})

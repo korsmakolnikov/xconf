@@ -11,6 +11,19 @@ return require('packer').startup(function()
   use { 'akinsho/bufferline.nvim', tag = "v2.*", requires = 'kyazdani42/nvim-web-devicons' }
 
   -- Filetree
+  use {
+    "stevearc/oil.nvim",
+  }
+  -- use {
+  --   'refractalize/oil-git-status.nvim',
+  --   requires = {
+  --     "stevearc/oil.nvim",
+  --   },
+  --   config = function()
+  --     require("oil-git-status").setup()
+  --   end,
+  -- }
+
   use { 'kyazdani42/nvim-web-devicons' }
   use { 'MunifTanjim/nui.nvim' }
   use {
