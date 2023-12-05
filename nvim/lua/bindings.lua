@@ -3,9 +3,10 @@ local vimp = vim.api.nvim_set_keymap
 local key_opts = { noremap = true, silent = true, buffer = bufnr }
 -- Mappings.
 -- Filetree mapping
-vimp('n', '<F2>', ':Neotree toggle=true<CR>', key_opts)
+vimp('n', '<F2>', '<CMD>Oil<CR>', key_opts)
 vimp('n', '<F3>', ':Neotree buffers toggle=true<CR>', key_opts)
 vimp('n', '<F4>', ':Neotree git_status position=right toggle=true<CR>', key_opts)
+vimp('n', '<F5>', ':Neotree toggle=true<CR>', key_opts)
 vimp('n', '<C-c>', ':Neotree filesystem reveal right toggle=true<CR>', key_opts)
 -- Buffers mapping
 -- This is overridden in presenting mode
@@ -50,6 +51,8 @@ vimp('n', '<Leader>/h',
 vimp('n', '<C-f>', ":FzfLua grep_cword<CR>", key_opts)
 vimp('v', '<C-f>', ":FzfLua grep_visual<CR>", key_opts)
 vimp('n', '<C-l>', ":lua require('fzf-lua').files({ resume = true })<CR>", key_opts)
+-- copy filepath to clipboard
+vimp('n', '<Leader>F', ":let @+=@%<CR>", key_opts)
 
 -- LSP Mappings
 -- All lsp function are under 'a'
