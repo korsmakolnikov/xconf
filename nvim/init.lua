@@ -58,18 +58,19 @@ vim.g.neovide_cursor_vfx_mode = "railgun"
 require 'lualine.themes.gruvbox-material'
 -- autogroup provides
 vim.api.nvim_create_autocmd("BufEnter", {
-  pattern = "*.php",
+  pattern = { "*.rs", "*.s", "*.asm" },
   command = ":set autoindent noexpandtab tabstop=4 shiftwidth=4",
 })
+
+-- Fix this with clang-format
+-- vim.api.nvim_create_autocmd("BufEnter", {
+--   pattern = { "*.cpp", "*.hpp", "*.c", "*.s", "*.asm" },
+--   command = ":set autoindent noexpandtab tabstop=4 shiftwidth=4",
+-- })
 
 vim.api.nvim_create_autocmd("BufEnter", {
   pattern = "*.go",
   command = ":set autoindent noexpandtab tabstop=8 shiftwidth=8",
-})
-
-vim.api.nvim_create_autocmd("BufEnter", {
-  pattern = "*.rs",
-  command = ":set autoindent noexpandtab tabstop=4 shiftwidth=4",
 })
 
 require "neovide"
