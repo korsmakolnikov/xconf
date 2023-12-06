@@ -55,6 +55,8 @@ vim.g.neovide_fullscreen = true
 set.guifont = 'Fira Code Font:h14'
 vim.g.neovide_cursor_vfx_mode = "railgun"
 
+Original_folder = vim.loop.cwd()
+
 require 'lualine.themes.gruvbox-material'
 -- autogroup provides
 vim.api.nvim_create_autocmd("BufEnter", {
@@ -74,6 +76,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
 })
 
 require "neovide"
+require "oil_manager"
 require "bindings"
 require "lib"
 require "visual.lualine"

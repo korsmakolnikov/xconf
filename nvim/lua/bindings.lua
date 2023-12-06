@@ -1,9 +1,14 @@
 local vim = vim
+
 local vimp = vim.api.nvim_set_keymap
 local key_opts = { noremap = true, silent = true, buffer = bufnr }
+
+--local oil_manager = require "oil_manager"
+
 -- Mappings.
 -- Filetree mapping
-vimp('n', '<F2>', '<CMD>Oil<CR>', key_opts)
+vimp('n', '<F2>', ":lua require'oil_manager'.toggle_on_root_folder()<CR>", key_opts)
+vimp('n', '<C-c>', ":lua require'oil_manager'.toggle_on_current_folder()<CR>", key_opts)
 vimp('n', '<F3>', ':Neotree buffers toggle=true<CR>', key_opts)
 vimp('n', '<F4>', ':Neotree git_status position=right toggle=true<CR>', key_opts)
 vimp('n', '<F5>', ':Neotree toggle=true<CR>', key_opts)
