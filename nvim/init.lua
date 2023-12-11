@@ -1,7 +1,6 @@
 local vim = vim
 local fn = vim.fn
 local cmd = vim.cmd
-local api = vim.api
 
 -- ensure that packer is installed
 local packer_install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
@@ -94,3 +93,4 @@ require "coding.on_attach"
 
 require "markdown"
 require "presentation"
+require "gitlinker".setup()
