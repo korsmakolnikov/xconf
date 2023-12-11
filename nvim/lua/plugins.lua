@@ -14,15 +14,21 @@ return require('packer').startup(function()
   use {
     "stevearc/oil.nvim",
   }
-  -- use {
-  --   'refractalize/oil-git-status.nvim',
-  --   requires = {
-  --     "stevearc/oil.nvim",
-  --   },
-  --   config = function()
-  --     require("oil-git-status").setup()
-  --   end,
-  -- }
+  use {
+    'refractalize/oil-git-status.nvim',
+
+    after = {
+      "oil.nvim",
+    },
+
+    config = function()
+      require("oil-git-status").setup()
+    end,
+  }
+  use {
+    'ruifm/gitlinker.nvim',
+    requires = 'nvim-lua/plenary.nvim',
+  }
 
   use { 'kyazdani42/nvim-web-devicons' }
   use { 'MunifTanjim/nui.nvim' }
