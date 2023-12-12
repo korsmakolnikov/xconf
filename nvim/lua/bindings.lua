@@ -12,7 +12,6 @@ vimp('n', '<C-c>', ":lua require'oil_manager'.toggle_on_current_folder()<CR>", k
 vimp('n', '<F3>', ':Neotree buffers toggle=true<CR>', key_opts)
 vimp('n', '<F4>', ':Neotree git_status position=right toggle=true<CR>', key_opts)
 vimp('n', '<F5>', ':Neotree toggle=true<CR>', key_opts)
-vimp('n', '<C-c>', ':Neotree filesystem reveal right toggle=true<CR>', key_opts)
 
 -- Buffers mapping
 -- bdelete! %d
