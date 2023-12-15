@@ -6,6 +6,7 @@ require('oil').setup({
   },
   win_options = {
     signcolumn = "yes:2",
+    cursorcolumn = true,
   },
   view_options = {
     -- Show files and directories that start with "."
