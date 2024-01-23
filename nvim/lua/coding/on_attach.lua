@@ -25,15 +25,3 @@ vim.api.nvim_create_autocmd("LspAttach", {
     require("lsp-inlayhints").on_attach(client, bufnr, true)
   end,
 })
-
-api.nvim_create_autocmd("BufReadPost", {
-  pattern = "*",
-  callback = function(_)
-    -- require("lsp-inlayhints").opts({ inlay_hints = { highlight = "Comment" } })
-  end,
-})
---  {
---   "lvimuser/lsp-inlayhints.nvim",
---   event = "",
---   opts = { inlay_hints = { highlight = "Comment" } },
--- }

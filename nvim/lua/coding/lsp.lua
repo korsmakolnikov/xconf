@@ -103,7 +103,7 @@ require 'lspconfig'.elixirls.setup {
   dialyzerEnabled = false,
   -- on_attach = on_attach,
   flags = { debounce_text_changes = 150 },
-  cmd = { "/home/blacksheep/elixir-ls/release/language_server.sh" },
+  cmd = { "elixir-ls" },
   settings = {
     elixirLS = {
       fetchDeps = false,
