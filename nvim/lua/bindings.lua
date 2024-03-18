@@ -28,10 +28,6 @@ vimp('x', '<S-Tab>', '<gv', key_opts)
 vimp('n', '<TAB>', ':BufferLineCycleNext<CR>', key_opts)
 vimp('n', '<S-TAB>', ':BufferLineCyclePrev<CR>', key_opts)
 
--- these are not working
-vim.api.nvim_set_keymap('i', '<expr> <C-n>', 'snippy#can_jump(1) ? \'<Plug>(snippy-next)\' : \'<C-n>', key_opts)
-vim.api.nvim_set_keymap('i', '<expr> <C-p>', 'snippy#can_jump(-1) ? \'<Plug>(snippy-previous)\' : \'<C-p>', key_opts)
-
 -- FZF mapping
 -- git is under 'g' except list files that is bound to leader-space
 -- rg is under 'r' except grep project that is bound to leader-/
