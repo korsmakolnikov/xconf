@@ -18,6 +18,9 @@ vimp('n', '<TAB>', ':BufferLineCycleNext<CR>', key_opts)
 vimp('n', '<S-TAB>', ':BufferLineCyclePrev<CR>', key_opts)
 vimp('x', '<Tab>', '>gv |', key_opts)
 vimp('x', '<S-Tab>', '<gv', key_opts)
+-- This is overridden in presenting mode
+vimp('n', '<TAB>', ':BufferLineCycleNext<CR>', key_opts)
+vimp('n', '<S-TAB>', ':BufferLineCyclePrev<CR>', key_opts)
 
 -- FZF mapping
 -- git is under 'g' except list files that is bound to leader-space
