@@ -1,11 +1,37 @@
 snippet slip-box-note
-	# ${0:Title}
-	${1:Note Content}
+	# ${1:Title}
+	${2:Note Content}
 
 	## tags
-	${2:Tags list}
+	${3:Tags list}
 
 snippet slip-box-ref
-	##### ${0:Number}
+	##### ${0:Number of the reference}
 	title: ${1:Title of the referenced item}
-	source: ${2: Source of the reference}
+	author: ${2: Author name/names} 
+	source: ${3: Source of the reference}
+	internal_reference: ${4: Page or other kind of reference inside the source}
+
+snippet interview-system-design
+	# System design interview
+	Looking to the exercises or discussing with the candidate (proposing a design
+	exercise) try to ask specific questions to highlight the following Content:
+	Is able ability to analyze the problem space and divide the problem into
+	sub-problems (sub-domains)?
+	1. ${1:...}
+	Has he/she the knowledge of the SOLID principles (if he can distinguish the
+	syntactic validation from the semantic validation, if he/she divides
+	responsibilities by people who can change the business requirements)?
+	1. ${2:...}
+	Is he/she able to handle the state (designing aggregates, sagas, process
+	managers) and placing them in the correct bounded contexts?
+	1. ${3:...}
+	Has he/she the attitude to distribute the work organizing teams around
+	bounded contexts?
+	1. ${4:...}
+	Is he/she able to design solutions resilient to race conditions (cart problem
+	usually) and to distribution (the bizantine problem)?
+	1. ${5:...}
+	How does he/she forecast the scalability (he/she able to build scalable
+	solutions or he/she able to iterate to build progressive improvements?)?
+	1. ${6:...}
