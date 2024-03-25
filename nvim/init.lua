@@ -106,3 +106,6 @@ require('snippy').setup({
     },
   },
 })
+
+vim.o.cursorline = true
+vim.o.culopt = 'line'
