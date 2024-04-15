@@ -15,15 +15,11 @@ return require('packer').startup(function()
     "stevearc/oil.nvim",
   }
   use {
-    'refractalize/oil-git-status.nvim',
+    'SirZenith/oil-vcs-status',
 
     after = {
       "oil.nvim",
     },
-
-    config = function()
-      require("oil-git-status").setup()
-    end,
   }
   use {
     'ruifm/gitlinker.nvim',
