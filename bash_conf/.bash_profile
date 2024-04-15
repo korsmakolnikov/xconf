@@ -82,3 +82,12 @@ eval "$(mcfly init bash)"
 LV2_PATH=/usr/lib/x86_64-linux-gnu/lv2:$LV2_PATH
 export LV2_PATH
 
+# X Server
+#export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):2.0
+#export DISPLAY=${HOSTNAME}.local:2.0
+export $(dbus-launch) # not needed if you have systemd enabled
+export LIBGL_ALWAYS_INDIRECT=1
+export WSL_HOST=$(cat "/etc/resolv.conf" | grep nameserver | awk '{print $2}' )
+export DISPLAY="${WSL_HOST}:0"
+
+cd
