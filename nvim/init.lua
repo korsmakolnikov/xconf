@@ -42,6 +42,20 @@ vim.o.wildmode = 'longest,list'
 vim.o.syntax = 'on'
 vim.o.mouse = 'a'
 vim.o.clipboard = vim.o.clipboard .. 'unnamedplus'
+if vim.fn.has('wsl') == 1 then
+  vim.g.clipboard = {
+    name = 'WslClipboard',
+    copy = {
+      ['+'] = 'clip.exe',
+      ['*'] = 'clip.exe',
+    },
+    paste = {
+      ['+'] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+      ['*'] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+    },
+    cache_enabled = 0,
+  }
+end
 vim.o.ttyfast = true
 vim.o.backupdir = '~/.config/nvim/backup'
 vim.o.cmdheight = 3
@@ -53,7 +67,10 @@ vim.g.goyo_width = '80'
 vim.g.neovide_fullscreen = true
 set.guifont = 'Fira Code Font:h14'
 vim.g.neovide_cursor_vfx_mode = "railgun"
-
+vim.opt.encoding = "utf-8"
+vim.fn.mkdir(vim.fn.stdpath("data") .. "site/spell", "p")
+vim.opt.spell = false
+vim.opt.spelllang = { "en_us", "it" }
 _G.Original_folder = vim.loop.cwd()
 
 require 'lualine.themes.gruvbox-material'

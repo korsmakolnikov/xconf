@@ -5,7 +5,7 @@ require('oil').setup({
     "icon",
   },
   win_options = {
-    signcolumn = "yes:2",
+    signcolumn = "number",
   },
   view_options = {
     -- Show files and directories that start with "."
@@ -16,9 +16,11 @@ require('oil').setup({
   }
 })
 
-require('oil-git-status').setup({
-  show_ignored = true -- show files that match gitignore with !!
-})
+require "oil_vcs"
+
+-- require('oil-git-status').setup({
+--   show_ignored = true -- show files that match gitignore with !!
+-- })
 
 local oil_manager = {}
 
