@@ -30,7 +30,7 @@ return require('packer').startup(function()
   use { 'MunifTanjim/nui.nvim' }
   use {
     "nvim-neo-tree/neo-tree.nvim",
-    branch = "v2.x",
+    branch = "v3.x",
     ensure_dependencies = true,
     requires = {
       "nvim-lua/plenary.nvim",
@@ -77,6 +77,11 @@ return require('packer').startup(function()
         { text = "", texthl = "DiagnosticSignHint" })
       -- NOTE: this is changed from v1.x, which used the old style of highlight groups
       -- in the form "LspDiagnosticsSignWarning"
+      --
+      local filesystem_follow_current_file_table = {}
+      filesystem_follow_current_file_table[enabled] = false
+      local buffer_follow_current_file_table = {}
+      follow_current_file_table[enabled] = true
 
       require("neo-tree").setup({
         close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
@@ -85,13 +90,6 @@ return require('packer').startup(function()
         enable_diagnostics = true,
         sort_case_insensitive = false, -- used when sorting files and directories in the tree
         sort_function = nil,           -- use a custom function for sorting files and directories in the tree
-        -- sort_function = function (a,b)
-        --       if a.type == b.type then
-        --           return a.path > b.path
-        --       else
-        --           return a.type > b.type
-        --       end
-        --   end , -- this sorts files and directories descendantly
         default_component_configs = {
           container = {
             enable_character_fade = true
@@ -213,7 +211,7 @@ return require('packer').startup(function()
               --"thumbs.db"
             },
           },
-          follow_current_file = false,            -- This will find and focus the file in the active buffer every
+          follow_current_file = filesystem_follow_current_file_table,
           -- time the current file is changed while the tree is open.
           group_empty_dirs = false,               -- when true, empty folders will be grouped together
           hijack_netrw_behavior = "open_default", -- netrw disabled, opening a directory opens neo-tree
@@ -238,9 +236,9 @@ return require('packer').startup(function()
           }
         },
         buffers = {
-          follow_current_file = true, -- This will find and focus the file in the active buffer every
+          follow_current_file = buffer_follow_current_file_table,
           -- time the current file is changed while the tree is open.
-          group_empty_dirs = true,    -- when true, empty folders will be grouped together
+          group_empty_dirs = true, -- when true, empty folders will be grouped together
           show_unloaded = true,
           window = {
             mappings = {
@@ -253,16 +251,16 @@ return require('packer').startup(function()
         git_status = {
           window = {
             position = "float",
-            mappings = {
-              ["A"]  = "git_add_all",
-              ["gu"] = "git_unstage_file",
-              ["ga"] = "git_add_file",
-              ["gr"] = "git_revert_file",
-              ["gc"] = "git_commit",
-              ["gp"] = "git_push",
-              ["gg"] = "git_commit_and_push",
-            }
+            mappings = {}
           }
+        },
+        event_handlers = {
+          {
+            event = "file_opened",
+            handler = function(_)
+              require("neo-tree.command").execute({ action = "close" })
+            end
+          },
         }
       })
 
