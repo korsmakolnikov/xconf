@@ -42,20 +42,6 @@ vim.o.wildmode = 'longest,list'
 vim.o.syntax = 'on'
 vim.o.mouse = 'a'
 vim.o.clipboard = vim.o.clipboard .. 'unnamedplus'
-if vim.fn.has('wsl') == 1 then
-  vim.g.clipboard = {
-    name = 'WslClipboard',
-    copy = {
-      ['+'] = 'clip.exe',
-      ['*'] = 'clip.exe',
-    },
-    paste = {
-      ['+'] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-      ['*'] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-    },
-    cache_enabled = 0,
-  }
-end
 vim.o.ttyfast = true
 vim.o.backupdir = '~/.config/nvim/backup'
 vim.o.cmdheight = 3
@@ -108,6 +94,7 @@ require "coding.treesitter"
 require "coding.autocompletition"
 require "coding.on_attach"
 
+require "elixir-tools"
 require "markdown"
 require "presentation"
 require "gitlinker".setup()

@@ -6,7 +6,6 @@ return require('packer').startup(function()
 
   -- Comment
   use "terrortylor/nvim-comment"
-
   -- Buffer utilities
   use { 'akinsho/bufferline.nvim', tag = "v2.*", requires = 'kyazdani42/nvim-web-devicons' }
 
@@ -419,4 +418,7 @@ return require('packer').startup(function()
       })
     end
   })
+
+  -- Elixir
+  use({ "elixir-tools/elixir-tools.nvim", tag = "stable", requires = { "nvim-lua/plenary.nvim" } })
 end)

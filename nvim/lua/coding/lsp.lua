@@ -98,20 +98,20 @@ require 'lspconfig'.intelephense.setup({
   -- on_attach = on_attach
 });
 
-require 'lspconfig'.elixirls.setup {
-  capabilities = capabilities,
-  dialyzerEnabled = false,
-  -- on_attach = on_attach,
-  flags = { debounce_text_changes = 150 },
-  cmd = { "elixir-ls" },
-  settings = {
-    elixirLS = {
-      fetchDeps = false,
-      mixEnv = "dev"
-    }
-  }
-}
-
+-- require 'lspconfig'.elixirls.setup {
+--   capabilities = capabilities,
+--   dialyzerEnabled = false,
+--   -- on_attach = on_attach,
+--   flags = { debounce_text_changes = 150 },
+--   cmd = { "elixir-ls" },
+--   settings = {
+--     elixirLS = {
+--       fetchDeps = false,
+--       mixEnv = "dev"
+--     }
+--   }
+-- }
+--
 require 'lspconfig'.gopls.setup {
   capabilities = capabilities,
   -- on_attach = on_attach,
