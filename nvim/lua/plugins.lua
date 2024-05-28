@@ -7,7 +7,7 @@ return require('packer').startup(function()
   -- Comment
   use "terrortylor/nvim-comment"
   -- Buffer utilities
-  use { 'akinsho/bufferline.nvim', tag = "v2.*", requires = 'kyazdani42/nvim-web-devicons' }
+  use { 'akinsho/bufferline.nvim', tag = "*", requires = 'nvim-tree/nvim-web-devicons' }
 
   -- Filetree
   use {
@@ -144,16 +144,16 @@ return require('packer').startup(function()
   -- Elixir syntax highlight :(
   use { 'nvim-treesitter/nvim-treesitter' }
 
-  use({
-    "Maan2003/lsp_lines.nvim",
-    config = function()
-      require("lsp_lines").setup()
-      vim.diagnostic.config({
-        virtual_text = false,
-        only_current_line = true
-      })
-    end,
-  })
+  -- use({
+  --   "Maan2003/lsp_lines.nvim",
+  --   config = function()
+  --     require("lsp_lines").setup()
+  --     vim.diagnostic.config({
+  --       virtual_text = false,
+  --       only_current_line = true
+  --     })
+  --   end,
+  -- })
 
   -- Debugging
   use 'nvim-lua/plenary.nvim'
