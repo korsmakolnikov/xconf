@@ -31,7 +31,8 @@ alias docker.down="docker-compose down"
 alias ku='kubectl'
 alias vimp='vim `ls *.vp |sort -g`'
 alias hx='helix'
-
+alias emacs='emacs --no-window-system'
+     
 if [ -f ~/.bash_local_aliases ]; then
     . ~/.bash_local_aliases
 fi
