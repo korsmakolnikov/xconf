@@ -26,6 +26,7 @@ return require('packer').startup(function()
   }
 
   use { 'kyazdani42/nvim-web-devicons' }
+  use { 'ryanoasis/vim-devicons' }
   use { 'MunifTanjim/nui.nvim' }
 
   use {
@@ -70,7 +71,6 @@ return require('packer').startup(function()
   use { 'rktjmp/lush.nvim' }
   use { 'blueshirts/darcula' }
   use { 'rakr/vim-one' }
-  -- use { 'projekt0n/github-nvim-theme' }
   use 'navarasu/onedark.nvim'
 
   -- FZF
@@ -97,21 +97,16 @@ return require('packer').startup(function()
       vim.o.timeout = true
       vim.o.timeoutlen = 300
       require("which-key").setup {
+        spelling = {
+          enabled = true,   -- enabling this will show WhichKey when pressing z= to select spelling suggestions
+          suggestions = 20, -- how many suggestions should be shown in the list?
+        },
         -- your configuration comes here
         -- or leave it empty to use the default settings
         -- refer to the configuration section below
       }
     end
   }
-
-  -- Docker file syntax
-  use { 'ekalinin/Dockerfile.vim' }
-
-  -- Graphql syntax
-  use { 'jparise/vim-graphql' }
-
-  -- Toml
-  use { 'cespare/vim-toml' }
 
   -- Status bar
   use {
@@ -136,11 +131,16 @@ return require('packer').startup(function()
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-vsnip',
       'hrsh7th/cmp-cmdline',
+      'f3fora/cmp-spell',
+      'ray-x/cmp-treesitter',
+      'onsails/lspkind.nvim',
+      "amarakon/nvim-cmp-buffer-lines",
       'nvim-lua/lsp-status.nvim'
     }
   }
   -- Elixir syntax highlight :(
   use { 'nvim-treesitter/nvim-treesitter' }
+  use { "elixir-tools/elixir-tools.nvim", tag = "stable", requires = { "nvim-lua/plenary.nvim" } }
 
   -- Debugging
   use 'nvim-lua/plenary.nvim'

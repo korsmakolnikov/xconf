@@ -1,28 +1,4 @@
-local vim = vim
-
-local vimp = vim.api.nvim_set_keymap
-local key_opts = { noremap = true, silent = true, buffer = bufnr }
-
---local oil_manager = require "oil_manager"
-
--- Mappings.
--- Filetree mapping
-vimp('n', '<F3>', ':Neotree buffers toggle=true<CR>', key_opts)
-vimp('n', '<F4>', ':Neotree git_status position=right toggle=true<CR>', key_opts)
-vimp('n', '<F5>', ':Neotree toggle=true<CR>', key_opts)
--- Buffers mapping
--- Tab mapping
-vimp('x', '<Tab>', '>gv |', key_opts)
-vimp('x', '<S-Tab>', '<gv', key_opts)
--- This is overridden in presenting mode
-
--- FZF mapping
--- git is under 'g' except list files that is bound to leader-space
--- rg is under 'r' except grep project that is bound to leader-/
--- history is under 'h'
--- vimp('n', '<Leader><Space>', ":FzfLua git_files<CR>", key_opts)
--- -- Git
--- -- FZF rg
+-- TODO reload lua conf
 -- vimp('n', '<Leader>/',
 --   ":lua require'fzf-lua'.live_grep({ cmd = \"rg --sort=path --column --line-number --no-heading --color=always --smart-case --max-columns=4096 -e\"})<CR>'",
 --   key_opts)
@@ -30,21 +6,16 @@ vimp('x', '<S-Tab>', '<gv', key_opts)
 --   ":lua require'fzf-lua'.live_grep({ cmd = \"rg --sort=path --hidden --follow --column --line-number --no-heading --color=always --smart-case --max-columns=4096 -e\"})<CR>'",
 --   key_opts)
 
--- copy filepath to clipboard
-
--- General mapping
-vimp('n', '<F12>', ':e $MYVIMRC<CR>', key_opts)
--- does it works?
-vimp('n', '<S-F12>', ':luafile %<CR>', key_opts)
-
--- FZF new mapping
---
-
 local wk = require("which-key")
 local dap = require("dap")
 
 -- Normal mode
 wk.register({
+  ["b"] = {
+    name = "+Buffer",
+    d = { ":bd<CR>", "Delete" },
+  },
+
   ["c"] = {
     name = "+Fzf Commands",
     a = { ":FzfLua args<CR>", "Find args" },
@@ -86,7 +57,7 @@ wk.register({
     R = { ":lua require'dap'.repl.open()<CR>", "REPL" }
   },
 
-  ["n"] = {
+  ["R"] = {
     name = "+Fzf-lua",
     r = { ":FzfLua register_ui_select<CR>", "Register fzf-lua as UI Interface for vim.ui.select" },
     d = { ":FzfLua deregister_ui_select<CR>", "De-register fzf-lua with vim.ui.select" },
@@ -169,6 +140,10 @@ wk.register({
     b = { ":FzfLua git_branches<CR>", "Branches" },
     t = { ":FzfLua git_tags<CR>", "Tags" },
     S = { ":FzfLua git_stash<CR>", "Stash" },
+    y = {
+      "<cmd>lua require'gitlinker'.get_buf_range_url('n', {action_callback = require'gitlinker.actions'.open_in_browser})<cr>",
+      "Gitlinker"
+    },
   },
 
   ["t"] = {
@@ -203,7 +178,24 @@ wk.register({
     ["<C-l>"] = { ":lua require('fzf-lua').files({ resume = true })<CR>", "Resume file search" },
   },
 
-  ["y"] = { ":let @+=@%<CR>", "Yank file path" }
+  ["S"] = {
+    name = "+Snippy",
+    y = { "<Plug>(snippy-cut-text)", "Cut text" },
+  },
+
+  ["y"] = { ":let @+=@%<CR>", "Yank file path" },
+
+  ["n"] = {
+    name = "+Neotree",
+    n = { ":Neotree toggle=true<CR>", "Neotree toggle" },
+    g = { ":Neotree git_status position=right toggle=true<CR>", "Neotree git status" },
+    b = { ":Neotree buffers toggle=true<CR>", "Neotree buffers" }
+  },
+
+  ["C"] = {
+    name = "+Configuration",
+    o = { ":e $MYVIMRC<CR>", "Open init.lua" }
+  },
 }, { prefix = "<Leader>" })
 
 wk.register({
@@ -212,11 +204,15 @@ wk.register({
   ["<TAB>"] = { ':BufferLineCycleNext<CR>', "Next tab" },
   ["<S-TAB>"] = { ':BufferLineCyclePrev<CR>', "Previous tab" },
   ["\\"] = { ":Neotree reveal<cr>", "Neotree" },
+  ["<S-ESC>"] = { ":noh<CR>", "No highlights" },
 })
+
 
 -- Visual mode
 wk.register({
   ["<C-f>"] = { ":FzfLua grep_visual<CR>", "Grep visual" },
+  ["<Tab>"] = { ">gv |", "Tab" },
+  ["<S-Tab>"] = { "<gv", "S-Tab" },
 }, { mode = "v" })
 
 wk.register({
@@ -225,3 +221,9 @@ wk.register({
     v = { ":FzfLua grep_visual<CR>", "Grep tags visual" }
   },
 }, { prefix = "<Leader>", mode = "v" })
+
+-- x mode
+wk.register({
+  ["<Tab>"] = { ">gv |", "Tab" },
+  ["<S-Tab>"] = { "<gv", "S-Tab" },
+}, { mode = "x" })

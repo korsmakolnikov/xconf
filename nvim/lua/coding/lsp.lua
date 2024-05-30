@@ -1,4 +1,3 @@
-local vim = vim
 local api = vim.api
 -- local vimp = vim.api.nvim_set_keymap
 -- local key_opts = { noremap = true, silent = true, buffer = bufnr }
