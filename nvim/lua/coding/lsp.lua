@@ -1,4 +1,3 @@
-local vim = vim
 local api = vim.api
 api.nvim_create_autocmd("BufWritePre", {
   pattern = "*",
@@ -80,20 +79,6 @@ require 'lspconfig'.intelephense.setup({
   capabilities = capabilities,
   -- on_attach = on_attach
 });
-
-require 'lspconfig'.elixirls.setup {
-  capabilities = capabilities,
-  dialyzerEnabled = false,
-  -- on_attach = on_attach,
-  flags = { debounce_text_changes = 150 },
-  cmd = { "/home/blacksheep/elixir-ls/release/language_server.sh" },
-  settings = {
-    elixirLS = {
-      fetchDeps = false,
-      mixEnv = "dev"
-    }
-  }
-}
 
 require 'lspconfig'.gopls.setup {
   capabilities = capabilities,

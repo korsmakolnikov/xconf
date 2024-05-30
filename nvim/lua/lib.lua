@@ -1,4 +1,4 @@
-function dump(o)
+function _G.dump(o)
   if type(o) == 'table' then
     local s = '{ '
     for k, v in pairs(o) do
