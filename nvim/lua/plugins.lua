@@ -63,8 +63,6 @@ return require('packer').startup(function()
           },
         }
       })
-
-      vim.cmd([[nnoremap \ :Neotree reveal<cr>]])
     end
   }
 
@@ -143,17 +141,6 @@ return require('packer').startup(function()
   }
   -- Elixir syntax highlight :(
   use { 'nvim-treesitter/nvim-treesitter' }
-
-  -- use({
-  --   "Maan2003/lsp_lines.nvim",
-  --   config = function()
-  --     require("lsp_lines").setup()
-  --     vim.diagnostic.config({
-  --       virtual_text = false,
-  --       only_current_line = true
-  --     })
-  --   end,
-  -- })
 
   -- Debugging
   use 'nvim-lua/plenary.nvim'
