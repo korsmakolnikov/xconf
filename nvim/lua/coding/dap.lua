@@ -1,9 +1,9 @@
 -- DAP debug
-vim.keymap.set("n", "<F5>", require 'dap'.continue, { buffer = bufnr })
+-- vim.keymap.set("n", "<F5>", require 'dap'.continue, { buffer = bufnr })
 -- nnoremap <silent> <F9> <Cmd>lua require'dap'.step_over()<CR>
 -- nnoremap <silent> <F10> <Cmd>lua require'dap'.step_into()<CR>
 -- nnoremap <silent> <F11> <Cmd>lua require'dap'.step_out()<CR>
-vim.keymap.set("n", "<Leader>b", require 'dap'.toggle_breakpoint, { buffer = bufnr })
+-- vim.keymap.set("n", "<Leader>b", require 'dap'.toggle_breakpoint, { buffer = bufnr })
 -- nnoremap <silent> <Leader>B <Cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>
 -- nnoremap <silent> <Leader>lp <Cmd>lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>
 -- nnoremap <silent> <Leader>dr <Cmd>lua require'dap'.repl.open()<CR>

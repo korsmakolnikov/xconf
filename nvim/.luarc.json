@@ -1,7 +1,7 @@
 {
     "diagnostics.globals": [
-        "cst_formatting",
+        "vim",
         "use",
-        "vim"
+        "bufnr"
     ]
 }

@@ -1,4 +1,4 @@
-function shorten_by(w)
+local function shorten_by(w)
   return function(s)
     local ellipsis = "…"
     return s:sub(1, w) .. ellipsis
