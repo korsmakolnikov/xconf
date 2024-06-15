@@ -54,7 +54,7 @@ require('mason-tool-installer').setup {
     'gofumpt',
     'luacheck',
     'shfmt',
-    'cmake-language-server ',
+    'cmake-language-server',
     'cmakelang',
     'cmakelint',
     'codelldb',
