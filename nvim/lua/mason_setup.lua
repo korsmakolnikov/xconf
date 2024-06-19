@@ -36,7 +36,7 @@ require('mason-tool-installer').setup {
     'luaformatter',
     'php-cs-fixer',
     'php-debug-adapter',
-    -- 'phpactor',
+    'phpactor',
     'yaml-language-server',
     'yamlfmt',
     'yamllint',
