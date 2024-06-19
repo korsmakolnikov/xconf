@@ -92,8 +92,8 @@ wk.register({
     name = "+LSP",
     ["n"] = {
       name = "+Nav",
-      d = { "<cmd>lua vim.lsp.buf.declaration()<CR>", "Jump to declaration" },
-      D = { "<cmd>lua vim.lsp.buf.definition()<CR>", "Jump to definition" },
+      D = { "<cmd>lua vim.lsp.buf.declaration()<CR>", "Jump to declaration" },
+      d = { "<cmd>lua vim.lsp.buf.definition()<CR>", "Jump to definition" },
       i = { "<cmd>lua vim.lsp.buf.implementation()<CR>", "Jump to implementation" },
     },
     ["e"] = {
