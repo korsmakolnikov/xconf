@@ -1,0 +1,46 @@
+(set _G.vim.g.mapleader ",")
+(set _G.vim.opt.matchpairs (.. _G.vim.bo.matchpairs ",<:>"))
+; (local ___set___ vim.opt)
+; (set ___set___.splitright true)
+; (set ___set___.tabstop 2)
+; (set ___set___.shiftwidth 2)
+; (set ___set___.softtabstop 2)
+; (set ___set___.expandtab true)
+; (set vim.wo.wrap false)
+; (set ___set___.termguicolors true)
+; (set vim.o.cc :80)
+; (set vim.o.virtualedit :all)
+; (set vim.o.hlsearch true)
+; (set vim.o.incsearch true)
+; (set vim.o.autoindent true)
+; (set vim.o.number true)
+; (set vim.o.wildmode "longest,list")
+; (set vim.o.syntax :on)
+; (set vim.o.mouse :a)
+(set _G.vim.o.clipboard (.. _G.vim.o.clipboard :unnamedplus))
+;
+; (when (= (vim.fn.has :wsl) 1)
+;   (set vim.g.clipboard
+;        {:cache_enabled 0
+;         :copy {:* :clip.exe :+ :clip.exe}
+;         :name :WslClipboard
+;         :paste {:* "powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace(\"`r\", \"\"))"
+;                 :+ "powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace(\"`r\", \"\"))"}}))
+;
+; (set vim.o.ttyfast true)
+; (set vim.o.backupdir "~/.config/nvim/backup")
+; (set vim.o.cmdheight 3)
+; (set vim.o.completeopt "menuone,noinsert,noselect")
+; (set vim.o.shortmess (.. vim.o.shortmess :c))
+; (set vim.opt.termguicolors true)
+; (set vim.g.loaded_python_provider :0)
+; (set vim.g.goyo_width :80)
+; (set vim.g.neovide_fullscreen true)
+; (set ___set___.guifont "Fira Code Font:h14")
+; (set vim.g.neovide_cursor_vfx_mode :railgun)
+; (set vim.opt.encoding :utf-8)
+; (vim.fn.mkdir (.. (vim.fn.stdpath :data) :site/spell) :p)
+; (set vim.opt.spell true)
+; (set vim.opt.spelllang [:en_us :it])
+; (set _G.Original_folder (vim.loop.cwd))
+

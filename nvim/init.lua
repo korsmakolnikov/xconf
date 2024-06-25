@@ -1,127 +1,53 @@
--- TODO:
--- [X]Fix warnings
--- [ ] gloabl options module
--- [ ] packer setup module
--- [ ] refactor bindings to be semantically aligned with vim's feature ("b" for "buffers" "w" for "window"[...])
--- [ ] refactor coding lsp module to include one file for supported language
--- [ ] fix binding module TODOs
--- [ ] fix comment (TODO) highlighting. It is highlighted for a moment then it turns gray
--- [ ] fix dap breakpoint icons
--- [ ] improve dap supported
-local fn = vim.fn
-local cmd = vim.cmd
-
--- ensure that packer is installed
-local packer_install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
-if fn.empty(fn.glob(packer_install_path)) > 0 then
-  _G.packer_bootstrap = fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim',
-    packer_install_path })
+-- Bootstrap lazy.nvim
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+  vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
 end
+vim.opt.rtp:prepend(lazypath)
 
-cmd('packadd packer.nvim')
-local packer = require 'packer'
-local util = require 'packer.util'
-
-packer.init({
-  package_root = util.join_paths(vim.fn.stdpath('data'), 'site', 'pack')
-})
-
-require 'plugins'
-require 'impatient'
-require "visual.theme"
-
+-- Make sure to setup `mapleader` and `maplocalleader` before
+-- loading lazy.nvim so that mappings are correct.
+-- This is also a good place to setup other settings (vim.opt)
 vim.g.mapleader = ","
-vim.opt.matchpairs = vim.bo.matchpairs .. ",<:>"
+vim.g.maplocalleader = "\\"
 
-local set = vim.opt
-set.splitright = true
-set.tabstop = 2
-set.shiftwidth = 2
-set.softtabstop = 2
-set.expandtab = true
-vim.wo.wrap = false
-set.termguicolors = true
-vim.o.cc = '80'
-vim.o.virtualedit = 'all'
-vim.o.hlsearch = true
-vim.o.incsearch = true
-vim.o.autoindent = true
-vim.o.number = true
-vim.o.wildmode = 'longest,list'
-vim.o.syntax = 'on'
-vim.o.mouse = 'a'
-vim.o.clipboard = vim.o.clipboard .. 'unnamedplus'
-if vim.fn.has('wsl') == 1 then
-  vim.g.clipboard = {
-    name = 'WslClipboard',
-    copy = {
-      ['+'] = 'clip.exe',
-      ['*'] = 'clip.exe',
-    },
-    paste = {
-      ['+'] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-      ['*'] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-    },
-    cache_enabled = 0,
-  }
+-- pick your plugin manager
+local pack = "tangerine" or "packer" or "paq" or "lazy"
+
+local function bootstrap(url, ref)
+    local name = url:gsub(".*/", "")
+    local path
+
+    if pack == "lazy" then
+        path = vim.fn.stdpath("data") .. "/lazy/" .. name
+        vim.opt.rtp:prepend(path)
+    else
+        path = vim.fn.stdpath("data") .. "/site/pack/".. pack .. "/start/" .. name
+    end
+
+    if vim.fn.isdirectory(path) == 0 then
+        print(name .. ": installing in data dir...")
+
+        vim.fn.system {"git", "clone", url, path}
+        if ref then
+            vim.fn.system {"git", "-C", path, "checkout", ref}
+        end
+
+        vim.cmd "redraw"
+        print(name .. ": finished installing")
+    end
 end
-vim.o.ttyfast = true
-vim.o.backupdir = '~/.config/nvim/backup'
-vim.o.cmdheight = 3
-vim.o.completeopt = 'menuone,noinsert,noselect'
-vim.o.shortmess = vim.o.shortmess .. 'c'
-vim.opt.termguicolors = true
-vim.g.loaded_python_provider = '0'
-vim.g.goyo_width = '80'
-vim.g.neovide_fullscreen = true
-set.guifont = 'Fira Code Font:h14'
-vim.g.neovide_cursor_vfx_mode = "railgun"
-vim.opt.encoding = "utf-8"
-vim.fn.mkdir(vim.fn.stdpath("data") .. "site/spell", "p")
-vim.opt.spell = true
-vim.opt.spelllang = { "en_us", "it" }
-_G.Original_folder = vim.loop.cwd()
 
-require 'lualine.themes.gruvbox-material'
--- autogroup provides
-vim.api.nvim_create_autocmd("BufEnter", {
-  pattern = { "*.rs", "*.s", "*.asm" },
-  command = ":set autoindent noexpandtab tabstop=4 shiftwidth=4",
-})
+-- for stable version [recommended]
+bootstrap("https://github.com/udayvir-singh/tangerine.nvim", "v2.9")
 
-vim.api.nvim_create_autocmd("BufEnter", {
-  pattern = "*.go",
-  command = ":set autoindent noexpandtab tabstop=8 shiftwidth=8",
-})
+-- for git head
+bootstrap("https://github.com/udayvir-singh/tangerine.nvim")
 
-require "nvim_comment".setup()
-require "bufferline".setup()
-require "zen-mode".setup()
-require "twilight".setup()
-
-require "neovide"
-require "oil_manager"
-require "bindings"
-require "lib"
-require "visual.lualine"
-require "mason_setup"
-require "coding.snippets"
-require "coding.lsp"
-require "coding.dap"
-require "coding.autocompletition"
-require "coding.on_attach"
-require "markdown"
-require "coding.treesitter"
-require "presentation"
-require "coding.elixir-tools"
-
-local format_sync_grp = vim.api.nvim_create_augroup("GoFormat", {})
-vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = "*.go",
-  callback = function()
-    require('go.format').goimport()
-  end,
-  group = format_sync_grp,
-})
-
-require "gitlinker".setup()
+require'tangerine'.setup{
+  compiler = {
+    verbose = false,
+    hooks = { "onsave", "oninit" }
+  }
+}
