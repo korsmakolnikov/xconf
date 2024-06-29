@@ -5,7 +5,7 @@ api.nvim_create_autocmd("BufWritePre", {
 })
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-local servers = { 'clangd', 'jsonls', 'elmls', 'hls', 'lua_ls', 'bashls', 'yamlls' }
+local servers = { 'clangd', 'jsonls', 'elmls', 'hls', 'lua_ls', 'bashls', 'yamlls', 'fennel_ls' }
 for _, lsp in pairs(servers) do
   require 'lspconfig'[lsp].setup {
     -- on_attach = on_attach,
