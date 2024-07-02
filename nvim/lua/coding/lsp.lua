@@ -1,26 +1,8 @@
-local api = vim.api
--- local vimp = vim.api.nvim_set_keymap
--- local key_opts = { noremap = true, silent = true, buffer = bufnr }
-api.nvim_create_autocmd("BufWritePre", {
+vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = "*",
   command = "lua vim.lsp.buf.format()",
 })
 
--- local on_attach = function(client, bufnr)
---   -- Enable completion triggered by <c-x><c-o>
---   api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
---   -- See `:help vim.lsp.*` for documentation on any of the below functions
---   vimp('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', key_opts)
---   vimp('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', key_opts)
---   vimp('n', '<C-space>', '<cmd>lua vim.lsp.buf.hover()<CR>', key_opts)
---   vimp('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', key_opts)
---   vimp('n', '<S-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', key_opts)
---   vimp('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', key_opts)
---
---   -- require("lsp_signature").on_attach({ bind = true }, bufnr)
---   require("lsp-inlayhints").on_attach(client, bufnr)
--- end
---
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local servers = { 'jsonls', 'elmls', 'hls', 'ccls', 'lua_ls', 'bashls', 'yamlls' }
 for _, lsp in pairs(servers) do
@@ -172,3 +154,45 @@ local inlay_hints_default_configuration = {
   debug_mode = false,
 }
 require("lsp-inlayhints").setup(inlay_hints_default_configuration)
+
+require 'lspconfig.configs'.fennel_language_server = {
+  default_config = {
+    cmd = { 'fennel-language-server' },
+    filetypes = { 'fennel' },
+    single_file_support = true,
+    -- source code resides in directory `fnl/`
+    root_dir = require 'lspconfig'.util.root_pattern("fnl"),
+    settings = {
+      fennel = {
+        workspace = {
+          -- If you are using hotpot.nvim or aniseed,
+          -- make the server aware of neovim runtime files.
+          library = vim.api.nvim_list_runtime_paths(),
+          checkThirdParty = false, -- THIS IS THE IMPORTANT LINE TO ADD
+        },
+        diagnostics = {
+          globals = { 'vim' },
+        },
+      },
+    },
+  },
+}
+
+-- doesn't work
+require 'lspconfig'.fennel_language_server.setup {
+  on_attach = function(client, bufnr)
+    -- Support formatting with fnlfmt
+    vim.keymap.set('n', '<leader>cf', function()
+      vim.lsp.buf.format({ async = true })
+    end, { noremap = true, silent = true, buffer = bufnr, desc = "Format code" })
+  end,
+}
+
+-- TODO move to another module
+require("nvim-format-buffer").setup({
+  -- If true, print an error message if command fails. default: false
+  verbose = false,
+  format_rules = {
+    { pattern = { "*.fnl" }, command = "fnlfmt -" },
+  },
+})

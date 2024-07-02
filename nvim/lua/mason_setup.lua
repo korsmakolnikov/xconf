@@ -22,6 +22,7 @@ require('mason-tool-installer').setup {
     -- you can turn off/on auto_update per tool
     -- { 'bash-language-server', auto_update = true },
     'elixir-ls',
+    'fennel-language-server',
     'bash-language-server',
     'bash-debug-adapter',
     'bzl',

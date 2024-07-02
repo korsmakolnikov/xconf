@@ -129,3 +129,12 @@ require "gitlinker".setup()
 
 vim.o.cursorline = true
 vim.o.culopt = 'line'
+
+-- vim.api.nvim_create_autocmd("BufWritePre", {
+--   pattern = "*.fnl",
+--   callback = function()
+--     vim.cmd([[w !fnlfmt %]])
+--     vim.cmd([[e!]])
+--   end,
+--   group = format_sync_grp,
+-- })

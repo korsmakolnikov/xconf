@@ -138,9 +138,11 @@ return require('packer').startup(function()
       'nvim-lua/lsp-status.nvim'
     }
   }
-  -- Elixir syntax highlight :(
+  -- treesitter
   use { 'nvim-treesitter/nvim-treesitter' }
-  use { "elixir-tools/elixir-tools.nvim", tag = "stable", requires = { "nvim-lua/plenary.nvim" } }
+
+  -- formatting
+  use { 'acro5piano/nvim-format-buffer' }
 
   -- Debugging
   use 'nvim-lua/plenary.nvim'
@@ -207,4 +209,6 @@ return require('packer').startup(function()
 
   -- Elixir
   use({ "elixir-tools/elixir-tools.nvim", tag = "stable", requires = { "nvim-lua/plenary.nvim" } })
+
+  -- Fennel TODO
 end)
