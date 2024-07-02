@@ -337,6 +337,9 @@ return require('packer').startup(function()
   use { 'nvim-treesitter/nvim-treesitter' }
   use { "elixir-tools/elixir-tools.nvim", tag = "stable", requires = { "nvim-lua/plenary.nvim" } }
 
+  -- formatting
+  use { 'acro5piano/nvim-format-buffer' }
+
   -- Debugging
   use 'nvim-lua/plenary.nvim'
   use { 'mfussenegger/nvim-dap',

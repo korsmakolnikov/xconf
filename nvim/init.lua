@@ -1,34 +1,23 @@
--- TODO:
--- [X]Fix warnings
--- [ ] gloabl options module
--- [ ] packer setup module
--- [ ] refactor bindings to be semantically aligned with vim's feature ("b" for "buffers" "w" for "window"[...])
--- [ ] refactor coding lsp module to include one file for supported language
--- [ ] fix binding module TODOs
--- [ ] fix comment (TODO) highlighting. It is highlighted for a moment then it turns gray
--- [ ] fix dap breakpoint icons
--- [ ] improve dap supported
-local fn = vim.fn
-local cmd = vim.cmd
+-- Bootstrap lazy.nvim and tangerine transpiler
+local init_layer = require 'init_layer'
+init_layer
+    .bootstrap("https://github.com/udayvir-singh/tangerine.nvim")
+    .init_transpiler()
 
--- ensure that packer is installed
-local packer_install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
-if fn.empty(fn.glob(packer_install_path)) > 0 then
-  _G.packer_bootstrap = fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim',
-    packer_install_path })
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+  vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
 end
 
-cmd('packadd packer.nvim')
-local packer = require 'packer'
-local util = require 'packer.util'
+vim.opt.rtp:prepend(lazypath)
 
-packer.init({
-  package_root = util.join_paths(vim.fn.stdpath('data'), 'site', 'pack')
-})
+vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
 
-require 'plugins'
+require 'packages'
+
 require 'impatient'
-require "visual.theme"
 
 vim.g.mapleader = ","
 vim.opt.matchpairs = vim.bo.matchpairs .. ",<:>"
@@ -82,22 +71,12 @@ vim.opt.spell = true
 vim.opt.spelllang = { "en_us", "it" }
 _G.Original_folder = vim.loop.cwd()
 
+require "visual.theme"
 require 'lualine.themes.gruvbox-material'
--- autogroup provides
-vim.api.nvim_create_autocmd("BufEnter", {
-  pattern = { "*.rs", "*.s", "*.asm" },
-  command = ":set autoindent noexpandtab tabstop=4 shiftwidth=4",
-})
-
-vim.api.nvim_create_autocmd("BufEnter", {
-  pattern = "*.go",
-  command = ":set autoindent noexpandtab tabstop=8 shiftwidth=8",
-})
-
 require "nvim_comment".setup()
 require "bufferline".setup()
-require "zen-mode".setup()
-require "twilight".setup()
+-- require "zen-mode".setup()
+-- require "twilight".setup()
 
 require "neovide"
 require "oil_manager"
@@ -110,18 +89,9 @@ require "coding.lsp"
 require "coding.dap"
 require "coding.autocompletition"
 require "coding.on_attach"
-require "markdown"
 require "coding.treesitter"
-require "presentation"
 require "coding.elixir-tools"
-
-local format_sync_grp = vim.api.nvim_create_augroup("GoFormat", {})
-vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = "*.go",
-  callback = function()
-    require('go.format').goimport()
-  end,
-  group = format_sync_grp,
-})
-
+require "markdown"
+require "presentation"
+require "autogroups"
 require "gitlinker".setup()
