@@ -4,6 +4,3 @@
 [submodule "my_keyboard_layout"]
 	path = my_keyboard_layout
 	url = git@github.com:korsmakolnikov/my_keyboard_layout.git
-[submodule "xnvim"]
-	path = xnvim
-	url = git@github.com:korsmakolnikov/xnvim.git
