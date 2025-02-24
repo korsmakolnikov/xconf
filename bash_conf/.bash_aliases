@@ -29,11 +29,9 @@ alias docker.run="docker_run"
 alias docker.down="docker-compose down"
 
 alias ku='kubectl'
-alias vimp='vim `ls *.vp |sort -g`'
-alias hx='helix'
 alias emacs='emacs --no-window-system'
-     
-if [ -f ~/.bash_local_aliases ]; then
-    . ~/.bash_local_aliases
-fi
+alias vimo='nvim -S Session.vim'
 
+if [ -f ~/.bash_local_aliases ]; then
+  . "$HOME/.bash_local_aliases"
+fi
