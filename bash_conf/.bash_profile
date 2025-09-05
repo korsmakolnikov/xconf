@@ -1,43 +1,39 @@
 #!/bin/bash
-export PATH="${PATH}:/home/blacksheep/.local/bin:/usr/local/bin:/home/blacksheep/.local/share/bin:/home/blacksheep/.npm-global/bin"
-if [ -f /opt/asdf-vm/bin/asdf ]; then
-  export PATH="${PATH}:/opt/asdf-vm/bin/"
-  . /opt/asdf-vm/asdf.sh
-  . /usr/share/bash-completion/completions/asdf
-fi
+export PATH="${PATH}:/$HOME/.local/bin:/usr/local/bin:/$HOME/.local/share/bin:/$HOME/.npm-global/bin"
 
-if [ -f $HOME/.asdf/asdf.sh  ]; then
-. $HOME/.asdf/asdf.sh
-. $HOME/.asdf/completions/asdf.bash
+if [ -f $HOME/.asdf/asdf.sh ]; then
+  . $HOME/.asdf/asdf.sh
+  . $HOME/.asdf/completions/asdf.bash
 fi
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 
-export GOPATH=`asdf where golang`
+export GOPATH=$(asdf where golang)
 export GO111MODULE=on
 export GOBIN="${GOPATH}/bin"
 export PATH="${PATH}:${GOPATH}:${GOBIN}"
-export RUSTPATH=`asdf where rust` 
+export RUSTPATH=$(asdf where rust)
 export CARGO_NET_GIT_FETCH_WITH_CLI=true
 export EDITOR=nvim
-export PATH="${PATH}:/home/blacksheep/.local/bin:/usr/local/bin:/home/blacksheep/.local/share/bin:/home/blacksheep/.npm-global/bin:/home/blacksheep/.config/yarn/global"
+export PATH="${PATH}:/$HOME/.local/bin:/usr/local/bin:/$HOME/.local/share/bin:/$HOME/.npm-global/bin:/$HOME/.config/yarn/global"
 export PATH="${PATH}:${GOPATH}:${GOBIN}"
 
 if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+  . ~/.bash_aliases
 fi
 
 if [ -f ~/.bashlib ]; then
-    . ~/.bashlib
+  . ~/.bashlib
 fi
 
 if [ -f ~/.bash_docker ]; then
-    . ~/.bash_docker
+  . ~/.bash_docker
 fi
 
 if [ -f ~/.transfer.sh ]; then
   . $HOME/.transfer.sh
 fi
 
-if [ -f $HOME/.cargo/env  ]; then
+if [ -f $HOME/.cargo/env ]; then
   . $HOME/.cargo/env
 fi
 
@@ -45,15 +41,15 @@ if [ -d $HOME/.asdf/installs ]; then
   PATH="${PATH}:$RUSTPATH:$RUSTPATH/bin"
 fi
 
-if [ -f $HOME/.bash_prompt  ]; then
+if [ -f $HOME/.bash_prompt ]; then
   . $HOME/.bash_prompt
 fi
 
-if [ -f $HOME/.bash_py  ]; then
+if [ -f $HOME/.bash_py ]; then
   . $HOME/.bash_py
 fi
 
-if [ -f $HOME/.bash_twig  ]; then
+if [ -f $HOME/.bash_twig ]; then
   . $HOME/.bash_twig
 fi
 
@@ -82,3 +78,6 @@ eval "$(mcfly init bash)"
 LV2_PATH=/usr/lib/x86_64-linux-gnu/lv2:$LV2_PATH
 export LV2_PATH
 
+if [[ $- == *i* && -f ~/.bashrc ]]; then
+  . ~/.bashrc
+fi

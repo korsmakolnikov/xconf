@@ -16,33 +16,33 @@ dir_stats() {
 }
 
 git_up() {
-  CBRANCH=$(git branch | grep \* | cut -d ' ' -f2)
-  printf "\e[38;5;81mpush force with lease local branch ${CBRANCH} to origin/${CBRANCH}\e[0m\n"
-  git push --force-with-lease origin $CBRANCH
+  CBRANCH=$(git branch | grep "\*" | cut -d ' ' -f2)
+  printf "\e[38;5;81mpush force with lease local branch %s to origin/%s\e[0m\n" "$CBRANCH" "$CBRANCH"
+  git push --force-with-lease origin "$CBRANCH"
 }
 
 git_down() {
-  CBRANCH=$(git branch | grep \* | cut -d ' ' -f2)
-  printf "\e[38;5;81mpull local branch from origin/${CBRANCH}\e[0m\n"
+  CBRANCH=$(git branch | grep "\*" | cut -d ' ' -f2)
+  printf "\e[38;5;81mpull local branch from origin/%s\e[0m\n" "$CBRANCH"
   git fetch -p
-  git pull origin $CBRANCH --rebase
+  git pull origin "$CBRANCH" --rebase
 }
 
 who_on_port() {
-  sudo lsof -i tcp:$1
+  sudo lsof -i tcp:"$1"
 }
 
 find_port_occupant() {
-  sudo lsof -i tcp:$1
+  sudo lsof -i tcp:"$1"
 }
 
 kill_port_occupant() {
-  kill -9 $(sudo lsof -i tcp:$1)
+  kill -9 $(sudo lsof -i tcp:"$1")
 }
 
 cbranch() {
   if [ -d .git ]; then
-    git branch | grep \* | cut -d ' ' -f2
+    git branch | grep "\*" | cut -d ' ' -f2
   fi
 }
 
@@ -53,28 +53,28 @@ docker_run() {
   fi
 
   if [ -z "$2" ]; then # Is parameter #1 zero length?
-    docker-compose run --service-ports $1 bash
+    docker compose run --service-ports "$1" bash
   else
-    docker-compose run --service-ports $1 $2
+    docker compose run --service-ports "$1" "$2"
   fi
 }
 
 last_revision() {
-  git log origin/master..HEAD -s --pretty=format:"%h" $1 | head -n 1
+  git log origin/master..HEAD -s --pretty=format:"%h" "$1" | head -n 1
   echo ""
 }
 
 auto_fixup() {
-  commit=$(last_revision $1)
-  eval_auto_fixup $commit
+  commit=$(last_revision "$1")
+  eval_auto_fixup "$commit"
   _ret=$?
   if [ $_ret -ne 0 ]; then
     >&2 echo -e "${RED}Auto fix returned with exit code $_ret, aborting due the last revision is out of scope${NC}"
     return $_ret
   fi
   echo "Auto fixup on $commit"
-  git add $1
-  git commit --fixup $commit
+  git add "$1"
+  git commit --fixup "$commit"
 }
 
 eval_auto_fixup() {
@@ -90,8 +90,28 @@ restart_pipewire() {
   systemctl --user daemon-reload
 }
 
+search() {
+  local file_pattern="$1"
+  shift
+  local search_pattern="$*"
+
+  echo "File pattern: $file_pattern"
+  echo "Pattern di ricerca: $search_pattern"
+
+  mapfile -t files < <(find . -name "$file_pattern")
+  if ((${#files[@]} == 0)); then
+    echo "❌ Nessun file trovato per '$file_pattern'"
+    return 1
+  fi
+
+  printf '%s\n' "${files[@]}" |
+    xargs rg --line-number "$search_pattern" |
+    fzf --delimiter ':' \
+      --bind "enter:execute(bat --paging=always --highlight-line {2} {1})"
+}
+
 graphql_download_schema() {
-  _help="Usage: $(basename $0) [-x introspection_token] [-s schema_url] [output]"
+  _help="Usage: $(basename "$0") [-x introspection_token] [-s schema_url] [output]"
   while getopts ':s:x:h' opt; do
     case "$opt" in
     x)
@@ -111,7 +131,7 @@ graphql_download_schema() {
       ;;
 
     h)
-      echo "$_help\n"
+      printf "%s \n" "$_help"
       return 0
       ;;
 
@@ -138,15 +158,3 @@ graphql_download_schema() {
 
   return $?
 }
-
-# export -f cbranch
-# export -f find_port_occupant
-# export -f kill_port_occupant
-# export -f who_on_port
-# export -f git_up
-# export -f git_down
-# #export -f dir_stats
-# export -f docker_run
-# export -f last_revision
-# export -f auto_fixup
-# export -f eval_auto_fixup

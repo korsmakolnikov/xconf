@@ -26,7 +26,7 @@ alias rebar="rebar3"
 alias ringo="AWS_PROFILE=secrets ringo"
 
 alias docker.run="docker_run"
-alias docker.down="docker-compose down"
+alias docker.down="docker compose down"
 
 alias ku='kubectl'
 alias emacs='emacs --no-window-system'
