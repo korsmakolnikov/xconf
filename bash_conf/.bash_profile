@@ -2,8 +2,7 @@
 export PATH="${PATH}:/$HOME/.local/bin:/usr/local/bin:/$HOME/.local/share/bin:/$HOME/.npm-global/bin:/$HOME/.config/yarn/global"
 
 if [ -d "$HOME/.asdf" ]; then
-  . "$HOME/asdf-vm/src/asdf-0.12.0/asdf.sh"
-  . "$HOME/asdf-vm/src/asdf-0.12.0/completions/asdf.bash"
+  source "$HOME/.asdf/asdf.bash"
   export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
   GOPATH=$(asdf where golang)
   export GOPATH
