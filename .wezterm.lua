@@ -1,1 +1,0 @@
-/home/federico-caprari/xconf/wezterm.lua
