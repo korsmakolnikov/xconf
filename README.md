@@ -44,7 +44,7 @@ No list to maintain: the tree is the list.
 | `make apps` | the optional apps list |
 | `make link` | symlink `home/` into `$HOME`; a real file that differs is moved to `<file>.bak-<date>`, one identical to the repo copy is just replaced. Safe to rerun |
 | `make check` | exit 1 on a file not linked, a dangling link into the repo, or an i3 `exec` whose command is missing |
-| `make reload` | `check`, reload i3 (which restarts eww), fail if picom or eww are down or eww logged errors |
+| `make reload` | `check`, reload i3, restart eww (`exec_always` does not run on an i3 reload), reload dunst; fail if picom or eww are down or eww logged errors |
 | `make docker` | docker + docker-compose, `$USER` in the docker group, service enabled (log out to apply the group) |
 | `make asdf` | asdf plugins and runtimes pinned in `home/.tool-versions` (golang, nodejs LTS); Python is not on asdf, use `uv` |
 
