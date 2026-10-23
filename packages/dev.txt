@@ -1,0 +1,7 @@
+# language servers and dev tools (runtimes come from asdf, see home/.tool-versions)
+delve
+gopls
+k9s
+lua-language-server
+luarocks
+pgcli

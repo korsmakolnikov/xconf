@@ -1,0 +1,16 @@
+# optional desktop applications: make apps
+acpi
+converseen
+dosbox-x
+ferdium-bin
+geary
+handbrake
+mystiq
+printer-support
+remmina
+samba-support
+scanner-support
+shortwave
+simple-scan
+system-config-printer
+vlc

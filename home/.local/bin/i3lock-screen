@@ -1,0 +1,48 @@
+#!/bin/bash
+# Lock screen per i3: i3lock-color con lo sfondo corrente di feh.
+# Usato da xss-lock --transfer-sleep-lock: il suspend parte solo dopo
+# che i3lock ha disegnato la finestra di blocco (niente flash al resume).
+
+cache=~/.cache/lockscreen
+wall=$(grep -oP "'\K[^']+(?=')" ~/.fehbg 2>/dev/null | head -1)
+res=$(xrandr --current | grep -oP 'current \K\d+ x \d+' | tr -d ' ')
+
+img=
+if [[ -f $wall ]]; then
+    img="$cache/$(basename "${wall%.*}")-$res.png"
+    if [[ ! -f $img ]]; then
+        mkdir -p "$cache"
+        magick "$wall" -resize "$res^" -gravity center -extent "$res" \
+            -fill black -colorize 35% "$img" || img=
+    fi
+fi
+
+opts=(
+    ${img:+--image="$img"} --color=1a1b26 --fill
+    --ignore-empty-password --show-failed-attempts
+    --pass-media-keys --pass-volume-keys --pass-screen-keys
+    -k --time-str="%H:%M" --date-str="%A %d %B"
+    --time-font="Fira Code" --date-font="Fira Code"
+    --verif-font="Fira Code" --wrong-font="Fira Code"
+    --time-size=64 --date-size=20 --time-color=ffffffee --date-color=ffffffbb
+    --radius=120 --ring-width=8
+    --inside-color=00000088 --ring-color=bd93f9ff --separator-color=00000000
+    --insidever-color=00000088 --ringver-color=8be9fdff
+    --insidewrong-color=00000088 --ringwrong-color=ff5555ff
+    --keyhl-color=50fa7bff --bshl-color=ff79c6ff --line-uses-inside
+    --verif-color=ffffffee --wrong-color=ff5555ee
+    --verif-text="…" --wrong-text="no" --noinput-text="vuoto"
+)
+
+if [[ -e /dev/fd/${XSS_SLEEP_LOCK_FD:--1} ]]; then
+    kill_i3lock() { pkill -xu $EUID "$@" i3lock; }
+    trap kill_i3lock TERM INT
+    # i3lock non deve ereditare il fd del lock: fa fork solo dopo aver bloccato
+    i3lock "${opts[@]}" {XSS_SLEEP_LOCK_FD}<&-
+    # chiudiamo l'ultima copia del fd: ora logind può sospendere
+    exec {XSS_SLEEP_LOCK_FD}<&-
+    while kill_i3lock -0; do sleep 0.5; done
+else
+    pgrep -xu $EUID i3lock >/dev/null && exit 0
+    i3lock "${opts[@]}"
+fi
