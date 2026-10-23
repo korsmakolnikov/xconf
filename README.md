@@ -77,6 +77,9 @@ slack-desktop, steam, gimp, soundconverter.
 - **picom** rounds window corners with the same 14px radius as the eww pills.
   eww needs picom for transparency: if picom dies, restart picom *and then*
   eww, or the bar stays opaque black.
+  picom reloads its config on every change and **exits if the file is
+  invalid even for a moment**: a `git mv` of the linked file or a merge that
+  writes conflict markers into it both killed picom. `make reload` reports it.
 - **gaps**: 10px everywhere (`gaps inner 10`, `gaps outer 0`, `smart_gaps off`).
 
 ## TODO
