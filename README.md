@@ -74,14 +74,16 @@ slack-desktop, steam, gimp, soundconverter.
   system tray. `scripts/i3-listen.py` streams i3 events, `scripts/status.py`
   probes the system and prints JSON. The tray only shows StatusNotifierItem
   apps (start nm-applet with `--indicator`).
-- **rofi** (`home/.config/rofi/`): Antracite theme, anchored top left right
-  under the bar (`y-offset: 64px` = bar height) instead of centered.
-- **dunst** (`home/.config/dunst/dunstrc`): notifications top right under
-  the bar (`offset = (10, 64)`), same palette and radius; critical ones have a
+- **eww sits at the bottom** (`:anchor "bottom center"`, struts on the
+  bottom side).
+- **rofi** (`home/.config/rofi/`): Antracite theme, anchored top left 10px
+  from the edges like the gaps, instead of centered.
+- **dunst** (`home/.config/dunst/dunstrc`): notifications top right, 10px
+  from the edges (`offset = (10, 10)`), same palette and radius; critical ones have a
   red frame and stay until closed. Left click closes, middle runs the action,
   right closes all. Reload with `dunstctl reload`.
-- **i3bar and i3status are gone**: eww is the only bar. If the bar height
-  changes, update the 64px offsets in rofi and dunst too.
+- **i3bar and i3status are gone**: eww is the only bar. If it moves back to
+  the top, rofi and dunst need `64px` offsets (bar height) to sit under it.
 - **picom** rounds window corners with the same 14px radius as the eww pills.
   eww needs picom for transparency: if picom dies, restart picom *and then*
   eww, or the bar stays opaque black.
