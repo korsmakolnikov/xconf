@@ -10,9 +10,10 @@ end
 
 config.window_background_opacity = 0.8
 config.font = wezterm.font_with_fallback {
-  'Fira Code',
+  'Fira Code Nerd Font',
   'JetBrains Mono',
 }
+config.font_size = 16.0
 config.warn_about_missing_glyphs = false
 
 config.inactive_pane_hsb = {

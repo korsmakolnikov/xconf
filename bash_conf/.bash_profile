@@ -2,17 +2,16 @@
 export PATH="${PATH}:/$HOME/.local/bin:/usr/local/bin:/$HOME/.local/share/bin:/$HOME/.npm-global/bin:/$HOME/.config/yarn/global"
 
 if [ -d "$HOME/.asdf" ]; then
-  source "$HOME/.asdf/asdf.bash"
+  asdf_autocompletition="$HOME/.asdf/asdf.bash" 
+  if [ -f "asdf_autocompletition" ]; then
+    source "asdf_autocompletition"
+  fi
   export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
   GOPATH=$(asdf where golang)
   export GOPATH
   export GO111MODULE=on
   export GOBIN="${GOPATH}/bin"
-
   export PATH="${PATH}:${GOPATH}:${GOBIN}"
-  RUSTPATH=$(asdf where rust)
-  export RUSTPATH
-  export CARGO_NET_GIT_FETCH_WITH_CLI=true
 fi
 
 export EDITOR=nvim
