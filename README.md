@@ -15,6 +15,7 @@ xconf/
 ├── packages/         # pacman lists, one package per line, # comments
 │   ├── base.txt      #   command line tools          ┐
 │   ├── dev.txt       #   language servers, dev tools  │ make packages
+│   ├── c-cpp.txt     #   gcc, cmake, ninja, clang…   │
 │   ├── fonts.txt     #                                │
 │   ├── desktop.txt   #   what home/ configs run       ┘
 │   ├── docker.txt    #   make docker (part of bootstrap)
@@ -40,7 +41,7 @@ No list to maintain: the tree is the list.
 | Target | What it does |
 |---|---|
 | `make bootstrap` | fresh machine: `packages`, `link`, `docker`, `asdf`, `git-identity`, `ssh-key`, `browser` (interactive) |
-| `make packages` | `pacman -S --needed` the base, dev, fonts and desktop lists |
+| `make packages` | `pacman -S --needed` the base, dev, c-cpp, fonts and desktop lists |
 | `make apps` | the optional apps list |
 | `make link` | symlink `home/` into `$HOME`; a real file that differs is moved to `<file>.bak-<date>`, one identical to the repo copy is just replaced. Safe to rerun |
 | `make check` | exit 1 on a file not linked, a dangling link into the repo, or an i3 `exec` whose command is missing |
