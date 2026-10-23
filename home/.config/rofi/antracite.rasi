@@ -1,5 +1,5 @@
 /* Antracite: same palette and radius as the eww bar (~/.config/eww/eww.scss).
- * Anchored top left, just under the bar, instead of centered. */
+ * Anchored top left, 10px from the edges like the i3 gaps, instead of centered. */
 
 * {
 	bg0:     #1b1f21;
@@ -18,7 +18,7 @@ window {
 	location:         northwest;
 	anchor:           northwest;
 	x-offset:         10px;
-	y-offset:         64px;   /* eww bar height: 10px gap + pills + 10px gap */
+	y-offset:         10px;   /* the eww bar is at the bottom: same 10px as the gaps */
 	width:            640px;
 	background-color: @bg1;
 	border:           1px;
