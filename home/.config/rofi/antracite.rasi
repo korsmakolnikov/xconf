@@ -1,0 +1,76 @@
+/* Antracite: same palette and radius as the eww bar (~/.config/eww/eww.scss).
+ * Anchored top left, just under the bar, instead of centered. */
+
+* {
+	bg0:     #1b1f21;
+	bg1:     #23292bf0;
+	bg2:     #293133;
+	bg3:     #383e42;
+	fg:      #d6dadb;
+	fg-dim:  #8a9498;
+	fuchsia: #e05bbf;
+
+	background-color: transparent;
+	text-color:       @fg;
+}
+
+window {
+	location:         northwest;
+	anchor:           northwest;
+	x-offset:         10px;
+	y-offset:         64px;   /* eww bar height: 10px gap + pills + 10px gap */
+	width:            640px;
+	background-color: @bg1;
+	border:           1px;
+	border-color:     @bg3;
+	border-radius:    14px;
+	padding:          12px;
+}
+
+mainbox {
+	spacing:  10px;
+	children: [ inputbar, listview ];
+}
+
+inputbar {
+	background-color: @bg2;
+	border-radius:    10px;
+	padding:          8px 12px;
+	spacing:          12px;
+	children:         [ prompt, entry ];
+}
+
+prompt { text-color: @fuchsia; }
+
+entry {
+	placeholder:       "cerca…";
+	placeholder-color: @fg-dim;
+	cursor-color:      @fuchsia;
+}
+
+listview {
+	lines:        10;
+	spacing:      4px;
+	fixed-height: false;
+	scrollbar:    false;
+}
+
+element {
+	padding:       6px 10px;
+	spacing:       12px;
+	border-radius: 10px;
+}
+
+element normal.normal,
+element alternate.normal { text-color: @fg; }
+element normal.active,
+element alternate.active { text-color: @fuchsia; }
+element selected.normal,
+element selected.active  { background-color: @fuchsia; text-color: @bg0; }
+
+element-icon { size: 22px; }
+
+element-text {
+	vertical-align: 0.5;
+	text-color:     inherit;
+}
