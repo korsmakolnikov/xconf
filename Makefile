@@ -23,8 +23,11 @@ check: ## verify the links and that every i3 exec resolves (exit 1 on any proble
 	@bin/dotlink check
 	@bin/i3check
 
-reload: check ## reload i3 (which restarts eww) and report eww errors
+# i3 runs exec_always on start and restart, not on reload: restart eww explicitly
+reload: check ## reload i3, restart eww, reload dunst; fail if picom or eww are down or eww logged errors
 	@i3-msg -q reload
+	@$(HOME)/.config/eww/launch.sh >/dev/null 2>&1
+	@dunstctl reload
 	@sleep 3
 	@pgrep -x picom >/dev/null || { echo "picom is not running (eww loses transparency without it)"; exit 1; }
 	@pgrep -x eww >/dev/null || { echo "eww is not running"; exit 1; }
