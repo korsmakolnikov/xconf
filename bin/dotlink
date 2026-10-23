@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+# Mirror every file under home/ into $HOME as a symlink.
+#
+#   dotlink link    create the links; a real file in the way is moved to <file>.bak-<date>,
+#                   unless it is identical to the repo copy (then it is just replaced)
+#   dotlink check   report every target that is not a link to the repo, and dangling links
+#                   into the repo; exits 1 if anything is wrong
+set -euo pipefail
+
+repo=$(cd "$(dirname "$0")/.." && pwd)
+src_root="$repo/home"
+dest_root="${DOTLINK_HOME:-$HOME}"
+
+sources() {
+	(cd "$src_root" && find . \( -type f -o -type l \) -printf '%P\n' | sort)
+}
+
+link() {
+	local rel src dest
+	while IFS= read -r rel; do
+		src="$src_root/$rel"
+		dest="$dest_root/$rel"
+		[[ "$(readlink "$dest" 2>/dev/null)" == "$src" ]] && continue
+		mkdir -p "$(dirname "$dest")"
+		if [[ -e "$dest" && ! -L "$dest" ]] && ! cmp -s "$src" "$dest"; then
+			mv -v "$dest" "$dest.bak-$(date +%F-%H%M%S)"
+		fi
+		ln -sfnv "$src" "$dest"
+	done < <(sources)
+}
+
+check() {
+	local rel dest status=0
+	while IFS= read -r rel; do
+		dest="$dest_root/$rel"
+		if [[ "$(readlink "$dest" 2>/dev/null)" != "$src_root/$rel" ]]; then
+			echo "not linked: $dest"
+			status=1
+		fi
+	done < <(sources)
+	# dangling links into the repo, left behind by files moved or removed from it
+	while IFS= read -r dir; do
+		[[ -d "$dest_root/$dir" ]] || continue
+		while IFS= read -r dangling; do
+			[[ "$(readlink "$dangling")" == "$repo"/* ]] || continue
+			echo "dangling:   $dangling"
+			status=1
+		done < <(find "$dest_root/$dir" -maxdepth 1 -xtype l)
+	done < <(sources | xargs -n1 dirname | sort -u)
+	[[ $status -eq 0 ]] && echo "ok: $(sources | wc -l) files linked"
+	return $status
+}
+
+case "${1:-}" in
+	link) link ;;
+	check) check ;;
+	*) echo "usage: $0 link|check" >&2; exit 2 ;;
+esac
