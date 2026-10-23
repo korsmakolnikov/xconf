@@ -65,9 +65,9 @@ exec --no-startup-id conky
 exec --no-startup-id conky -c ~/.config/conky/conky-shcts
 exec --no-startup-id copyq
 exec --no-startup-id dunst
-exec --no-startup-id dex -a -s /etc/xdg/autostart/:~/.config/autostart/
+exec --no-startup-id dex -a -s ~/.config/autostart/:/etc/xdg/autostart/
 exec --no-startup-id desktop-items
-exec --no-startup-id nm-applet
+exec --no-startup-id nm-applet --indicator
 exec --no-startup-id pamac-tray
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id xfce4-power-manager
@@ -89,30 +89,37 @@ bindsym $super+Shift+d exec i3-dmenu-desktop --dmenu="dmenu -nb '#282a36' -sf  '
 bindsym $super+d exec --no-startup-id rofi -show drun
 
 # Lock screen
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock -c 000000
-# bindsym $super+l exec betterlockscreen --lock blur -u $lockScreenWallpaper
+exec --no-startup-id xss-lock --transfer-sleep-lock -- ~/.local/bin/i3lock-screen
+bindsym $super+Shift+x exec --no-startup-id loginctl lock-session
 
-# Screen brightness controls
-bindsym XF86MonBrightnessUp exec "xbacklight -inc 10; notify-send 'brightness up'"
-bindsym XF86MonBrightnessDown exec "xbacklight -dec 10; notify-send 'brightness down'"
+# Tasti funzione (ThinkBook 16p Gen 2) - logica in ~/.config/i3/scripts/fnkey.sh
+set $fnkey ~/.config/i3/scripts/fnkey.sh
 
-# Use pactl to adjust volume in PulseAudio.
-set $refresh_i3status killall -SIGUSR1 i3status
-# bindsym XF86AudioRaiseVolume exec --no-startup-id volume -npy -t i3blocks -u SIGRTMIN+10 up 5
-# bindsym XF86AudioLowerVolume exec --no-startup-id volume -npy -t i3blocks -u SIGRTMIN+10 down 5 
-# bindsym XF86AudioMute exec --no-startup-id volume -npy -t i3blocks -u SIGRTMIN+10 mute  
-# bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
-#change volume
-#bindsym XF86AudioRaiseVolume exec pulseaudio-ctl up
-#bindsym XF86AudioLowerVolume exec pulseaudio-ctl down
-#bindsym XF86AudioMute exec pulseaudio-ctl mute
+# Volume e microfono (PipeWire / wpctl)
+bindsym XF86AudioRaiseVolume exec --no-startup-id $fnkey vol-up
+bindsym XF86AudioLowerVolume exec --no-startup-id $fnkey vol-down
+bindsym XF86AudioMute        exec --no-startup-id $fnkey mute
+bindsym XF86AudioMicMute     exec --no-startup-id $fnkey mic-mute
 
+# Luminosità schermo (brightnessctl, pannello su amdgpu)
+bindsym XF86MonBrightnessUp   exec --no-startup-id $fnkey bright-up
+bindsym XF86MonBrightnessDown exec --no-startup-id $fnkey bright-down
 
-# music control
-#bindsym XF86AudioNext exec playerctl next
-#bindsym XF86AudioPrev exec playerctl previous
-#bindsym XF86AudioPlay exec playerctl play-pause
-#bindsym XF86AudioStop exec playerctl stop
+# Controlli multimediali
+bindsym XF86AudioPlay  exec --no-startup-id playerctl play-pause
+bindsym XF86AudioPause exec --no-startup-id playerctl play-pause
+bindsym XF86AudioStop  exec --no-startup-id playerctl stop
+bindsym XF86AudioNext  exec --no-startup-id playerctl next
+bindsym XF86AudioPrev  exec --no-startup-id playerctl previous
+
+# Cambio display (Win+P) e calcolatrice
+bindsym XF86Display    exec --no-startup-id arandr
+# il tasto display dei Lenovo spesso invia Super+P invece di XF86Display
+bindsym $super+p       exec --no-startup-id arandr
+bindsym XF86Calculator exec --no-startup-id galculator
+
+# Touchpad: toggle "disattiva mentre scrivi" (spento per giocare)
+bindsym Help exec --no-startup-id $fnkey touchpad-dwt
 
 # Print screen
 
@@ -236,7 +243,11 @@ bindsym $super+n border normal
 # panel
 # Start i3bar to display a workspace bar
 
+# eww on top, restarted on every i3 reload; i3bar stays at the bottom until eww is stable
+exec_always --no-startup-id ~/.config/eww/launch.sh
+
 bar {
+  position bottom
 	#status_command exec /usr/bin/net-speed.sh
   status_command i3status # -c $HOME/.config/i3status/i3status.conf
 	#strip_workspace_numbers yes|no
@@ -290,7 +301,7 @@ for_window [class="garuda-welcome"] floating enable
 for_window [class="plasmashell"] floating enable
 for_window [title="Desktop — Plasma"] kill, floating enable, border none
 for_window [title="Desktop @ QRect.*"] kill; floating enable; border none
-
+for_window [class="dosbox-x"] floating enable
 # window rules, you can find the window class using xprop
 for_window [class=".*"] border pixel 1
 assign [class=URxvt] 1
@@ -313,8 +324,8 @@ client.background           #2f343f
 #############################
 
 # Set inner/outer gaps
-gaps inner 20
-gaps outer 10
+gaps inner 10
+gaps outer 0
 
 # Additionally, you can issue commands with the following syntax. This is useful to bind keys to changing the gap size.
 # gaps inner|outer current|all set|plus|minus <px>
@@ -322,7 +333,7 @@ gaps outer 10
 # gaps outer all plus 5
 
 # Smart gaps (gaps used if only more than one container on the workspace)
-smart_gaps on
+smart_gaps off
 
 # Smart borders (draw borders around container only if it is not the only container on this workspace)
 # on|no_gaps (on=always activate and no_gaps=only activate if the gap size to the edge of the screen is 0)
@@ -373,11 +384,11 @@ mode "$mode_gaps_outer" {
 bindsym $super+0 mode "$mode_system"
 set $mode_system (l)ock, (e)xit, switch_(u)ser, (s)uspend, (h)ibernate, (r)eboot, (Shift+s)hutdown
 mode "$mode_system" {
-    bindsym l exec --no-startup-id i3lock -c 000000
+    bindsym l exec --no-startup-id loginctl lock-session, mode "default"
     bindsym s exec --no-startup-id systemctl suspend, mode "default" 
     #bindsym u exec --no-startup-id i3exit switch_user, mode "default"
     #bindsym e exec --no-startup-id i3exit logout, mode "default"
-    #bindsym h exec --no-startup-id i3exit hibernate, mode "default"
+    bindsym h exec --no-startup-id systemctl hibernate, mode "default"
     bindsym r exec --no-startup-id systemctl reboot
     bindsym Shift+s exec --no-startup-id systemctl poweroff
 
@@ -386,36 +397,5 @@ mode "$mode_system" {
     bindsym Escape mode "default"
 }
 
-# Review the lines below and append to ~/.config/i3/config
-
-## Volume control
-
-# Path to volume control, without trailing slash
-set $volumepath ~/i3-volume
-
-# Command for the status line
-#   ie: i3blocks, i3status
-set $statuscmd i3status
-
-# Signal used to update the status line
-#   i3blocks uses SIGRTMIN+10 by default
-#   i3status uses SIGUSR1 by default
-set $statussig SIGUSR1
-
-# Amount to increase/decrease volume as a percentage
-set $volumestep 5
-
-# pulseaudio-utils settings
-#
-# Symbolic name for sink (numeric index not supported)
-#   Recommended: comment out this setting and omit the -s option to use default sink
-#   List sink names: pacmd list-sinks | awk -F "[<>]" '/^\s+name: <.*>/{print $2}'
-#set $sinkname alsa_output.pci-0000_00_1b.0.analog-stereo
-
-# Using pulseaudio-utils (append "-s $sinkname" without quotes to override default sink)
-bindsym XF86AudioRaiseVolume exec --no-startup-id $volumepath/volume -n -t $statuscmd -u $statussig up $volumestep
-bindsym XF86AudioLowerVolume exec --no-startup-id $volumepath/volume -n -t $statuscmd -u $statussig down $volumestep
-bindsym XF86AudioMute        exec --no-startup-id $volumepath/volume -n -t $statuscmd -u $statussig mute
-
 # replace picom with another compositor
-exec_always --no-startup-id picom --config ~/.config/picom/picom.conf
+exec --no-startup-id picom --config ~/.config/picom.conf

@@ -1,0 +1,70 @@
+// Antracite — palette built on RAL 7016 (Anthracite grey) with a copper accent.
+$bg0:    #1b1f21;  // deepest, text on accent
+$bg1:    #23292b;  // pill background
+$bg2:    #293133;  // RAL 7016
+$bg3:    #383e42;  // RAL 7016 light, borders / hover
+$fg:     #d6dadb;
+$fg-dim: #8a9498;
+$fuchsia: #e05bbf; // primary accent, vaporwave
+$steel:  #8ea5b2;  // secondary accent
+$green:  #9bb07f;
+$yellow: #d8b568;
+$red:    #e0566e;
+
+* {
+  all: unset;
+  font-family: "JetBrainsMono Nerd Font", monospace;
+  font-size: 15px;
+}
+
+window { background: transparent; }
+
+tooltip {
+  background: $bg1;
+  border: 1px solid $bg3;
+  border-radius: 8px;
+  color: $fg;
+  padding: 4px 8px;
+}
+
+.bar {
+  margin: 10px;  // same gap above and below the pills
+  color: $fg;
+}
+
+.pill {
+  background: rgba($bg1, 0.94);
+  border: 1px solid $bg3;
+  border-radius: 14px;
+  padding: 6px 14px;
+}
+
+.item .icon { color: $fuchsia; font-size: 19px; }
+.item.dim, .item.dim .icon { color: $fg-dim; }
+.item.warn, .item.warn .icon { color: $yellow; }
+.item.crit, .item.crit .icon { color: $red; }
+
+.workspaces { padding: 4px 5px; }
+
+.ws {
+  padding: 2px 12px;
+  border-radius: 10px;
+  color: $fg-dim;
+  transition: background 200ms ease, color 200ms ease;
+
+  &:hover { background: $bg3; color: $fg; }
+  &.visible { background: $bg2; color: $steel; }
+  &.focused { background: $fuchsia; color: $bg0; font-weight: bold; }
+  &.urgent { background: $red; color: $bg0; }
+}
+
+.mode {
+  background: $red;
+  border-color: $red;
+  color: $bg0;
+  font-weight: bold;
+}
+
+.clock .text { font-weight: bold; }
+
+.tray { padding: 4px 12px; }
