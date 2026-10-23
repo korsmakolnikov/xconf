@@ -1,0 +1,11 @@
+# C and C++ toolchain, matching what `scaffold c` projects expect (CMake behind a Make wrapper)
+base-devel
+cmake
+ninja
+# clangd for the editor, clang-format, clang-tidy
+clang
+gdb
+valgrind
+# 32-bit target (i686 with -m32), offered by the c-scaffold skill
+lib32-gcc-libs
+lib32-glibc

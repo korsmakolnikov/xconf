@@ -1,7 +1,7 @@
 .PHONY: help bootstrap packages apps link check reload docker asdf git-identity ssh-key browser
 
 # package lists installed by `make packages`; apps.txt is opt-in through `make apps`
-PACKAGE_LISTS := base dev fonts desktop
+PACKAGE_LISTS := base dev c-cpp fonts desktop
 pacman_install = grep -hv '^\#' $(1) | sudo pacman -S --needed --noconfirm -
 
 help: ## list the targets
@@ -10,7 +10,7 @@ help: ## list the targets
 bootstrap: packages link docker asdf git-identity ssh-key browser ## set up a fresh machine (interactive)
 	@echo "bootstrap done: log out and back in for the docker group to apply"
 
-packages: ## install the base, dev, fonts and desktop package lists
+packages: ## install the base, dev, c-cpp, fonts and desktop package lists
 	@$(call pacman_install,$(PACKAGE_LISTS:%=packages/%.txt))
 
 apps: ## install the optional desktop applications
