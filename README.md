@@ -25,6 +25,8 @@ xconf/
 │   └── .config/
 │       ├── i3/config, i3/scripts/fnkey.sh
 │       ├── eww/      # the top bar
+│       ├── rofi/     # launcher, Antracite theme
+│       ├── dunst/    # notifications
 │       └── picom.conf
 ├── swapcaps/             (submodule)
 └── my_keyboard_layout/   (submodule)
@@ -72,8 +74,14 @@ slack-desktop, steam, gimp, soundconverter.
   system tray. `scripts/i3-listen.py` streams i3 events, `scripts/status.py`
   probes the system and prints JSON. The tray only shows StatusNotifierItem
   apps (start nm-applet with `--indicator`).
-- **i3bar** is still at the bottom with i3status, as a fallback until eww is
-  proven on both machines.
+- **rofi** (`home/.config/rofi/`): Antracite theme, anchored top left right
+  under the bar (`y-offset: 64px` = bar height) instead of centered.
+- **dunst** (`home/.config/dunst/dunstrc`): notifications top right under
+  the bar (`offset = (10, 64)`), same palette and radius; critical ones have a
+  red frame and stay until closed. Left click closes, middle runs the action,
+  right closes all. Reload with `dunstctl reload`.
+- **i3bar and i3status are gone**: eww is the only bar. If the bar height
+  changes, update the 64px offsets in rofi and dunst too.
 - **picom** rounds window corners with the same 14px radius as the eww pills.
   eww needs picom for transparency: if picom dies, restart picom *and then*
   eww, or the bar stays opaque black.
@@ -106,8 +114,9 @@ config.
      (laptop: `feh --bg-fill --randomize`)
    - lock with `betterlockscreen -l dimblur` via xss-lock and `$super+l`
      (laptop: `i3lock-color` through `~/.local/bin/i3lock-screen`)
-   - rofi with `-theme ~/.local/share/rofi/themes/launchpad.rasi`
-   - i3status reads `~/.config/i3status/config`
+   - rofi with `-theme ~/.local/share/rofi/themes/launchpad.rasi` (the shared
+     config now uses `home/.config/rofi/antracite.rasi`: drop it or keep it)
+   - i3status reads `~/.config/i3status/config` (i3bar is gone: obsolete)
    - picom started from `~/.config/picom/picom.conf` (repo links `~/.config/picom.conf`)
    - the `xrandr --output HDMI-1-0 … --left-of eDP-1` line, commented
 5. **Per-machine config**: end the shared i3 config with
@@ -127,8 +136,6 @@ config.
 
 ### Rice, after that
 
-- rofi: themed in Antracite, anchored under the bar (top left) instead of centered.
-- dunst: rounded corners, Antracite palette, placed under the bar.
 - i3 window border: the focused border is still Garuda's salmon `#bf616a`,
   clipped by the rounded corners; options: 2px fuchsia or no border plus
   picom shadow.
@@ -136,7 +143,8 @@ config.
   size only, colors stay out of the theme.
 - picom animations (`animations` block, picom ≥ 12) and blur behind
   translucent windows; `inactive-opacity = 0.3` is very aggressive.
-- remove i3bar and `i3status.conf` once eww is stable on both machines.
+- dunst keyboard shortcuts: the old `[shortcuts]` section is gone from
+  dunst; if wanted, bind `dunstctl close`, `close-all` and `history-pop` in i3.
 
 ### Housekeeping
 
