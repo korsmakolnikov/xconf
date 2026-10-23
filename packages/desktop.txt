@@ -1,0 +1,22 @@
+# what the i3, picom and eww configs in home/ run
+arandr
+blueman
+brightnessctl
+copyq
+dex
+dunst
+eww
+feh
+galculator
+i3-wm
+i3lock-color
+i3status
+imagemagick
+network-manager-applet
+numlockx
+picom
+playerctl
+rofi
+wireplumber
+xdotool
+xss-lock

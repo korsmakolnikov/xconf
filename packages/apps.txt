@@ -1,0 +1,10 @@
+# optional desktop applications: make apps
+acpi
+dosbox-x
+ferdium-bin
+printer-support
+samba-support
+scanner-support
+simple-scan
+system-config-printer
+vlc

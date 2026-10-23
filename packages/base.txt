@@ -1,0 +1,20 @@
+# command line and everyday tools
+asdf-vm
+bash-completion
+bat
+claude-code
+firefox
+fzf
+git
+git-delta
+github-cli
+htop
+jq
+lsof
+neovim
+ripgrep
+tig
+tree-sitter
+uv
+wezterm
+xclip

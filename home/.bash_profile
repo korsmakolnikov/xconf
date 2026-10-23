@@ -2,11 +2,8 @@
 export PATH="${PATH}:/$HOME/.local/bin:/usr/local/bin:/$HOME/.local/share/bin:/$HOME/.npm-global/bin:/$HOME/.config/yarn/global"
 
 if [ -d "$HOME/.asdf" ]; then
-  asdf_autocompletition="$HOME/.asdf/asdf.bash" 
-  if [ -f "asdf_autocompletition" ]; then
-    source "asdf_autocompletition"
-  fi
   export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+  . <(asdf completion bash)
   GOPATH=$(asdf where golang)
   export GOPATH
   export GO111MODULE=on
