@@ -1,4 +1,4 @@
-;; Antracite bar for i3 — same modules the old i3bar + i3status showed.
+;; Antracite bar for i3.
 
 (deflisten workspaces :initial "[]" "~/.config/eww/scripts/i3-listen.py workspaces")
 (deflisten mode :initial "" "~/.config/eww/scripts/i3-listen.py mode")
@@ -41,11 +41,12 @@
             :tooltip {wifi.up ? wifi.ip : ""})
       (box :visible {ethernet.up}
         (item :icon "󰈀" :text "${ethernet.ip} (${ethernet.speed})")))
-    (pill
-      (item :class {battery.capacity < 15 && battery.status != "Charging" ? "crit" : battery.capacity < 30 ? "warn" : ""}
-            :icon {battery.status == "Charging" ? "󰂄" : battery.capacity > 60 ? "󰁹" : battery.capacity > 25 ? "󰁾" : "󰁺"}
-            :text "${battery.capacity}%${battery.remaining == '' ? '' : ' ' + battery.remaining}"
-            :tooltip {battery.status}))
+    (box :visible {battery.present}
+      (pill
+        (item :class {battery.capacity < 15 && battery.status != "Charging" ? "crit" : battery.capacity < 30 ? "warn" : ""}
+              :icon {battery.status == "Charging" ? "󰂄" : battery.capacity > 60 ? "󰁹" : battery.capacity > 25 ? "󰁾" : "󰁺"}
+              :text "${battery.capacity}%${battery.remaining == '' ? '' : ' ' + battery.remaining}"
+              :tooltip {battery.status})))
     (pill
       (item :icon "󰋊" :text "${round(EWW_DISK['/'].free / 1073741824, 1)}G")
       (item :icon "󰻠"  :text loadavg)
