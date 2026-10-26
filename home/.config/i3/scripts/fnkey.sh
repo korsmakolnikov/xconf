@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Tasti funzione ThinkBook 16p Gen 2: esegue l'azione, aggiorna i3status e mostra una notifica dunst.
-# Uso: fnkey.sh vol-up|vol-down|mute|mic-mute|bright-up|bright-down|touchpad-dwt
+# Tasti funzione (ThinkBook 16p Gen 2, HHKB del desktop): esegue l'azione e mostra una notifica dunst.
+# Uso: fnkey.sh vol-up|vol-down|mute|mic-mute|bright-up|bright-down|touchpad-dwt|eject
 
 STEP=5
 BL_DEV=amdgpu_bl2
@@ -34,6 +34,22 @@ bright_notify() {
     notify brightness "Luminosità: ${pct}%" "$pct"
 }
 
+# eject: smonta e spegne ogni disco USB o hotplug (le chiavette), mai i dischi interni
+eject_usb() {
+    local disk part ok=() busy=()
+    while read -r disk; do
+        for part in $(/usr/bin/lsblk -lnpo NAME "$disk"); do
+            findmnt -n -S "$part" >/dev/null || continue
+            udisksctl unmount -b "$part" >/dev/null 2>&1 || { busy+=("$part"); continue 2; }
+        done
+        udisksctl power-off -b "$disk" >/dev/null 2>&1 && ok+=("${disk#/dev/}") || busy+=("$disk")
+    done < <(/usr/bin/lsblk -dnpo NAME,TRAN,HOTPLUG,TYPE | awk '$NF == "disk" && ($2 == "usb" || $3 == 1) {print $1}')
+    if ((${#busy[@]})); then notify eject "Occupato, non espulso: ${busy[*]}"
+    elif ((${#ok[@]})); then notify eject "Espulso: ${ok[*]}"
+    else notify eject "Nessuna chiavetta da espellere"
+    fi
+}
+
 case "$1" in
     vol-up)      wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ "${STEP}%+"; vol_notify ;;
     vol-down)    wpctl set-volume @DEFAULT_AUDIO_SINK@ "${STEP}%-"; vol_notify ;;
@@ -42,8 +58,7 @@ case "$1" in
                  if wpctl get-volume @DEFAULT_AUDIO_SOURCE@ | grep -q MUTED; then notify mic "Microfono: muto"; else notify mic "Microfono: attivo"; fi ;;
     bright-up)   brightnessctl -q -d "$BL_DEV" set "${STEP}%+"; bright_notify ;;
     bright-down) brightnessctl -q -d "$BL_DEV" -n1 set "${STEP}%-"; bright_notify ;;
-    touchpad-dwt) touchpad_dwt_toggle; exit ;;
-    *) echo "uso: $0 vol-up|vol-down|mute|mic-mute|bright-up|bright-down|touchpad-dwt" >&2; exit 1 ;;
+    touchpad-dwt) touchpad_dwt_toggle ;;
+    eject)       eject_usb ;;
+    *) echo "uso: $0 vol-up|vol-down|mute|mic-mute|bright-up|bright-down|touchpad-dwt|eject" >&2; exit 1 ;;
 esac
-
-killall -q -SIGUSR1 i3status

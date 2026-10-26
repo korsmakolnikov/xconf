@@ -10,7 +10,6 @@ feh
 galculator
 i3-wm
 i3lock-color
-i3status
 imagemagick
 network-manager-applet
 numlockx

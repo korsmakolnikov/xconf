@@ -48,7 +48,7 @@ bindsym Print exec --no-startup-id $preferredScreenCaptureTool
 bindsym $super+Return exec $preferredTerminalEmulator
 bindsym $super+t exec wezterm
 
-# set font
+# set font (hosts/<hostname>/.config/i3/local.conf can override it)
 font pango: source code pro 14
 
 # Use Mouse+$super to drag floating windows to their wanted position
@@ -67,7 +67,6 @@ exec --no-startup-id nm-applet --indicator
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec_always --no-startup-id numlockx on
 exec --no-startup-id ~/.local/bin/fastfetch-garuda
-exec --no-startup-id swapcaps
 
 
 # start rofi (a program launcher) change modus Ctrl + Tab
@@ -102,6 +101,9 @@ bindsym XF86Display    exec --no-startup-id arandr
 # il tasto display dei Lenovo spesso invia Super+P invece di XF86Display
 bindsym $super+p       exec --no-startup-id arandr
 bindsym XF86Calculator exec --no-startup-id galculator
+
+# Eject: unmount and power off every removable USB drive
+bindsym XF86Eject exec --no-startup-id $fnkey eject
 
 # Touchpad: toggle "disattiva mentre scrivi" (spento per giocare)
 bindsym Help exec --no-startup-id $fnkey touchpad-dwt
@@ -364,3 +366,6 @@ mode "$mode_system" {
 
 # replace picom with another compositor
 exec --no-startup-id picom --config ~/.config/picom.conf
+
+# per-machine settings, linked by make link from hosts/<hostname>/; included last so they override
+include ~/.config/i3/local.conf
