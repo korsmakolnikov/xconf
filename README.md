@@ -102,17 +102,20 @@ slack-desktop, steam, gimp, soundconverter.
   route, docker containers (yellow when restarting), the coding agents
   running (claude, codex, aider…) with their project. `conky.conf` is Lua and
   detects the interface, the root disk and the NVIDIA GPU at load, so it is
-  the same on every machine; conky reloads it when it changes. picom does not
-  round its window: `background.lua` clears the corners. The panel is 85%
-  opaque through `own_window_color` (`#D9…`), which conky also gives to bars
-  and rules; with a transparent window and a background drawn in Lua they
-  were added to the wallpaper (red specks on the lines), and at `#FF` conky
-  drops the ARGB visual and the corners turn black.
+  the same on every machine; conky reloads it when it changes. picom rounds its
+  window, `background.lua` draws the bg3 border of the eww pills. The panel
+  is 85% opaque through `own_window_color` (`#D9…`), which conky also gives
+  to bars and rules; with a transparent window and a background drawn in Lua
+  they were added to the wallpaper (red specks on the lines).
 - **i3bar and i3status are gone**: eww is the only bar. If it moves back to
   the top, rofi and dunst need `64px` offsets (bar height) to sit under it.
 - **picom** rounds window corners with the same 14px radius as the eww pills.
   eww needs picom for transparency: if picom dies, restart picom *and then*
   eww, or the bar stays opaque black.
+  Garuda's `/etc/xdg/autostart/picom.desktop` starts a bare `picom` through
+  `dex -a` and races the i3 `exec`: `home/.config/autostart/picom.desktop`
+  hides it. Square window corners mean picom runs without this config
+  (`ps -o args -C picom`).
   picom reloads its config on every change and **exits if the file is
   invalid even for a moment**: a `git mv` of the linked file or a merge that
   writes conflict markers into it both killed picom. `make reload` reports it.

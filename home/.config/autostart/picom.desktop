@@ -1,0 +1,6 @@
+# Hides /etc/xdg/autostart/picom.desktop, which dex -a runs at login as a bare `picom`:
+# it raced the i3 `exec picom --config ~/.config/picom.conf` and could win with another config.
+[Desktop Entry]
+Type=Application
+Name=picom
+Hidden=true
