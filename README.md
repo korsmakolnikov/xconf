@@ -29,6 +29,7 @@ xconf/
 │       ├── eww/      # the bar
 │       ├── rofi/     # launcher, Antracite theme
 │       ├── dunst/    # notifications
+│       ├── conky/    # system monitor on the desktop: GPU, local models, agents
 │       └── picom.conf
 ├── hosts/            # per machine, linked only on the machine with that hostname
 │   ├── blacksheep-tmp20/.config/i3/local.conf   # laptop: swapcaps at startup
@@ -93,6 +94,18 @@ slack-desktop, steam, gimp, soundconverter.
   from the edges (`offset = (10, 10)`), same palette and radius; critical ones have a
   red frame and stay until closed. Left click closes, middle runs the action,
   right closes all. Reload with `dunstctl reload`.
+- **conky** (`home/.config/conky/`): a panel on the desktop, top right under
+  the windows, 10px from the edges, same palette, 14px corners. What the bar
+  has no room for: the GPU (load and VRAM history, temperature, power, the
+  compute processes holding VRAM, the models loaded in ollama), CPU and
+  memory history, top processes, root disk I/O, network on the default
+  route, docker containers (yellow when restarting), the coding agents
+  running (claude, codex, aider…) with their project. `conky.conf` is Lua and
+  detects the interface, the root disk and the NVIDIA GPU at load, so it is
+  the same on every machine; conky reloads it when it changes. picom does not
+  round its window: the window is opaque (`#FE…`: conky gives that alpha to
+  bars and rules as well, and 255 would drop the ARGB visual) and
+  `background.lua` clears the corners.
 - **i3bar and i3status are gone**: eww is the only bar. If it moves back to
   the top, rofi and dunst need `64px` offsets (bar height) to sit under it.
 - **picom** rounds window corners with the same 14px radius as the eww pills.
