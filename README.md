@@ -1,8 +1,9 @@
 # xconf
 
 Dotfiles and machine setup for my Arch (Garuda i3) machines: a laptop
-(`blacksheep-tmp20`, Lenovo ThinkBook 16p Gen 2) and a desktop. The repo is
-how the two stay in sync: change on one, push, pull on the other.
+(`blacksheep-tmp20`, Lenovo ThinkBook 16p Gen 2) and a desktop
+(`blacksheep-i3`, RTX 3060, one 27" 2560x1440 monitor, HHKB Professional).
+The repo is how the two stay in sync: change on one, push, pull on the other.
 
 ## Layout
 
@@ -22,13 +23,17 @@ xconf/
 │   └── apps.txt      #   optional apps: make apps
 ├── home/             # mirror of $HOME: home/X is linked to ~/X
 │   ├── .bash_*  .bashlib  .tool-versions  .wezterm.lua
-│   ├── .local/bin/   # rgs, i3lock-screen
+│   ├── .local/bin/   # rgs, i3lock-screen, swapcaps (link into the submodule)
 │   └── .config/
 │       ├── i3/config, i3/scripts/fnkey.sh
-│       ├── eww/      # the top bar
+│       ├── eww/      # the bar
 │       ├── rofi/     # launcher, Antracite theme
 │       ├── dunst/    # notifications
+│       ├── conky/    # system monitor on the desktop: GPU, local models, agents
 │       └── picom.conf
+├── hosts/            # per machine, linked only on the machine with that hostname
+│   ├── blacksheep-tmp20/.config/i3/local.conf   # laptop: swapcaps at startup
+│   └── blacksheep-i3/.config/i3/local.conf      # desktop: font 10
 ├── swapcaps/             (submodule)
 └── my_keyboard_layout/   (submodule)
 ```
@@ -36,15 +41,21 @@ xconf/
 Adding a dotfile: move it to the same path under `home/`, run `make link`.
 No list to maintain: the tree is the list.
 
+Per-machine files go under `hosts/<hostname>/` with the same layout as `home/`;
+`make link` links `home/` and then the folder matching `hostname`. The same
+path cannot be in both (`make check` fails). The shared i3 config ends with
+`include ~/.config/i3/local.conf`, so a host's `local.conf` overrides it; a
+machine without one just uses the shared settings.
+
 ## Make targets
 
 | Target | What it does |
 |---|---|
 | `make bootstrap` | fresh machine: `packages`, `link`, `docker`, `asdf`, `git-identity`, `ssh-key`, `browser` (interactive) |
-| `make packages` | `pacman -S --needed` the base, dev, c-cpp, fonts and desktop lists |
+| `make packages` | `pacman -Syu --needed` (full upgrade: no partial upgrades on Arch) the base, dev, c-cpp, fonts and desktop lists |
 | `make apps` | the optional apps list |
-| `make link` | symlink `home/` into `$HOME`; a real file that differs is moved to `<file>.bak-<date>`, one identical to the repo copy is just replaced. Safe to rerun |
-| `make check` | exit 1 on a file not linked, a dangling link into the repo, or an i3 `exec` whose command is missing |
+| `make link` | symlink `home/` into `$HOME`; a real file that differs is moved to `<file>.bak-<date>`, one identical to the repo copy is just replaced; dangling links into the repo are removed. Safe to rerun |
+| `make check` | exit 1 on a file not linked, a dangling link into the repo, a path in both `home/` and `hosts/`, an i3 config syntax error (`i3 -C`), or an i3 `exec` whose command is missing |
 | `make reload` | `check`, reload i3, restart eww (`exec_always` does not run on an i3 reload), reload dunst; fail if picom or eww are down or eww logged errors |
 | `make docker` | docker + docker-compose, `$USER` in the docker group, service enabled (log out to apply the group) |
 | `make asdf` | asdf plugins and runtimes pinned in `home/.tool-versions` (golang, nodejs LTS); Python is not on asdf, use `uv` |
@@ -70,9 +81,9 @@ slack-desktop, steam, gimp, soundconverter.
   `#e05bbf` fuchsia, `#8ea5b2` steel, `#9bb07f` green, `#d8b568` yellow,
   `#e0566e` red.
 - **wezterm stays out of the theme**: it keeps its own colors on purpose.
-- **eww** is the top bar (`home/.config/eww/`): i3 workspaces, binding mode,
-  clock, IPv4, wifi, ethernet (only when up), battery, disk, load, memory,
-  system tray. `scripts/i3-listen.py` streams i3 events, `scripts/status.py`
+- **eww** is the bar (`home/.config/eww/`): i3 workspaces, binding mode,
+  clock, IPv4, wifi, ethernet (only when up), battery (only when there is
+  one), disk, load, memory, system tray. `scripts/i3-listen.py` streams i3 events, `scripts/status.py`
   probes the system and prints JSON. The tray only shows StatusNotifierItem
   apps (start nm-applet with `--indicator`).
 - **eww sits at the bottom** (`:anchor "bottom center"`, struts on the
@@ -83,11 +94,28 @@ slack-desktop, steam, gimp, soundconverter.
   from the edges (`offset = (10, 10)`), same palette and radius; critical ones have a
   red frame and stay until closed. Left click closes, middle runs the action,
   right closes all. Reload with `dunstctl reload`.
+- **conky** (`home/.config/conky/`): a panel on the desktop, top right under
+  the windows, 10px from the edges, same palette, 14px corners. What the bar
+  has no room for: the GPU (load and VRAM history, temperature, power, the
+  compute processes holding VRAM, the models loaded in ollama), CPU and
+  memory history, top processes, root disk I/O, network on the default
+  route, docker containers (yellow when restarting), the coding agents
+  running (claude, codex, aider…) with their project. `conky.conf` is Lua and
+  detects the interface, the root disk and the NVIDIA GPU at load, so it is
+  the same on every machine; conky reloads it when it changes. picom rounds its
+  window, `background.lua` draws the bg3 border of the eww pills. The panel
+  is 85% opaque through `own_window_color` (`#D9…`), which conky also gives
+  to bars and rules; with a transparent window and a background drawn in Lua
+  they were added to the wallpaper (red specks on the lines).
 - **i3bar and i3status are gone**: eww is the only bar. If it moves back to
   the top, rofi and dunst need `64px` offsets (bar height) to sit under it.
 - **picom** rounds window corners with the same 14px radius as the eww pills.
   eww needs picom for transparency: if picom dies, restart picom *and then*
   eww, or the bar stays opaque black.
+  Garuda's `/etc/xdg/autostart/picom.desktop` starts a bare `picom` through
+  `dex -a` and races the i3 `exec`: `home/.config/autostart/picom.desktop`
+  hides it. Square window corners mean picom runs without this config
+  (`ps -o args -C picom`).
   picom reloads its config on every change and **exits if the file is
   invalid even for a moment**: a `git mv` of the linked file or a merge that
   writes conflict markers into it both killed picom. `make reload` reports it.
@@ -95,47 +123,24 @@ slack-desktop, steam, gimp, soundconverter.
 
 ## TODO
 
-### Next session on the desktop (read this first)
+### Desktop and laptop
 
-The restructuring into `home/` was done on the laptop. The desktop has never
-pulled it, and its own last changes were never merged into the shared
-config.
+The desktop is on the `home/` layout and has its `hosts/blacksheep-i3/`.
+Its old settings (commits `7e3652f`, `3889088`) were reviewed: the font is in
+`local.conf`, the picom fix is in the shared config, everything else
+(xwallpaper, betterlockscreen, i3status, the launchpad rofi theme, conky,
+the HDMI xrandr line, Garuda tray tools) was dropped for the shared setup.
 
-1. **Before pulling**: `git status`; commit or stash anything local.
-2. **Right after `git pull --recurse-submodules`, run `make link` before any
-   i3 reload or logout.** On the desktop `~/.config/i3/config` and
-   `~/.config/picom.conf` are probably symlinks to `xconf/i3.conf` and
-   `xconf/picom.conf`, which no longer exist: i3 would start without a config.
-   `make link` backs up real files that differ as `.bak-<date>`.
-3. Then `make check`, `make packages` (eww comes from chaotic-aur: check it is
-   enabled), `make reload`.
-4. **Recover the desktop-only settings** from commits `7e3652f` and `3889088`
-   (`git show 3889088 -- i3.conf`). They were left out of the shared i3 config
-   because they conflict with the laptop:
-   - `font pango: source code pro 10` (laptop: 14)
-   - wallpaper with `xwallpaper --zoom` on a random file of `~/wallpapers`
-     (laptop: `feh --bg-fill --randomize`)
-   - lock with `betterlockscreen -l dimblur` via xss-lock and `$super+l`
-     (laptop: `i3lock-color` through `~/.local/bin/i3lock-screen`)
-   - rofi with `-theme ~/.local/share/rofi/themes/launchpad.rasi` (the shared
-     config now uses `home/.config/rofi/antracite.rasi`: drop it or keep it)
-   - i3status reads `~/.config/i3status/config` (i3bar is gone: obsolete)
-   - picom started from `~/.config/picom/picom.conf` (repo links `~/.config/picom.conf`)
-   - the `xrandr --output HDMI-1-0 … --left-of eDP-1` line, commented
-5. **Per-machine config**: end the shared i3 config with
-   `include ~/.config/i3/local.conf`, keep one file per machine in the repo
-   (e.g. `hosts/<hostname>/`) and have `make link` link the one matching
-   `hostname`. Laptop-only today: `fnkey.sh` and the ThinkBook function keys,
-   brightness, touchpad toggle. Desktop-only: the list in step 4, monitors.
-6. **Make eww portable**:
-   - battery: on a machine without one `status.py battery` returns no
-     `capacity` and eww logs `Failed to turn null into f64`; hide the pill
-     when `present` is false and return safe defaults;
-   - wifi: hide the pill when there is no wireless device (today it shows a
-     red "down" on a wired machine);
-   - monitors: the window is pinned to `:monitor 0`; open one bar per monitor.
-7. `make check` should also fail on eww errors on the current machine, so one
-   command proves the setup works there.
+- **On the laptop, after pulling**: `make link` (it links
+  `hosts/blacksheep-tmp20/`, which now starts swapcaps), `make check`,
+  `make reload`. swapcaps is linked from the submodule into `~/.local/bin`:
+  the old `/usr/local/bin/swapcaps` from `swapcaps/install.sh` can go.
+- **eww, still to do**:
+  - wifi: hide the pill when there is no wireless device (today it shows a
+    red "down" on a wired machine);
+  - monitors: the window is pinned to `:monitor 0`; open one bar per monitor.
+- `make check` should also fail on eww errors on the current machine, so one
+  command proves the setup works there.
 
 ### Rice, after that
 

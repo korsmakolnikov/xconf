@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Status probes for the eww bar, the same data i3status showed.
+"""Status probes for the eww bar.
 
 Usage: status.py wifi | ethernet | battery | ipv4   (prints one JSON object)
 """
@@ -48,7 +48,8 @@ def ethernet():
 def battery():
     bats = sorted(Path("/sys/class/power_supply").glob("BAT*"))
     if not bats:
-        return {"present": False}
+        # eww evaluates the hidden pill too: no field may be null
+        return {"present": False, "status": "", "capacity": 100, "remaining": ""}
     bat = bats[0]
     read = lambda f: (bat / f).read_text().strip() if (bat / f).exists() else ""
     status = read("status")

@@ -1,24 +1,43 @@
 #!/usr/bin/env bash
-# Mirror every file under home/ into $HOME as a symlink.
+# Mirror every file under home/, then under hosts/<hostname>/, into $HOME as a symlink.
+# home/ is shared by every machine, hosts/<hostname>/ holds what only this machine needs;
+# the same path must not be in both.
 #
 #   dotlink link    create the links; a real file in the way is moved to <file>.bak-<date>,
-#                   unless it is identical to the repo copy (then it is just replaced)
-#   dotlink check   report every target that is not a link to the repo, and dangling links
-#                   into the repo; exits 1 if anything is wrong
+#                   unless it is identical to the repo copy (then it is just replaced);
+#                   dangling links into the repo are removed
+#   dotlink check   report every target that is not a link to the repo, dangling links
+#                   into the repo and paths in both roots; exits 1 if anything is wrong
 set -euo pipefail
 
 repo=$(cd "$(dirname "$0")/.." && pwd)
-src_root="$repo/home"
 dest_root="${DOTLINK_HOME:-$HOME}"
+host="${DOTLINK_HOST:-$(hostname)}"
+roots=("$repo/home")
+[[ -d "$repo/hosts/$host" ]] && roots+=("$repo/hosts/$host")
 
+# one "<source>\t<path relative to $HOME>" line per file
 sources() {
-	(cd "$src_root" && find . \( -type f -o -type l \) -printf '%P\n' | sort)
+	local root
+	for root in "${roots[@]}"; do
+		(cd "$root" && find . \( -type f -o -type l \) -printf "$root/%P\t%P\n")
+	done | sort -t$'\t' -k2
+}
+
+# dangling links into the repo, left behind by files moved or removed from it
+dangling() {
+	local dir
+	while IFS= read -r dir; do
+		[[ -d "$dest_root/$dir" ]] || continue
+		find "$dest_root/$dir" -maxdepth 1 -xtype l | while IFS= read -r l; do
+			if [[ "$(readlink "$l")" == "$repo"/* ]]; then echo "$l"; fi
+		done
+	done < <(sources | cut -f2 | xargs -n1 dirname | sort -u | sed 's|^\.$||')
 }
 
 link() {
-	local rel src dest
-	while IFS= read -r rel; do
-		src="$src_root/$rel"
+	local rel src dest l
+	while IFS=$'\t' read -r src rel; do
 		dest="$dest_root/$rel"
 		[[ "$(readlink "$dest" 2>/dev/null)" == "$src" ]] && continue
 		mkdir -p "$(dirname "$dest")"
@@ -27,27 +46,30 @@ link() {
 		fi
 		ln -sfnv "$src" "$dest"
 	done < <(sources)
+	while IFS= read -r l; do
+		rm -v "$l"
+	done < <(dangling)
+	echo "ok: $(sources | wc -l) files linked (host $host)"
 }
 
 check() {
-	local rel dest status=0
-	while IFS= read -r rel; do
+	local rel src dest l status=0
+	while IFS=$'\t' read -r src rel; do
 		dest="$dest_root/$rel"
-		if [[ "$(readlink "$dest" 2>/dev/null)" != "$src_root/$rel" ]]; then
+		if [[ "$(readlink "$dest" 2>/dev/null)" != "$src" ]]; then
 			echo "not linked: $dest"
 			status=1
 		fi
 	done < <(sources)
-	# dangling links into the repo, left behind by files moved or removed from it
-	while IFS= read -r dir; do
-		[[ -d "$dest_root/$dir" ]] || continue
-		while IFS= read -r dangling; do
-			[[ "$(readlink "$dangling")" == "$repo"/* ]] || continue
-			echo "dangling:   $dangling"
-			status=1
-		done < <(find "$dest_root/$dir" -maxdepth 1 -xtype l)
-	done < <(sources | xargs -n1 dirname | sort -u)
-	[[ $status -eq 0 ]] && echo "ok: $(sources | wc -l) files linked"
+	while IFS= read -r rel; do
+		echo "duplicate:  $rel is in home/ and hosts/$host/"
+		status=1
+	done < <(sources | cut -f2 | uniq -d)
+	while IFS= read -r l; do
+		echo "dangling:   $l"
+		status=1
+	done < <(dangling)
+	[[ $status -eq 0 ]] && echo "ok: $(sources | wc -l) files linked (host $host)"
 	return $status
 }
 

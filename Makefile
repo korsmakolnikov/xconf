@@ -2,7 +2,8 @@
 
 # package lists installed by `make packages`; apps.txt is opt-in through `make apps`
 PACKAGE_LISTS := base dev c-cpp fonts desktop
-pacman_install = grep -hv '^\#' $(1) | sudo pacman -S --needed --noconfirm -
+# -Syu: Arch does not support partial upgrades, a -S on a stale system can break dependencies
+pacman_install = grep -hv '^\#' $(1) | sudo pacman -Syu --needed --noconfirm -
 
 help: ## list the targets
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  %-13s %s\n", $$1, $$2}'
@@ -19,12 +20,14 @@ apps: ## install the optional desktop applications
 link: ## symlink every file under home/ into $HOME
 	@bin/dotlink link
 
-check: ## verify the links and that every i3 exec resolves (exit 1 on any problem)
+check: ## verify the links, the i3 config syntax and that every i3 exec resolves (exit 1 on any problem)
 	@bin/dotlink check
+	@i3 -C -c $(HOME)/.config/i3/config && echo "ok: i3 config is valid"
 	@bin/i3check
 
 # i3 runs exec_always on start and restart, not on reload: restart eww explicitly
 reload: check ## reload i3, restart eww, reload dunst; fail if picom or eww are down or eww logged errors
+	@command -v eww >/dev/null || { echo "eww is not installed: run make packages"; exit 1; }
 	@i3-msg -q reload
 	@$(HOME)/.config/eww/launch.sh >/dev/null 2>&1
 	@dunstctl reload
