@@ -103,9 +103,11 @@ slack-desktop, steam, gimp, soundconverter.
   running (claude, codex, aider…) with their project. `conky.conf` is Lua and
   detects the interface, the root disk and the NVIDIA GPU at load, so it is
   the same on every machine; conky reloads it when it changes. picom does not
-  round its window: the window is opaque (`#FE…`: conky gives that alpha to
-  bars and rules as well, and 255 would drop the ARGB visual) and
-  `background.lua` clears the corners.
+  round its window: `background.lua` clears the corners. The panel is 85%
+  opaque through `own_window_color` (`#D9…`), which conky also gives to bars
+  and rules; with a transparent window and a background drawn in Lua they
+  were added to the wallpaper (red specks on the lines), and at `#FF` conky
+  drops the ARGB visual and the corners turn black.
 - **i3bar and i3status are gone**: eww is the only bar. If it moves back to
   the top, rofi and dunst need `64px` offsets (bar height) to sit under it.
 - **picom** rounds window corners with the same 14px radius as the eww pills.
