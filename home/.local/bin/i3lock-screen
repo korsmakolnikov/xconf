@@ -31,7 +31,11 @@ opts=(
     --insidewrong-color=00000088 --ringwrong-color=ff5555ff
     --keyhl-color=50fa7bff --bshl-color=ff79c6ff --line-uses-inside
     --verif-color=ffffffee --wrong-color=ff5555ee
-    --verif-text="…" --wrong-text="no" --noinput-text="vuoto"
+    # i3lock centra il testo come se fosse su una riga sola: --wrong-pos lo riporta
+    # al centro (87 = metà larghezza totale - metà di "Password"; va rifatto se cambia --wrong-size)
+    --verif-text="…" --noinput-text="vuoto"
+    --wrong-text=$'Password\n errata' --wrong-size=36 --wrong-pos="ix+87:iy-6"
+    --modif-pos="ix:iy+70"
 )
 
 if [[ -e /dev/fd/${XSS_SLEEP_LOCK_FD:--1} ]]; then
