@@ -23,7 +23,7 @@ xconf/
 │   └── apps.txt      #   optional apps: make apps
 ├── home/             # mirror of $HOME: home/X is linked to ~/X
 │   ├── .bash_*  .bashlib  .tool-versions  .wezterm.lua
-│   ├── .local/bin/   # rgs, i3lock-screen, swapcaps (link into the submodule)
+│   ├── .local/bin/   # rgs, i3lock-screen
 │   └── .config/
 │       ├── i3/config, i3/scripts/fnkey.sh
 │       ├── eww/      # the bar
@@ -32,10 +32,10 @@ xconf/
 │       ├── conky/    # system monitor on the desktop: GPU, local models, agents
 │       └── picom.conf
 ├── hosts/            # per machine, linked only on the machine with that hostname
-│   ├── blacksheep-tmp20/.config/i3/local.conf   # laptop: swapcaps at startup
+│   ├── blacksheep-tmp20/.config/i3/local.conf   # laptop: nothing to override yet
 │   └── blacksheep-i3/.config/i3/local.conf      # desktop: font 10
-├── swapcaps/             (submodule)
-└── my_keyboard_layout/   (submodule)
+├── swapcaps/             (submodule, deprecated: my_keyboard_layout swaps Ctrl/Caps Lock)
+└── my_keyboard_layout/   (submodule: layout, hotplug service, laptop Ctrl/Caps Lock swap)
 ```
 
 Adding a dotfile: move it to the same path under `home/`, run `make link`.
@@ -131,10 +131,13 @@ Its old settings (commits `7e3652f`, `3889088`) were reviewed: the font is in
 (xwallpaper, betterlockscreen, i3status, the launchpad rofi theme, conky,
 the HDMI xrandr line, Garuda tray tools) was dropped for the shared setup.
 
-- **On the laptop, after pulling**: `make link` (it links
-  `hosts/blacksheep-tmp20/`, which now starts swapcaps), `make check`,
-  `make reload`. swapcaps is linked from the submodule into `~/.local/bin`:
-  the old `/usr/local/bin/swapcaps` from `swapcaps/install.sh` can go.
+- **On the laptop, after pulling**: `git submodule update`,
+  `my_keyboard_layout/install.sh` (installs the layout and its hotplug
+  service, swaps Ctrl/Caps Lock on the built-in keyboard in the kernel and
+  removes the swapcaps links, `/usr/local/bin/swapcaps` included), then
+  `make link`, `make check`, `make reload`.
+- **swapcaps**: deprecated, nothing uses it any more; the submodule can be
+  removed (`git rm swapcaps`).
 - **eww, still to do**:
   - wifi: hide the pill when there is no wireless device (today it shows a
     red "down" on a wired machine);
