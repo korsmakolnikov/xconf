@@ -76,6 +76,9 @@ bindsym $super+d exec --no-startup-id rofi -show drun
 
 # Lock screen
 exec --no-startup-id xss-lock --transfer-sleep-lock -- ~/.local/bin/i3lock-screen
+# org.freedesktop.ScreenSaver: Firefox (YouTube, Prime Video, ...) asks it to inhibit
+# idle while a video plays; xssproxy suspends the X screensaver, so xss-lock does not lock (AUR)
+exec --no-startup-id xssproxy
 bindsym $super+Shift+x exec --no-startup-id loginctl lock-session
 
 # Tasti funzione (ThinkBook 16p Gen 2) - logica in ~/.config/i3/scripts/fnkey.sh

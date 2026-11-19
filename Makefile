@@ -1,4 +1,4 @@
-.PHONY: help bootstrap packages apps link check reload docker asdf git-identity ssh-key browser
+.PHONY: help bootstrap packages apps aur link check reload docker asdf git-identity ssh-key browser
 
 # package lists installed by `make packages`; apps.txt is opt-in through `make apps`
 PACKAGE_LISTS := base dev c-cpp fonts desktop
@@ -8,7 +8,7 @@ pacman_install = grep -hv '^\#' $(1) | sudo pacman -Syu --needed --noconfirm -
 help: ## list the targets
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  %-13s %s\n", $$1, $$2}'
 
-bootstrap: packages link docker asdf git-identity ssh-key browser ## set up a fresh machine (interactive)
+bootstrap: packages aur link docker asdf git-identity ssh-key browser ## set up a fresh machine (interactive)
 	@echo "bootstrap done: log out and back in for the docker group to apply"
 
 packages: ## install the base, dev, c-cpp, fonts and desktop package lists
@@ -16,6 +16,17 @@ packages: ## install the base, dev, c-cpp, fonts and desktop package lists
 
 apps: ## install the optional desktop applications
 	@$(call pacman_install,packages/apps.txt)
+
+AUR_DIR := $(HOME)/.cache/xconf/aur
+
+aur: ## clone (or pull) and build with makepkg every package in packages/aur.txt
+	@mkdir -p $(AUR_DIR)
+	@grep -v '^#' packages/aur.txt | while read -r pkg; do \
+		pacman -Q "$$pkg" >/dev/null 2>&1 && continue; \
+		if [ -d "$(AUR_DIR)/$$pkg/.git" ]; then git -C "$(AUR_DIR)/$$pkg" pull -q --ff-only; \
+		else git clone -q "https://aur.archlinux.org/$$pkg.git" "$(AUR_DIR)/$$pkg"; fi; \
+		(cd "$(AUR_DIR)/$$pkg" && makepkg -si --needed --noconfirm) || exit 1; \
+	done
 
 link: ## symlink every file under home/ into $HOME
 	@bin/dotlink link

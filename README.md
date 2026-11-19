@@ -51,16 +51,17 @@ machine without one just uses the shared settings.
 
 | Target | What it does |
 |---|---|
-| `make bootstrap` | fresh machine: `packages`, `link`, `docker`, `asdf`, `git-identity`, `ssh-key`, `browser` (interactive) |
+| `make bootstrap` | fresh machine: `packages`, `aur`, `link`, `docker`, `asdf`, `git-identity`, `ssh-key`, `browser` (interactive) |
 | `make packages` | `pacman -Syu --needed` (full upgrade: no partial upgrades on Arch) the base, dev, c-cpp, fonts and desktop lists |
 | `make apps` | the optional apps list |
+| `make aur` | clone each package in `packages/aur.txt` from `aur.archlinux.org` into `~/.cache/xconf/aur/` and build it with `makepkg -si`; skips the ones already installed. Read the PKGBUILD of a package before adding it to the list |
 | `make link` | symlink `home/` into `$HOME`; a real file that differs is moved to `<file>.bak-<date>`, one identical to the repo copy is just replaced; dangling links into the repo are removed. Safe to rerun |
 | `make check` | exit 1 on a file not linked, a dangling link into the repo, a path in both `home/` and `hosts/`, an i3 config syntax error (`i3 -C`), or an i3 `exec` whose command is missing |
 | `make reload` | `check`, reload i3, restart eww (`exec_always` does not run on an i3 reload), reload dunst; fail if picom or eww are down or eww logged errors |
 | `make docker` | docker + docker-compose, `$USER` in the docker group, service enabled (log out to apply the group) |
 | `make asdf` | asdf plugins and runtimes pinned in `home/.tool-versions` (golang, nodejs LTS); Python is not on asdf, use `uv` |
 
-`sudo` needs a real terminal: run `make packages`, `make apps`, `make docker`
+`sudo` needs a real terminal: run `make packages`, `make apps`, `make aur`, `make docker`
 and `make bootstrap` from a terminal, not from an agent's shell.
 
 Fresh machine (the repo cannot clone itself):
